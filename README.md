@@ -1,8 +1,21 @@
-# vinext-starter
+# LaunchLift Practice App
 
-A clean full-stack starter running on
-[vinext](https://github.com/cloudflare/vinext), with optional Cloudflare D1 and
-Drizzle support.
+A reusable, disposable test app for learning LaunchLiftAI before connecting a real product.
+The code is the immutable template; each browser creates numbered practice runs that can be
+reset, revisited, compared with the original, or replaced without changing the template.
+
+## Practice workflow
+
+1. Open a new numbered run.
+2. Test camera, location, notifications, sharing, clipboard, vibration, and evidence export.
+3. Scan the public URL in LaunchLiftAI and choose the corresponding native capabilities.
+4. Generate assets and platform packages, then inspect the results.
+5. Update this repository through Codex/GitHub, deploy the revision, and rerun the scan.
+6. Repeat until the workflow is familiar; credentials, payments, signing, declarations,
+   store submission, publication, and rollout remain owner-controlled.
+
+The implementation uses [vinext](https://github.com/cloudflare/vinext), with optional
+Cloudflare D1 and Drizzle support inherited from the starter.
 
 ## Prerequisites
 

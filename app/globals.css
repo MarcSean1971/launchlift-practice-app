@@ -108,6 +108,9 @@ h1 { margin: 0; max-width: 13ch; font-size: clamp(2.55rem, 7vw, 5.4rem); line-he
 .run-chip { padding: .3rem .5rem; }
 .progress-track { height: .55rem; border-radius: 999px; background: rgba(255,255,255,.08); overflow: hidden; margin: 1rem 0 .55rem; }
 .progress-track span { display: block; height: 100%; border-radius: inherit; background: linear-gradient(90deg, var(--mint-strong), var(--sky)); }
+.run-picker { display: grid; gap: .42rem; color: #d6e8e5; font-size: .82rem; font-weight: 780; }
+.run-picker select { width: 100%; min-height: 2.85rem; border: 1px solid var(--line); border-radius: .9rem; padding: 0 .8rem; color: #eaf7f5; background: #061921; font: inherit; }
+.run-picker small { color: var(--muted); font-weight: 500; }
 .run-actions { display: grid; grid-template-columns: 1fr 1fr; gap: .65rem; }
 .button-primary, .button-secondary, .lab-action, .text-button {
   border: 0;

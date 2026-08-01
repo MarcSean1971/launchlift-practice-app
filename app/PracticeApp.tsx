@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 
-const REVISION = "1.0.0";
+const REVISION = "1.1.0";
 const STORAGE_KEY = "launchlift-practice-runs-v1";
 
 type TestKey = "camera" | "location" | "notifications" | "share" | "clipboard" | "vibration" | "export";
@@ -66,6 +66,7 @@ export function PracticeApp() {
   const active = useMemo(() => runs.find((run) => run.id === activeId) ?? runs[0], [runs, activeId]);
   const passed = active ? Object.values(active.tests).filter((value) => value === "passed").length : 0;
   const progress = Math.round((passed / labItems.length) * 100);
+  const completedRuns = runs.filter((run) => Object.values(run.tests).some((value) => value === "passed")).length;
 
   function createRun() {
     const next = makeRun(runs.length + 1);
@@ -169,11 +170,21 @@ export function PracticeApp() {
               <div className="progress-track" aria-label={`${progress}% complete`}><span style={{ width: `${progress}%` }} /></div>
               <small>{message}</small>
             </div>
+            <label className="run-picker">
+              <span>Saved practice runs</span>
+              <select value={active?.id ?? ""} onChange={(event) => setActiveId(event.currentTarget.value)}>
+                {runs.map((run) => {
+                  const runPassed = Object.values(run.tests).filter((value) => value === "passed").length;
+                  return <option key={run.id} value={run.id}>{run.name} · {runPassed}/{labItems.length} passed</option>;
+                })}
+              </select>
+              <small>{runs.length} reusable run{runs.length === 1 ? "" : "s"} saved on this device · {completedRuns} with evidence</small>
+            </label>
             <div className="run-actions">
               <button className="button-primary" onClick={createRun}>Start new run</button>
               <button className="button-secondary" onClick={() => setCompareOpen((value) => !value)}>Compare original</button>
               <button className="text-button" onClick={resetRun}>Reset this run</button>
-              <button className="text-button" onClick={() => setActiveId(runs.at(-1)?.id ?? activeId)}>Resume first run</button>
+              <button className="text-button" onClick={() => setActiveId(runs.at(-1)?.id ?? activeId)}>Open first run</button>
             </div>
             {compareOpen ? <div className="compare-drawer"><strong>Immutable original · revision {REVISION}</strong><ul><li>No test results stored</li><li>No permissions granted</li><li>No generated assets attached</li><li>Ready to clone again</li></ul></div> : null}
           </aside>
@@ -207,7 +218,7 @@ export function PracticeApp() {
           <span className="boundary-mark">!</span>
           <div><h3>Full authority has a clear safety boundary</h3><p>The practice Agent may change code, rerun scans, create assets and packages, and verify outputs. Account passwords, payments, signing keys, legal declarations, final submissions and public rollouts still pause for the owner.</p></div>
         </section>
-        <p className="footer-note">Practice template {REVISION} · Built for repeatable LaunchLiftAI verification</p>
+        <p className="footer-note">Practice template {REVISION} · Codex update proof ready for a LaunchLiftAI rerun</p>
       </main>
     </div>
   );
