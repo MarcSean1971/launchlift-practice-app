@@ -1,4 +1,4 @@
-const CACHE = "launchlift-practice-v1";
+const CACHE = "launchlift-practice-v2";
 const CORE = ["/", "/manifest.webmanifest", "/launchlift-practice.json"];
 
 self.addEventListener("install", (event) => {
