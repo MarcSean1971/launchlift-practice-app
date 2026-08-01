@@ -1,0 +1,171 @@
+@import "tailwindcss";
+
+:root {
+  --background: #06141d;
+  --foreground: #f4fbf8;
+  --muted: #9ab5b6;
+  --panel: rgba(11, 37, 49, 0.82);
+  --panel-solid: #0b2531;
+  --line: rgba(162, 217, 205, 0.18);
+  --mint: #79f2c0;
+  --mint-strong: #28d79b;
+  --sky: #70c8ff;
+  --amber: #ffc76b;
+  --danger: #ff8b8b;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
+  min-height: 100vh;
+  margin: 0;
+  overflow-x: hidden;
+}
+
+* { box-sizing: border-box; }
+
+button, input { font: inherit; }
+button { cursor: pointer; }
+
+.practice-shell {
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at 80% -10%, rgba(40, 215, 155, 0.18), transparent 34rem),
+    radial-gradient(circle at -12% 38%, rgba(112, 200, 255, 0.13), transparent 30rem),
+    linear-gradient(180deg, #06141d 0%, #071923 58%, #06131a 100%);
+}
+
+.practice-header {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1rem clamp(1rem, 4vw, 3.5rem);
+  border-bottom: 1px solid var(--line);
+  background: rgba(6, 20, 29, 0.88);
+  backdrop-filter: blur(18px);
+}
+
+.brand-lockup { display: flex; align-items: center; gap: .8rem; }
+.brand-mark {
+  width: 2.65rem;
+  height: 2.65rem;
+  display: grid;
+  place-items: center;
+  border-radius: .9rem;
+  color: #06201a;
+  font-weight: 900;
+  font-size: 1.2rem;
+  background: linear-gradient(135deg, var(--mint), var(--sky));
+  box-shadow: 0 10px 30px rgba(40, 215, 155, .22);
+}
+.brand-lockup strong { display: block; letter-spacing: -.02em; }
+.brand-lockup small { display: block; color: var(--muted); margin-top: .1rem; }
+
+.safe-badge, .eyebrow, .status-pill, .run-chip {
+  border: 1px solid rgba(121, 242, 192, .28);
+  color: var(--mint);
+  background: rgba(121, 242, 192, .08);
+  border-radius: 999px;
+  font-size: .78rem;
+  font-weight: 750;
+  letter-spacing: .02em;
+}
+.safe-badge { padding: .55rem .8rem; white-space: nowrap; }
+
+.practice-main { width: min(1160px, calc(100% - 2rem)); margin: 0 auto; padding: clamp(2rem, 6vw, 5rem) 0 5rem; }
+.hero-grid { display: grid; grid-template-columns: 1.3fr .8fr; gap: 1.4rem; align-items: stretch; }
+.hero-copy, .run-panel, .guide-card, .lab-section, .boundary-card {
+  border: 1px solid var(--line);
+  background: var(--panel);
+  box-shadow: 0 24px 80px rgba(0, 0, 0, .2);
+}
+.hero-copy { padding: clamp(1.5rem, 5vw, 3.5rem); border-radius: 2rem; }
+.eyebrow { display: inline-flex; padding: .45rem .68rem; margin-bottom: 1.1rem; }
+h1 { margin: 0; max-width: 13ch; font-size: clamp(2.55rem, 7vw, 5.4rem); line-height: .96; letter-spacing: -.065em; }
+.hero-copy > p { max-width: 58ch; color: #c4d8d6; font-size: clamp(1rem, 2vw, 1.18rem); line-height: 1.7; margin: 1.4rem 0 0; }
+.hero-points { display: flex; flex-wrap: wrap; gap: .55rem; margin-top: 1.5rem; }
+.hero-points span { border-radius: 999px; border: 1px solid var(--line); padding: .48rem .68rem; color: #b8d0cf; font-size: .82rem; background: rgba(255,255,255,.025); }
+
+.run-panel { border-radius: 2rem; padding: 1.4rem; display: flex; flex-direction: column; gap: 1rem; }
+.panel-kicker { color: var(--sky); font-size: .75rem; font-weight: 800; text-transform: uppercase; letter-spacing: .12em; }
+.run-panel h2, .section-heading h2 { margin: .2rem 0 0; font-size: clamp(1.5rem, 3vw, 2.15rem); letter-spacing: -.035em; }
+.run-card { border: 1px solid var(--line); border-radius: 1.25rem; padding: 1rem; background: rgba(1, 15, 22, .48); }
+.run-card-top { display: flex; justify-content: space-between; gap: .75rem; align-items: flex-start; }
+.run-card strong { display: block; }
+.run-card small { color: var(--muted); }
+.run-chip { padding: .3rem .5rem; }
+.progress-track { height: .55rem; border-radius: 999px; background: rgba(255,255,255,.08); overflow: hidden; margin: 1rem 0 .55rem; }
+.progress-track span { display: block; height: 100%; border-radius: inherit; background: linear-gradient(90deg, var(--mint-strong), var(--sky)); }
+.run-actions { display: grid; grid-template-columns: 1fr 1fr; gap: .65rem; }
+.button-primary, .button-secondary, .lab-action, .text-button {
+  border: 0;
+  border-radius: .9rem;
+  min-height: 2.8rem;
+  font-weight: 780;
+}
+.button-primary { color: #032018; background: linear-gradient(135deg, var(--mint), #55e5c8); }
+.button-secondary { color: #d6e8e5; background: rgba(255,255,255,.06); border: 1px solid var(--line); }
+.text-button { color: var(--muted); background: transparent; min-height: auto; padding: .35rem; }
+.text-button:hover { color: #fff; }
+
+.guide-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin: 1rem 0 3rem; }
+.guide-card { border-radius: 1.35rem; padding: 1.25rem; }
+.guide-number { color: #062019; background: var(--mint); width: 2rem; height: 2rem; display: grid; place-items: center; border-radius: .7rem; font-weight: 900; }
+.guide-card h3 { margin: 1rem 0 .45rem; }
+.guide-card p { color: var(--muted); line-height: 1.55; margin: 0; font-size: .92rem; }
+
+.lab-section { border-radius: 2rem; padding: clamp(1.2rem, 4vw, 2rem); }
+.section-heading { display: flex; align-items: flex-end; justify-content: space-between; gap: 1rem; margin-bottom: 1.3rem; }
+.section-heading p { color: var(--muted); max-width: 48ch; margin: 0; line-height: 1.55; }
+.lab-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .9rem; }
+.lab-card { min-height: 14rem; border: 1px solid var(--line); border-radius: 1.3rem; padding: 1.1rem; background: rgba(2, 18, 25, .55); display: flex; flex-direction: column; }
+.lab-card-top { display: flex; justify-content: space-between; align-items: center; gap: .75rem; }
+.lab-icon { width: 2.2rem; height: 2.2rem; display: grid; place-items: center; border-radius: .8rem; background: rgba(112,200,255,.1); color: var(--sky); font-weight: 900; }
+.status-pill { padding: .28rem .48rem; color: var(--muted); border-color: var(--line); background: rgba(255,255,255,.03); }
+.status-pill.passed { color: var(--mint); border-color: rgba(121,242,192,.32); }
+.status-pill.blocked { color: var(--amber); border-color: rgba(255,199,107,.32); }
+.lab-card h3 { margin: 1rem 0 .45rem; }
+.lab-card p { color: var(--muted); margin: 0 0 1rem; line-height: 1.5; font-size: .9rem; }
+.lab-action { margin-top: auto; width: 100%; color: #eaf7f5; background: rgba(255,255,255,.065); border: 1px solid var(--line); }
+.lab-action:hover { border-color: rgba(121,242,192,.45); background: rgba(121,242,192,.08); }
+.hidden-file { position: absolute; width: 1px; height: 1px; opacity: 0; pointer-events: none; }
+
+.boundary-card { margin-top: 1rem; border-radius: 1.5rem; padding: 1.25rem; display: grid; grid-template-columns: auto 1fr; gap: 1rem; }
+.boundary-mark { width: 2.4rem; height: 2.4rem; border-radius: .8rem; display: grid; place-items: center; background: rgba(255,199,107,.12); color: var(--amber); font-weight: 900; }
+.boundary-card h3 { margin: 0 0 .35rem; }
+.boundary-card p { margin: 0; color: var(--muted); line-height: 1.55; }
+
+.compare-drawer { margin-top: 1rem; border: 1px solid rgba(112,200,255,.28); border-radius: 1.1rem; padding: 1rem; background: rgba(112,200,255,.06); }
+.compare-drawer strong { color: var(--sky); }
+.compare-drawer ul { margin: .6rem 0 0; padding-left: 1.1rem; color: var(--muted); }
+.footer-note { text-align: center; color: #719092; margin-top: 2.5rem; font-size: .82rem; }
+
+@media (max-width: 860px) {
+  .hero-grid { grid-template-columns: 1fr; }
+  .guide-grid, .lab-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .section-heading { align-items: flex-start; flex-direction: column; }
+}
+
+@media (max-width: 580px) {
+  .practice-header { padding: .8rem 1rem; }
+  .safe-badge { font-size: .7rem; }
+  .practice-main { width: min(100% - 1rem, 1160px); padding-top: .75rem; }
+  .hero-copy, .run-panel, .lab-section { border-radius: 1.4rem; }
+  .hero-copy { padding: 1.3rem; }
+  .guide-grid, .lab-grid { grid-template-columns: 1fr; }
+  .lab-card { min-height: 12.5rem; }
+  .boundary-card { grid-template-columns: 1fr; }
+  .brand-lockup small { display: none; }
+}

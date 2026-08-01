@@ -1,0 +1,15 @@
+{
+  "name": "LaunchLift Practice App",
+  "short_name": "LiftLab",
+  "description": "A reusable practice app for learning the LaunchLiftAI workflow.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#06141d",
+  "theme_color": "#071a24",
+  "orientation": "portrait-primary",
+  "categories": ["education", "productivity", "utilities"],
+  "shortcuts": [
+    { "name": "Start practice run", "short_name": "New run", "url": "/?action=new-run" },
+    { "name": "Open device lab", "short_name": "Device lab", "url": "/#device-lab" }
+  ]
+}

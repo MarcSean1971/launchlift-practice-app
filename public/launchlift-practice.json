@@ -1,0 +1,11 @@
+{
+  "schemaVersion": 1,
+  "template": "launchlift-practice-app",
+  "revision": "1.0.0",
+  "immutableOriginal": true,
+  "repeatableRuns": true,
+  "sourceUpdateChannel": "codex-mcp-acp",
+  "capabilities": ["camera", "geolocation", "notifications", "share", "clipboard", "vibration", "file-export"],
+  "expectedOutputs": ["pwa", "android-apk", "android-aab", "chrome-extension", "firefox-handoff", "store-assets"],
+  "ownerGates": ["credentials", "payments", "signing", "legal-declarations", "final-submission", "rollout"]
+}
