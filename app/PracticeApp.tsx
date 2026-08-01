@@ -47,6 +47,8 @@ export function PracticeApp() {
     try {
       const stored = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]") as PracticeRun[];
       const next = stored.length ? stored : [makeRun(1)];
+      // This effect intentionally hydrates state from the browser's persisted practice runs.
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setRuns(next);
       setActiveId(next[0].id);
     } catch {
