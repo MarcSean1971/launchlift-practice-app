@@ -25,6 +25,9 @@ test("server-renders the reusable Practice App", async () => {
   assert.match(html, /Original always preserved/);
   assert.match(html, /Start new run/);
   assert.match(html, /Seven safe capability checks/);
+  assert.match(html, /Choose what LaunchLiftAI should build/);
+  assert.match(html, /AI Helper authority/);
+  assert.match(html, /Chrome extension/);
   assert.match(html, /Full authority has a clear safety boundary/);
   assert.doesNotMatch(html, /Your site is taking shape|Building your site/);
 });
@@ -38,7 +41,9 @@ test("declares an immutable template and repeatable disposable runs", async () =
 
   assert.equal(metadata.immutableOriginal, true);
   assert.equal(metadata.repeatableRuns, true);
+  assert.equal(metadata.revision, "1.2.0");
   assert.equal(metadata.sourceUpdateChannel, "codex-mcp-acp");
+  assert.deepEqual(metadata.authorityModes, ["guided", "full-safe"]);
   assert.deepEqual(metadata.expectedOutputs, [
     "pwa",
     "android-apk",
@@ -51,4 +56,7 @@ test("declares an immutable template and repeatable disposable runs", async () =
   assert.match(source, /function createRun\(\)/);
   assert.match(source, /untouched revision/);
   assert.match(source, /localStorage\.setItem/);
+  assert.match(source, /nativeSelections/);
+  assert.match(source, /authorityMode/);
+  assert.match(source, /new URLSearchParams\(location\.search\)/);
 });
