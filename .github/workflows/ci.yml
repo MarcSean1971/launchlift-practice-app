@@ -40,6 +40,14 @@ jobs:
       - name: Build and test
         run: npm test
 
+      - name: Preserve validated site bundle
+        uses: actions/upload-artifact@v6
+        with:
+          name: practice-site-dist
+          path: dist
+          if-no-files-found: error
+          retention-days: 3
+
       - name: Lint
         run: npm run lint
 
