@@ -1,0 +1,358 @@
+{
+  "jobId": "d24a5c5e-43de-4510-ba84-42d805d128ec",
+  "projectId": "42314633-00ce-4de8-87ed-112740414b4b",
+  "sourceUrl": "https://launchlift-practice-app.seelenbinder.chatgpt.site/",
+  "appName": "LaunchLift Practice App",
+  "packageName": "site.chatgpt.seelenbinder.launchliftpracticeapp.android",
+  "versionName": "1.2.0",
+  "versionCode": 3,
+  "launchMode": "Closed beta",
+  "releaseFiles": "signed",
+  "nativeCapabilities": [
+    "camera",
+    "location",
+    "share",
+    "offline",
+    "network",
+    "clipboard",
+    "files",
+    "haptics",
+    "localNotifications"
+  ],
+  "featureLabels": [],
+  "pushEvents": [],
+  "scanEvidence": {
+    "scanId": "0e6f01db-8104-40b9-a00c-bcb6a116de19",
+    "readinessScore": 72,
+    "appType": "Marketplace-style web app",
+    "aiReviewed": true,
+    "scanModel": "gpt-5.6-luna",
+    "evidenceSummary": [
+      "Website fetched: https://launchlift-practice-app.seelenbinder.chatgpt.site/ (200)",
+      "Website routes found: /, /assets/index-DySQWFLW.css, /assets/layout-segment-context-BRqKDGBf.js, /assets/rolldown-runtime-S-ySWqyJ.js, /assets/index-BSHuM6iv.js",
+      "Website feature hints: login, payments, uploads, marketplace, notifications, ai, location, dating",
+      "Website text sampled: LaunchLift Practice App · LaunchLift Practice App L LaunchLift Practice App Reusable launch sandbox Original always pres",
+      "GitHub repo inspected: MarcSean1971/launchlift-practice-app",
+      "Repo file samples read: package.json, app/PracticeApp.tsx, app/chatgpt-auth.ts, app/layout.tsx, app/page.tsx",
+      "Screenshot evidence: captured"
+    ],
+    "detectedRoutes": [
+      "/",
+      "/assets/index-DySQWFLW.css",
+      "/assets/layout-segment-context-BRqKDGBf.js",
+      "/assets/rolldown-runtime-S-ySWqyJ.js",
+      "/assets/index-BSHuM6iv.js",
+      "/assets/framework-DjPHiq1u.js",
+      "/assets/PracticeApp-CzrjXta5.js",
+      "/manifest.webmanifest",
+      "/assets/_vinext_fonts/geist-8ac0455e797f/geist-ff2310f5.woff2",
+      "/assets/_vinext_fonts/geist-8ac0455e797f/geist-875ccdd4.woff2",
+      "/assets/_vinext_fonts/geist-8ac0455e797f/geist-52306abf.woff2",
+      "/assets/_vinext_fonts/geist-8ac0455e797f/geist-001175b1.woff2"
+    ],
+    "detectedFeatures": [
+      "login",
+      "payments",
+      "uploads",
+      "marketplace",
+      "notifications",
+      "ai",
+      "location",
+      "dating",
+      "chat",
+      "bluetooth"
+    ],
+    "recommendedCapabilities": [
+      "deepLinks",
+      "network",
+      "offline",
+      "push",
+      "camera",
+      "media",
+      "files",
+      "location",
+      "maps",
+      "biometrics",
+      "share",
+      "clipboard",
+      "browser",
+      "keyboard",
+      "deviceInfo",
+      "privacyScreen"
+    ],
+    "findings": [
+      {
+        "id": "source-repository-match",
+        "label": "Website and repository match",
+        "detail": "The selected repository references launchlift-practice-app.seelenbinder.chatgpt.site, which matches the scanned website launchlift-practice-app.seelenbinder.chatgpt.site.",
+        "severity": "info"
+      },
+      {
+        "id": "scan-finding",
+        "label": "Scan finding",
+        "severity": "info"
+      },
+      {
+        "id": "scan-finding",
+        "label": "Scan finding",
+        "severity": "info"
+      },
+      {
+        "id": "scan-finding",
+        "label": "Scan finding",
+        "severity": "info"
+      },
+      {
+        "id": "scan-finding",
+        "label": "Scan finding",
+        "severity": "info"
+      },
+      {
+        "id": "scan-finding",
+        "label": "Scan finding",
+        "severity": "info"
+      },
+      {
+        "id": "scan-finding",
+        "label": "Scan finding",
+        "severity": "info"
+      },
+      {
+        "id": "scan-finding",
+        "label": "Scan finding",
+        "severity": "info"
+      }
+    ],
+    "sourceMatch": {
+      "status": "matched",
+      "label": "Website and repository match",
+      "detail": "The selected repository references launchlift-practice-app.seelenbinder.chatgpt.site, which matches the scanned website launchlift-practice-app.seelenbinder.chatgpt.site.",
+      "evidence": [
+        "Scanned website: launchlift-practice-app.seelenbinder.chatgpt.site",
+        "Connected repository: MarcSean1971/launchlift-practice-app",
+        "Repository URL evidence: launchlift-practice-app.seelenbinder.chatgpt.site"
+      ]
+    },
+    "codeInspection": {
+      "repository": "MarcSean1971/launchlift-practice-app",
+      "checkedAt": "2026-08-02T06:05:57.634Z",
+      "frameworks": [
+        "React",
+        "Vite",
+        "Next.js"
+      ],
+      "nativeSignals": [],
+      "configFiles": [
+        "package.json"
+      ],
+      "routeFiles": [
+        "app/PracticeApp.tsx",
+        "app/chatgpt-auth.ts",
+        "app/layout.tsx",
+        "app/page.tsx",
+        "examples/d1/app/api/notes/route.ts"
+      ],
+      "riskSignals": [],
+      "nativeCodeSignals": [
+        {
+          "capability": "push",
+          "status": "missing",
+          "confidence": 0,
+          "evidence": [],
+          "missing": [
+            "Capacitor push plugin",
+            "Firebase/FCM config",
+            "device token registration/storage",
+            "notification tap routing"
+          ]
+        },
+        {
+          "capability": "camera",
+          "status": "missing",
+          "confidence": 0,
+          "evidence": [],
+          "missing": [
+            "Camera plugin",
+            "capture UI",
+            "permission denied fallback",
+            "upload/storage path"
+          ]
+        },
+        {
+          "capability": "media",
+          "status": "missing",
+          "confidence": 0,
+          "evidence": [],
+          "missing": [
+            "Media picker",
+            "file validation",
+            "storage/upload path",
+            "delete/remove user media"
+          ]
+        },
+        {
+          "capability": "location",
+          "status": "missing",
+          "confidence": 0,
+          "evidence": [],
+          "missing": [
+            "Geolocation plugin",
+            "clear user-facing location feature",
+            "permission fallback",
+            "privacy wording"
+          ]
+        },
+        {
+          "capability": "biometrics",
+          "status": "missing",
+          "confidence": 0,
+          "evidence": [],
+          "missing": [
+            "Biometric plugin",
+            "protected screens/actions",
+            "fallback login",
+            "session handling"
+          ]
+        },
+        {
+          "capability": "share",
+          "status": "missing",
+          "confidence": 0,
+          "evidence": [],
+          "missing": [
+            "Native share plugin",
+            "real share button/action",
+            "share URL routing"
+          ]
+        },
+        {
+          "capability": "deepLinks",
+          "status": "missing",
+          "confidence": 0,
+          "evidence": [],
+          "missing": [
+            "App link configuration",
+            "assetlinks.json domain verification",
+            "route mapping",
+            "tap/open tests"
+          ]
+        },
+        {
+          "capability": "offline",
+          "status": "partial",
+          "confidence": 50,
+          "evidence": [
+            "Service worker/offline file detected"
+          ],
+          "missing": [
+            "Local storage layer",
+            "safe offline data map",
+            "sync/retry behavior",
+            "clear/delete controls"
+          ]
+        },
+        {
+          "capability": "background",
+          "status": "partial",
+          "confidence": 50,
+          "evidence": [
+            "Background/scheduler naming appears in repo tree"
+          ],
+          "missing": [
+            "Allowed background job",
+            "Android battery-limit review",
+            "user-facing explanation",
+            "test plan"
+          ]
+        },
+        {
+          "capability": "voice",
+          "status": "missing",
+          "confidence": 0,
+          "evidence": [],
+          "missing": [
+            "Microphone capture flow",
+            "start/stop/delete controls",
+            "audio storage/transmission handling",
+            "privacy wording"
+          ]
+        },
+        {
+          "capability": "video",
+          "status": "missing",
+          "confidence": 0,
+          "evidence": [],
+          "missing": [
+            "Video call provider/flow",
+            "camera and microphone permissions",
+            "moderation/blocking",
+            "poor-network states"
+          ]
+        },
+        {
+          "capability": "network",
+          "status": "partial",
+          "confidence": 50,
+          "evidence": [
+            "Service worker/offline file detected"
+          ],
+          "missing": [
+            "Network listener",
+            "offline UI state",
+            "retry behavior",
+            "lost-work protection"
+          ]
+        },
+        {
+          "capability": "appLauncher",
+          "status": "missing",
+          "confidence": 0,
+          "evidence": [],
+          "missing": [
+            "App launcher plugin",
+            "can-open check",
+            "fallback route or link"
+          ]
+        },
+        {
+          "capability": "browser",
+          "status": "missing",
+          "confidence": 0,
+          "evidence": [],
+          "missing": [
+            "Browser plugin",
+            "trusted-domain rules",
+            "return-to-app behavior"
+          ]
+        },
+        {
+          "capability": "clipboard",
+          "status": "missing",
+          "confidence": 0,
+          "evidence": [],
+          "missing": [
+            "Clipboard plugin",
+            "copy action",
+            "copied confirmation",
+            "sensitive-data review"
+          ]
+        },
+        {
+          "capability": "files",
+          "status": "missing",
+          "confidence": 0,
+          "evidence": [],
+          "missing": [
+            "File plugin",
+            "save/open/share flow",
+            "failure handling",
+            "privacy notes"
+          ]
+        }
+      ]
+    }
+  },
+  "rebuildOfBuildId": "dfd62e2f-35f0-4980-8f9b-f17a123eb3d2",
+  "rebuildReason": "UI, OAuth, branding, blog, navigation, AI Helper, and privacy corrections from corrected source 3bd0b0e1e864bcc3e99cf0a96be9ed4376a0f95a code 3.",
+  "generatedAt": "2026-08-02T06:41:55.471Z"
+}
