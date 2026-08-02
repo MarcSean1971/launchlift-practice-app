@@ -86,7 +86,7 @@ button { cursor: pointer; }
 
 .practice-main { width: min(1160px, calc(100% - 2rem)); margin: 0 auto; padding: clamp(2rem, 6vw, 5rem) 0 5rem; }
 .hero-grid { display: grid; grid-template-columns: 1.3fr .8fr; gap: 1.4rem; align-items: stretch; }
-.hero-copy, .run-panel, .guide-card, .lab-section, .boundary-card {
+.hero-copy, .run-panel, .guide-card, .rehearsal-section, .lab-section, .boundary-card {
   border: 1px solid var(--line);
   background: var(--panel);
   box-shadow: 0 24px 80px rgba(0, 0, 0, .2);
@@ -129,6 +129,31 @@ h1 { margin: 0; max-width: 13ch; font-size: clamp(2.55rem, 7vw, 5.4rem); line-he
 .guide-card h3 { margin: 1rem 0 .45rem; }
 .guide-card p { color: var(--muted); line-height: 1.55; margin: 0; font-size: .92rem; }
 
+.rehearsal-section { border-radius: 2rem; padding: clamp(1.2rem, 4vw, 2rem); margin-bottom: 1rem; }
+.rehearsal-grid { display: grid; grid-template-columns: 1fr 1fr; gap: .9rem; }
+.rehearsal-card { border: 1px solid var(--line); border-radius: 1.3rem; padding: 1.1rem; background: rgba(2, 18, 25, .55); }
+.card-label { display: block; color: #dceceb; font-size: .9rem; font-weight: 800; margin-bottom: .8rem; }
+.choice-grid { display: grid; grid-template-columns: 1fr 1fr; gap: .55rem; }
+.choice-button { min-height: 2.8rem; border: 1px solid var(--line); border-radius: .85rem; color: #bcd0cf; background: rgba(255,255,255,.035); text-align: left; padding: 0 .7rem; font-weight: 720; }
+.choice-button span { color: var(--sky); display: inline-grid; place-items: center; width: 1.25rem; margin-right: .35rem; }
+.choice-button.selected { color: #062019; background: var(--mint); border-color: var(--mint); }
+.choice-button.selected span { color: #062019; }
+.rehearsal-card > small { display: block; color: var(--muted); margin-top: .7rem; }
+.authority-options { display: grid; grid-template-columns: 1fr 1fr; gap: .55rem; }
+.authority-options button { display: grid; gap: .3rem; min-height: 5.5rem; border: 1px solid var(--line); border-radius: .9rem; padding: .8rem; color: #d6e8e5; background: rgba(255,255,255,.035); text-align: left; }
+.authority-options button[aria-pressed="true"] { border-color: rgba(121,242,192,.6); background: rgba(121,242,192,.1); box-shadow: inset 0 0 0 1px rgba(121,242,192,.2); }
+.authority-options small, .authority-note { color: var(--muted); line-height: 1.45; }
+.authority-note { margin: .75rem 0 0; font-size: .78rem; }
+.agent-cycle { display: grid; grid-template-columns: repeat(4, 1fr); gap: .65rem; margin-top: .9rem; }
+.agent-cycle > div { position: relative; display: grid; align-content: start; gap: .3rem; border: 1px solid var(--line); border-radius: 1rem; padding: .9rem; background: rgba(112,200,255,.035); }
+.agent-cycle span { color: var(--sky); font-weight: 900; }
+.agent-cycle small { color: var(--muted); line-height: 1.45; }
+.output-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: .55rem; margin-top: .9rem; }
+.output-grid article { display: flex; align-items: center; gap: .65rem; border: 1px solid var(--line); border-radius: .9rem; padding: .75rem; background: rgba(255,255,255,.025); }
+.output-grid article > span { color: var(--mint); font-weight: 900; }
+.output-grid strong, .output-grid small { display: block; }
+.output-grid small { color: var(--muted); margin-top: .15rem; }
+
 .lab-section { border-radius: 2rem; padding: clamp(1.2rem, 4vw, 2rem); }
 .section-heading { display: flex; align-items: flex-end; justify-content: space-between; gap: 1rem; margin-bottom: 1.3rem; }
 .section-heading p { color: var(--muted); max-width: 48ch; margin: 0; line-height: 1.55; }
@@ -158,6 +183,8 @@ h1 { margin: 0; max-width: 13ch; font-size: clamp(2.55rem, 7vw, 5.4rem); line-he
 @media (max-width: 860px) {
   .hero-grid { grid-template-columns: 1fr; }
   .guide-grid, .lab-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .rehearsal-grid { grid-template-columns: 1fr; }
+  .agent-cycle { grid-template-columns: repeat(2, 1fr); }
   .section-heading { align-items: flex-start; flex-direction: column; }
 }
 
@@ -165,9 +192,10 @@ h1 { margin: 0; max-width: 13ch; font-size: clamp(2.55rem, 7vw, 5.4rem); line-he
   .practice-header { padding: .8rem 1rem; }
   .safe-badge { font-size: .7rem; }
   .practice-main { width: min(100% - 1rem, 1160px); padding-top: .75rem; }
-  .hero-copy, .run-panel, .lab-section { border-radius: 1.4rem; }
+  .hero-copy, .run-panel, .rehearsal-section, .lab-section { border-radius: 1.4rem; }
   .hero-copy { padding: 1.3rem; }
   .guide-grid, .lab-grid { grid-template-columns: 1fr; }
+  .choice-grid, .authority-options, .agent-cycle, .output-grid { grid-template-columns: 1fr; }
   .lab-card { min-height: 12.5rem; }
   .boundary-card { grid-template-columns: 1fr; }
   .brand-lockup small { display: none; }

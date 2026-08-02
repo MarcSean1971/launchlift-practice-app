@@ -2,11 +2,13 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 
-const REVISION = "1.1.0";
+const REVISION = "1.2.0";
 const STORAGE_KEY = "launchlift-practice-runs-v1";
 
 type TestKey = "camera" | "location" | "notifications" | "share" | "clipboard" | "vibration" | "export";
 type TestState = "ready" | "passed" | "blocked";
+type NativeKey = "camera" | "location" | "notifications" | "share" | "clipboard" | "haptics";
+type AuthorityMode = "guided" | "full-safe";
 
 type PracticeRun = {
   id: string;
@@ -14,6 +16,8 @@ type PracticeRun = {
   createdAt: string;
   revision: string;
   tests: Partial<Record<TestKey, TestState>>;
+  nativeSelections?: NativeKey[];
+  authorityMode?: AuthorityMode;
 };
 
 const labItems: Array<{ key: TestKey; icon: string; title: string; description: string; action: string }> = [
@@ -26,6 +30,24 @@ const labItems: Array<{ key: TestKey; icon: string; title: string; description: 
   { key: "export", icon: "07", title: "File export", description: "Download a JSON evidence file without sending personal or production data anywhere.", action: "Export evidence" },
 ];
 
+const nativeOptions: Array<{ key: NativeKey; label: string }> = [
+  { key: "camera", label: "Camera" },
+  { key: "location", label: "Location" },
+  { key: "notifications", label: "Notifications" },
+  { key: "share", label: "Native share" },
+  { key: "clipboard", label: "Clipboard" },
+  { key: "haptics", label: "Haptics" },
+];
+
+const expectedOutputs = [
+  ["PWA", "Installable web app"],
+  ["Android APK", "Real-device testing"],
+  ["Android AAB", "Play delivery package"],
+  ["Chrome extension", "Browser package"],
+  ["Firefox handoff", "Store-ready guidance"],
+  ["Store assets", "Icons, screenshots and copy"],
+] as const;
+
 function makeRun(index: number): PracticeRun {
   return {
     id: crypto.randomUUID?.() ?? `run-${Date.now()}-${index}`,
@@ -33,6 +55,8 @@ function makeRun(index: number): PracticeRun {
     createdAt: new Date().toISOString(),
     revision: REVISION,
     tests: {},
+    nativeSelections: [],
+    authorityMode: "guided",
   };
 }
 
@@ -46,11 +70,14 @@ export function PracticeApp() {
   useEffect(() => {
     try {
       const stored = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]") as PracticeRun[];
-      const next = stored.length ? stored : [makeRun(1)];
+      const requestedNewRun = new URLSearchParams(location.search).get("action") === "new-run";
+      const initial = stored.length ? stored : [makeRun(1)];
+      const next = requestedNewRun ? [makeRun(initial.length + 1), ...initial] : initial;
       // This effect intentionally hydrates state from the browser's persisted practice runs.
       // eslint-disable-next-line react-hooks/set-state-in-effect
       setRuns(next);
       setActiveId(next[0].id);
+      if (requestedNewRun) history.replaceState(null, "", location.pathname);
     } catch {
       const first = makeRun(1);
       setRuns([first]);
@@ -85,6 +112,23 @@ export function PracticeApp() {
     if (!active) return;
     setRuns((current) => current.map((run) => run.id === active.id ? { ...run, tests: {} } : run));
     setMessage(`${active.name} was reset. The original template and your other runs were not changed.`);
+  }
+
+  function toggleNativeSelection(key: NativeKey) {
+    if (!active) return;
+    setRuns((current) => current.map((run) => {
+      if (run.id !== active.id) return run;
+      const selected = run.nativeSelections ?? [];
+      return {
+        ...run,
+        nativeSelections: selected.includes(key) ? selected.filter((value) => value !== key) : [...selected, key],
+      };
+    }));
+  }
+
+  function setAuthorityMode(authorityMode: AuthorityMode) {
+    if (!active) return;
+    setRuns((current) => current.map((run) => run.id === active.id ? { ...run, authorityMode } : run));
   }
 
   async function runTest(key: TestKey) {
@@ -196,7 +240,40 @@ export function PracticeApp() {
           <article className="guide-card"><span className="guide-number">3</span><h3>Build confidence</h3><p>Reset or start again until the steps make sense, then connect your real app.</p></article>
         </section>
 
-        <section className="lab-section">
+        <section className="rehearsal-section" aria-labelledby="rehearsal-heading">
+          <div className="section-heading"><div><span className="panel-kicker">Launch rehearsal</span><h2 id="rehearsal-heading">Choose what LaunchLiftAI should build</h2></div><p>These choices stay inside this saved practice run. They teach the packaging workflow without changing the immutable original.</p></div>
+          <div className="rehearsal-grid">
+            <article className="rehearsal-card">
+              <span className="card-label">Native phone functions</span>
+              <div className="choice-grid">
+                {nativeOptions.map((option) => {
+                  const selected = active?.nativeSelections?.includes(option.key) ?? false;
+                  return <button key={option.key} className={`choice-button ${selected ? "selected" : ""}`} aria-pressed={selected} onClick={() => toggleNativeSelection(option.key)}><span aria-hidden="true">{selected ? "✓" : "+"}</span>{option.label}</button>;
+                })}
+              </div>
+              <small>{active?.nativeSelections?.length ?? 0} selected for this run</small>
+            </article>
+            <article className="rehearsal-card">
+              <span className="card-label">AI Helper authority</span>
+              <div className="authority-options" role="group" aria-label="AI Helper authority mode">
+                <button aria-pressed={(active?.authorityMode ?? "guided") === "guided"} onClick={() => setAuthorityMode("guided")}><strong>Guided</strong><small>Explain actions and pause at owner gates.</small></button>
+                <button aria-pressed={active?.authorityMode === "full-safe"} onClick={() => setAuthorityMode("full-safe")}><strong>Full safe authority</strong><small>Implement, rerun and verify routine work automatically.</small></button>
+              </div>
+              <p className="authority-note">Full safe authority never includes credentials, payments, signing, legal declarations, final submission or public rollout.</p>
+            </article>
+          </div>
+          <article className="agent-cycle">
+            <div><span>1</span><strong>Codex updates source</strong><small>Change the practice copy through the connected repository.</small></div>
+            <div><span>2</span><strong>MCP or ACP reports activity</strong><small>Keep each change and tool result visible.</small></div>
+            <div><span>3</span><strong>LaunchLiftAI reruns</strong><small>Rescan, regenerate assets and rebuild selected packages.</small></div>
+            <div><span>4</span><strong>You inspect evidence</strong><small>Compare outputs, then repeat or reset safely.</small></div>
+          </article>
+          <div className="output-grid" aria-label="Expected LaunchLiftAI outputs">
+            {expectedOutputs.map(([name, purpose]) => <article key={name}><span aria-hidden="true">→</span><div><strong>{name}</strong><small>{purpose}</small></div></article>)}
+          </div>
+        </section>
+
+        <section className="lab-section" id="device-lab">
           <div className="section-heading"><div><span className="panel-kicker">Device lab</span><h2>Seven safe capability checks</h2></div><p>Each result becomes simple evidence that can be compared between the web app, packaged Android app and browser extension.</p></div>
           <div className="lab-grid">
             {labItems.map((item) => {

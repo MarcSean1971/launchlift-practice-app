@@ -9,7 +9,7 @@
   "orientation": "portrait-primary",
   "categories": ["education", "productivity", "utilities"],
   "shortcuts": [
-    { "name": "Start practice run", "short_name": "New run", "url": "/?action=new-run" },
-    { "name": "Open device lab", "short_name": "Device lab", "url": "/#device-lab" }
+    { "name": "Start practice run", "short_name": "New run", "url": "/?action=new-run", "id": "new-run" },
+    { "name": "Open device lab", "short_name": "Device lab", "url": "/#device-lab", "id": "device-lab" }
   ]
 }
