@@ -1,7 +1,12 @@
 {
-  "name": "site-creator-vinext-starter",
-  "version": "0.1.0",
+  "name": "launchlift-practice-app",
+  "version": "1.2.0",
   "private": true,
+  "homepage": "https://launchlift-practice-app.seelenbinder.chatgpt.site/",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/MarcSean1971/launchlift-practice-app.git"
+  },
   "engines": {
     "node": ">=22.13.0"
   },
