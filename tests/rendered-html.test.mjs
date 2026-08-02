@@ -33,11 +33,13 @@ test("server-renders the reusable Practice App", async () => {
 });
 
 test("declares an immutable template and repeatable disposable runs", async () => {
-  const [metadataText, source] = await Promise.all([
+  const [metadataText, packageText, source] = await Promise.all([
     readFile(new URL("../public/launchlift-practice.json", import.meta.url), "utf8"),
+    readFile(new URL("../package.json", import.meta.url), "utf8"),
     readFile(new URL("../app/PracticeApp.tsx", import.meta.url), "utf8"),
   ]);
   const metadata = JSON.parse(metadataText);
+  const packageMetadata = JSON.parse(packageText);
 
   assert.equal(metadata.immutableOriginal, true);
   assert.equal(metadata.repeatableRuns, true);
@@ -52,6 +54,10 @@ test("declares an immutable template and repeatable disposable runs", async () =
     "firefox-handoff",
     "store-assets",
   ]);
+  assert.equal(packageMetadata.name, "launchlift-practice-app");
+  assert.equal(packageMetadata.version, "1.2.0");
+  assert.equal(packageMetadata.homepage, "https://launchlift-practice-app.seelenbinder.chatgpt.site/");
+  assert.equal(packageMetadata.repository.url, "https://github.com/MarcSean1971/launchlift-practice-app.git");
   assert.match(source, /launchlift-practice-runs-v1/);
   assert.match(source, /function createRun\(\)/);
   assert.match(source, /untouched revision/);
