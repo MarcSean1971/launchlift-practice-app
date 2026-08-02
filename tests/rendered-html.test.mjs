@@ -33,13 +33,16 @@ test("server-renders the reusable Practice App", async () => {
 });
 
 test("declares an immutable template and repeatable disposable runs", async () => {
-  const [metadataText, packageText, source] = await Promise.all([
+  const [metadataText, packageText, source, manifestText, iconBytes] = await Promise.all([
     readFile(new URL("../public/launchlift-practice.json", import.meta.url), "utf8"),
     readFile(new URL("../package.json", import.meta.url), "utf8"),
     readFile(new URL("../app/PracticeApp.tsx", import.meta.url), "utf8"),
+    readFile(new URL("../public/manifest.webmanifest", import.meta.url), "utf8"),
+    readFile(new URL("../public/icon-512.png", import.meta.url)),
   ]);
   const metadata = JSON.parse(metadataText);
   const packageMetadata = JSON.parse(packageText);
+  const manifest = JSON.parse(manifestText);
 
   assert.equal(metadata.immutableOriginal, true);
   assert.equal(metadata.repeatableRuns, true);
@@ -65,4 +68,6 @@ test("declares an immutable template and repeatable disposable runs", async () =
   assert.match(source, /nativeSelections/);
   assert.match(source, /authorityMode/);
   assert.match(source, /new URLSearchParams\(location\.search\)/);
+  assert.deepEqual(manifest.icons.map((icon) => icon.src), ["/icon-192.png", "/icon-512.png"]);
+  assert.deepEqual([...iconBytes.subarray(0, 8)], [137, 80, 78, 71, 13, 10, 26, 10]);
 });

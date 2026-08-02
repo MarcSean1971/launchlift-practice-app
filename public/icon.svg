@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-labelledby="title">
+  <title id="title">LaunchLift Practice App</title>
+  <defs>
+    <linearGradient id="practice-gradient" x1="72" y1="64" x2="440" y2="448" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#79F2C0"/>
+      <stop offset="1" stop-color="#70C8FF"/>
+    </linearGradient>
+  </defs>
+  <rect width="512" height="512" rx="128" fill="#06141D"/>
+  <rect x="56" y="56" width="400" height="400" rx="112" fill="url(#practice-gradient)"/>
+  <path d="M185 142h70v170h100v66H185V142Z" fill="#06201A"/>
+</svg>
