@@ -147,6 +147,37 @@ test("wires five reversible native utility probes without external side effects"
   }
 });
 
+test("wires the final five bounded native probes without device-verification overclaims", async () => {
+  const [harnessSource, modelSource, packageText] = await Promise.all([
+    readFile(new URL("../app/NativeTestHarness.tsx", import.meta.url), "utf8"),
+    readFile(new URL("../app/nativeHarnessModel.ts", import.meta.url), "utf8"),
+    readFile(new URL("../package.json", import.meta.url), "utf8"),
+  ]);
+  const packageMetadata = JSON.parse(packageText);
+
+  for (const capability of ["maps", "keyboard", "deviceInfo", "privacyScreen", "screenReader"]) {
+    assert.match(modelSource, new RegExp(`\\b${capability}\\b`));
+  }
+  for (const signal of [
+    'Capacitor.isPluginAvailable("GoogleMaps")', "Keyboard.show", "Keyboard.hide", "Device.getInfo",
+    "PrivacyScreen.enable", "PrivacyScreen.disable", "PrivacyScreen.isEnabled", "ScreenReader.isEnabled", "ScreenReader.speak",
+  ]) {
+    assert.match(harnessSource, new RegExp(signal.replaceAll(".", "\\.").replaceAll("(", "\\(").replaceAll(")", "\\)")));
+  }
+  assert.doesNotMatch(harnessSource, /Device\.getId/);
+  assert.match(harnessSource, /No map, API key, coordinates, markers, route, or external service was used/);
+  assert.match(harnessSource, /Form resize, focus order, scroll behavior, and the device matrix remain unverified/);
+  assert.match(harnessSource, /No device name, model, identifier, memory, or battery data was displayed, stored, or transmitted/);
+  assert.match(harnessSource, /Screenshot and app-switcher behavior across real devices remains unverified/);
+  assert.match(harnessSource, /TalkBack navigation, focus order, labels, gestures, and the device matrix remain unverified/);
+  for (const dependency of [
+    "@capacitor/google-maps", "@capacitor/keyboard", "@capacitor/device",
+    "@capacitor/privacy-screen", "@capacitor/screen-reader",
+  ]) {
+    assert.equal(typeof packageMetadata.dependencies[dependency], "string", `${dependency} must be installed`);
+  }
+});
+
 test("declares an immutable 28-capability source owned by the LaunchLift workflow", async () => {
   const [metadataText, packageText, source, manifestText, iconBytes] = await Promise.all([
     readFile(new URL("../public/launchlift-practice.json", import.meta.url), "utf8"),

@@ -218,6 +218,8 @@ h1 { margin: 0; max-width: 13ch; font-size: clamp(2.55rem, 7vw, 5.4rem); line-he
 .native-test-card, .native-preview-card { border: 1px solid var(--line); border-radius: 1rem; padding: 1rem; background: rgba(255,255,255,.03); }
 .native-test-card > div, .native-preview-card > div { display: flex; justify-content: space-between; align-items: center; gap: .75rem; }
 .native-test-card p { color: var(--muted); min-height: 3rem; line-height: 1.45; }
+.native-keyboard-probe { width: 100%; margin: 0 0 .75rem; border: 1px solid var(--line); border-radius: .75rem; padding: .72rem .8rem; color: var(--text); background: rgba(1,12,18,.72); font: inherit; }
+.native-keyboard-probe:focus { outline: 2px solid var(--mint); outline-offset: 2px; }
 .native-result { border-radius: 999px; padding: .25rem .5rem; font-size: .7rem; font-weight: 800; text-transform: uppercase; color: var(--muted); background: rgba(255,255,255,.05); }
 .native-result.running { color: var(--sky); }
 .native-result.passed { color: var(--mint); }

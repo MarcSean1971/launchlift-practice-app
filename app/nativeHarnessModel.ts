@@ -3,6 +3,7 @@ export const nativeHarnessCapabilityIds = [
   "sensors", "biometrics", "deepLinks", "offline", "background", "voice",
   "push", "location", "bluetooth", "nfc", "video", "network",
   "appLauncher", "browser", "files", "barcode", "localNotifications",
+  "maps", "keyboard", "deviceInfo", "privacyScreen", "screenReader",
 ] as const;
 
 export type NativeHarnessCapabilityId = typeof nativeHarnessCapabilityIds[number];

@@ -8,13 +8,16 @@ import {
   passedNativeHarnessResult,
 } from "../app/nativeHarnessModel.ts";
 
-test("covers the first two bounded native slices without changing the canonical catalogue", () => {
+test("covers all 28 bounded native probes without changing the canonical catalogue", () => {
   assert.deepEqual(nativeHarnessCapabilityIds, [
     "camera", "media", "share", "clipboard", "haptics", "toast",
     "sensors", "biometrics", "deepLinks", "offline", "background", "voice",
     "push", "location", "bluetooth", "nfc", "video", "network",
     "appLauncher", "browser", "files", "barcode", "localNotifications",
+    "maps", "keyboard", "deviceInfo", "privacyScreen", "screenReader",
   ]);
+  assert.equal(nativeHarnessCapabilityIds.length, 28);
+  assert.equal(new Set(nativeHarnessCapabilityIds).size, 28);
   const results = idleNativeHarnessResults();
   assert.deepEqual(Object.keys(results), nativeHarnessCapabilityIds);
   assert.ok(Object.values(results).every((result) => result.status === "idle"));

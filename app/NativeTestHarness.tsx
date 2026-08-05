@@ -35,6 +35,11 @@ const capabilityLabels: Record<NativeHarnessCapabilityId, string> = {
   files: "Private file round trip",
   barcode: "QR and barcode scan",
   localNotifications: "Local reminder",
+  maps: "Native maps",
+  keyboard: "Software keyboard",
+  deviceInfo: "Device context",
+  privacyScreen: "Privacy screen",
+  screenReader: "Screen reader",
 };
 
 export function NativeTestHarness() {
@@ -371,6 +376,73 @@ export function NativeTestHarness() {
       }
       return passedNativeHarnessResult("A temporary local reminder was scheduled, found, and canceled before display. Delivery, tap routing, edits, and user timing choices remain unverified.");
     },
+    maps: async () => {
+      const { GoogleMap } = await import("@capacitor/google-maps");
+      if (!GoogleMap || !Capacitor.isPluginAvailable("GoogleMaps")) {
+        return { status: "blocked", message: "The native Google Maps bridge is unavailable in this converted build." };
+      }
+      return passedNativeHarnessResult("The native Google Maps bridge is registered. No map, API key, coordinates, markers, route, or external service was used; provider configuration and real map rendering remain unverified.");
+    },
+    keyboard: async () => {
+      const { Keyboard } = await import("@capacitor/keyboard");
+      const input = document.getElementById("native-keyboard-probe");
+      if (!(input instanceof HTMLInputElement)) throw new Error("Keyboard test input unavailable.");
+
+      let resolveShown: (height: number) => void = () => undefined;
+      const shown = new Promise<number>((resolve) => { resolveShown = resolve; });
+      const handle = await Keyboard.addListener("keyboardDidShow", ({ keyboardHeight }) => resolveShown(keyboardHeight));
+      const timer = window.setTimeout(() => resolveShown(-1), 4_000);
+      try {
+        input.focus();
+        input.select();
+        await Keyboard.show();
+        const height = await shown;
+        if (height < 0) throw new Error("Software keyboard event unavailable.");
+        await new Promise((resolve) => window.setTimeout(resolve, 350));
+        return passedNativeHarnessResult(`The software keyboard emitted a show event (${Math.round(height)} px) and was then hidden. Form resize, focus order, scroll behavior, and the device matrix remain unverified.`);
+      } finally {
+        window.clearTimeout(timer);
+        await handle.remove();
+        await Keyboard.hide().catch(() => undefined);
+        input.blur();
+      }
+    },
+    deviceInfo: async () => {
+      const { Device } = await import("@capacitor/device");
+      const info = await Device.getInfo();
+      if (!info.platform || !info.operatingSystem) throw new Error("Non-identifying device context unavailable.");
+      return passedNativeHarnessResult(`The native device plugin returned ${info.platform}/${info.operatingSystem} runtime context. No device name, model, identifier, memory, or battery data was displayed, stored, or transmitted.`);
+    },
+    privacyScreen: async () => {
+      const { PrivacyScreen } = await import("@capacitor/privacy-screen");
+      const initial = await PrivacyScreen.isEnabled();
+      if (initial.enabled) {
+        return passedNativeHarnessResult("Secure-window protection was already enabled, was confirmed, and was left enabled. Screenshot and app-switcher behavior across real devices remains unverified.");
+      }
+      let changed = false;
+      try {
+        const enableResult = await PrivacyScreen.enable();
+        if (!enableResult.success) throw new Error("Privacy screen did not enable.");
+        changed = true;
+        const active = await PrivacyScreen.isEnabled();
+        if (!active.enabled) throw new Error("Privacy screen state was not confirmed.");
+        await new Promise((resolve) => window.setTimeout(resolve, 350));
+      } finally {
+        if (changed) await PrivacyScreen.disable().catch(() => undefined);
+      }
+      const restored = await PrivacyScreen.isEnabled();
+      if (restored.enabled) throw new Error("Privacy screen did not return to its original disabled state.");
+      return passedNativeHarnessResult("Secure-window protection was enabled, confirmed, and disabled. Screenshot and app-switcher behavior across real devices remains unverified.");
+    },
+    screenReader: async () => {
+      const { ScreenReader } = await import("@capacitor/screen-reader");
+      const state = await ScreenReader.isEnabled();
+      if (!state.value) {
+        return { status: "blocked", message: "The Android screen reader is disabled. Enable it in accessibility settings, then run this test again." };
+      }
+      await ScreenReader.speak({ value: "LaunchLift Practice screen reader test", language: "en" });
+      return passedNativeHarnessResult("The native screen reader reported enabled and accepted one spoken test phrase. TalkBack navigation, focus order, labels, gestures, and the device matrix remain unverified.");
+    },
   };
 
   return (
@@ -393,6 +465,9 @@ export function NativeTestHarness() {
               <article className="native-test-card" key={capability}>
                 <div><strong>{capabilityLabels[capability]}</strong><span className={`native-result ${result.status}`}>{result.status}</span></div>
                 <p id={`native-result-${capability}`} role="status" aria-live="polite">{result.message}</p>
+                {capability === "keyboard" ? (
+                  <input id="native-keyboard-probe" className="native-keyboard-probe" type="text" defaultValue="Practice keyboard test" aria-label="Practice keyboard test field" />
+                ) : null}
                 <button
                   className="lab-action"
                   type="button"
