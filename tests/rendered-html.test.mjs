@@ -85,6 +85,34 @@ test("wires the next six unimplemented native actions without claiming ordinal c
   }
 });
 
+test("wires the following six device probes while retaining downstream evidence gates", async () => {
+  const [harnessSource, modelSource, packageText] = await Promise.all([
+    readFile(new URL("../app/NativeTestHarness.tsx", import.meta.url), "utf8"),
+    readFile(new URL("../app/nativeHarnessModel.ts", import.meta.url), "utf8"),
+    readFile(new URL("../package.json", import.meta.url), "utf8"),
+  ]);
+  const packageMetadata = JSON.parse(packageText);
+
+  for (const capability of ["push", "location", "bluetooth", "nfc", "video", "network"]) {
+    assert.match(modelSource, new RegExp(`\\b${capability}\\b`));
+  }
+  for (const signal of [
+    "PushNotifications.register", "Geolocation.getCurrentPosition", "BluetoothLe.initialize",
+    "CapacitorNfc.getStatus", "facingMode", "Network.getStatus",
+  ]) {
+    assert.match(harnessSource, new RegExp(signal.replaceAll(".", "\\.")));
+  }
+  assert.match(harnessSource, /Backend storage, FCM delivery, tap routing, and notification preferences remain unverified/);
+  assert.match(harnessSource, /Coordinates were not displayed, stored, or transmitted/);
+  assert.match(harnessSource, /No devices were scanned, paired, connected, or queried/);
+  assert.match(harnessSource, /No tag was scanned, trusted, parsed, written, or acted upon/);
+  assert.match(harnessSource, /No frame, recording, audio, call, or upload was retained/);
+  assert.match(harnessSource, /Retry and no-data-loss behavior remain unverified/);
+  for (const dependency of ["@capacitor/push-notifications", "@capacitor-community/bluetooth-le", "@capgo/capacitor-nfc"]) {
+    assert.equal(typeof packageMetadata.dependencies[dependency], "string", `${dependency} must be installed`);
+  }
+});
+
 test("declares an immutable 28-capability source owned by the LaunchLift workflow", async () => {
   const [metadataText, packageText, source, manifestText, iconBytes] = await Promise.all([
     readFile(new URL("../public/launchlift-practice.json", import.meta.url), "utf8"),

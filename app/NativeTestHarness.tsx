@@ -24,6 +24,12 @@ const capabilityLabels: Record<NativeHarnessCapabilityId, string> = {
   offline: "Offline storage",
   background: "Background runner",
   voice: "Microphone",
+  push: "Push registration",
+  location: "Location",
+  bluetooth: "Bluetooth readiness",
+  nfc: "NFC readiness",
+  video: "Video capture",
+  network: "Network awareness",
 };
 
 export function NativeTestHarness() {
@@ -181,6 +187,102 @@ export function NativeTestHarness() {
         stream.getTracks().forEach((track) => track.stop());
       }
       return passedNativeHarnessResult("Microphone permission and capture opened, then stopped. No audio was recorded, retained, uploaded, or transcribed.");
+    },
+    push: async () => {
+      const { PushNotifications } = await import("@capacitor/push-notifications");
+      let permission = await PushNotifications.checkPermissions();
+      if (permission.receive !== "granted") permission = await PushNotifications.requestPermissions();
+      if (permission.receive !== "granted") throw new Error("Push notification permission denied.");
+
+      return new Promise<NativeHarnessResult>((resolve, reject) => {
+        let settled = false;
+        let handles: Array<{ remove: () => Promise<void> }> = [];
+        let timer: number | undefined;
+
+        async function cleanup() {
+          if (timer !== undefined) window.clearTimeout(timer);
+          await Promise.all(handles.map((handle) => handle.remove()));
+        }
+        async function finish(result: NativeHarnessResult) {
+          if (settled) return;
+          settled = true;
+          await cleanup();
+          resolve(result);
+        }
+        async function fail(error: Error) {
+          if (settled) return;
+          settled = true;
+          await cleanup();
+          reject(error);
+        }
+
+        void Promise.all([
+          PushNotifications.addListener("registration", ({ value }) => {
+            if (!value) return;
+            void finish(passedNativeHarnessResult("The device returned a push registration token. Backend storage, FCM delivery, tap routing, and notification preferences remain unverified."));
+          }),
+          PushNotifications.addListener("registrationError", (error) => {
+            void fail(new Error(error.error || "Push registration failed."));
+          }),
+        ]).then(async (registeredHandles) => {
+          handles = registeredHandles;
+          timer = window.setTimeout(() => void fail(new Error("Push registration unavailable or timed out.")), 15_000);
+          await PushNotifications.register();
+        }).catch((error: unknown) => {
+          void fail(error instanceof Error ? error : new Error("Push registration failed."));
+        });
+      });
+    },
+    location: async () => {
+      const { Geolocation } = await import("@capacitor/geolocation");
+      let permission = await Geolocation.checkPermissions();
+      if (permission.location !== "granted" && permission.coarseLocation !== "granted") {
+        permission = await Geolocation.requestPermissions({ permissions: ["location", "coarseLocation"] });
+      }
+      if (permission.location !== "granted" && permission.coarseLocation !== "granted") {
+        throw new Error("Location permission denied.");
+      }
+      const position = await Geolocation.getCurrentPosition({ enableHighAccuracy: false, timeout: 10_000, maximumAge: 60_000 });
+      if (!Number.isFinite(position.coords.latitude) || !Number.isFinite(position.coords.longitude)) {
+        throw new Error("Location result unavailable.");
+      }
+      return passedNativeHarnessResult("The phone returned a current position. Coordinates were not displayed, stored, or transmitted by this harness.");
+    },
+    bluetooth: async () => {
+      const { BluetoothLe } = await import("@capacitor-community/bluetooth-le");
+      await BluetoothLe.initialize({ androidNeverForLocation: true });
+      const enabled = await BluetoothLe.isEnabled();
+      if (!enabled.value) {
+        return { status: "blocked", message: "Bluetooth is available but disabled. Enable it in phone settings before testing scan, pairing, or reconnect behavior." };
+      }
+      return passedNativeHarnessResult("The native BLE adapter initialized and is enabled. No devices were scanned, paired, connected, or queried.");
+    },
+    nfc: async () => {
+      const { CapacitorNfc } = await import("@capgo/capacitor-nfc");
+      const support = await CapacitorNfc.isSupported();
+      if (!support.supported) return { status: "blocked", message: "This phone does not report NFC hardware support." };
+      const { status } = await CapacitorNfc.getStatus();
+      if (status !== "NFC_OK") {
+        return { status: "blocked", message: `NFC hardware is present but not ready (${status}). Enable NFC before testing a real tag.` };
+      }
+      return passedNativeHarnessResult("The native NFC adapter reports ready. No tag was scanned, trusted, parsed, written, or acted upon.");
+    },
+    video: async () => {
+      if (!navigator.mediaDevices?.getUserMedia) throw new Error("Video capture is unavailable in this converted build.");
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: false, video: { facingMode: "user" } });
+      try {
+        await new Promise((resolve) => window.setTimeout(resolve, 600));
+      } finally {
+        stream.getTracks().forEach((track) => track.stop());
+      }
+      return passedNativeHarnessResult("The front camera video stream opened, then stopped. No frame, recording, audio, call, or upload was retained.");
+    },
+    network: async () => {
+      const { Network } = await import("@capacitor/network");
+      const current = await Network.getStatus();
+      const listener = await Network.addListener("networkStatusChange", () => undefined);
+      await listener.remove();
+      return passedNativeHarnessResult(`The native network plugin reported ${current.connected ? "connected" : "offline"} and accepted a change listener. Retry and no-data-loss behavior remain unverified.`);
     },
   };
 

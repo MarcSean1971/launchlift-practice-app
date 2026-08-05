@@ -5,6 +5,9 @@ project(':capacitor-android').projectDir = new File('../node_modules/@capacitor/
 include ':aparajita-capacitor-biometric-auth'
 project(':aparajita-capacitor-biometric-auth').projectDir = new File('../node_modules/@aparajita/capacitor-biometric-auth/android')
 
+include ':capacitor-community-bluetooth-le'
+project(':capacitor-community-bluetooth-le').projectDir = new File('../node_modules/@capacitor-community/bluetooth-le/android')
+
 include ':capacitor-app'
 project(':capacitor-app').projectDir = new File('../node_modules/@capacitor/app/android')
 
@@ -29,8 +32,14 @@ project(':capacitor-network').projectDir = new File('../node_modules/@capacitor/
 include ':capacitor-preferences'
 project(':capacitor-preferences').projectDir = new File('../node_modules/@capacitor/preferences/android')
 
+include ':capacitor-push-notifications'
+project(':capacitor-push-notifications').projectDir = new File('../node_modules/@capacitor/push-notifications/android')
+
 include ':capacitor-share'
 project(':capacitor-share').projectDir = new File('../node_modules/@capacitor/share/android')
 
 include ':capacitor-toast'
 project(':capacitor-toast').projectDir = new File('../node_modules/@capacitor/toast/android')
+
+include ':capgo-capacitor-nfc'
+project(':capgo-capacitor-nfc').projectDir = new File('../node_modules/@capgo/capacitor-nfc/android')

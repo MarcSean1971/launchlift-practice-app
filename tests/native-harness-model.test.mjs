@@ -12,6 +12,7 @@ test("covers the first two bounded native slices without changing the canonical 
   assert.deepEqual(nativeHarnessCapabilityIds, [
     "camera", "media", "share", "clipboard", "haptics", "toast",
     "sensors", "biometrics", "deepLinks", "offline", "background", "voice",
+    "push", "location", "bluetooth", "nfc", "video", "network",
   ]);
   const results = idleNativeHarnessResults();
   assert.deepEqual(Object.keys(results), nativeHarnessCapabilityIds);
