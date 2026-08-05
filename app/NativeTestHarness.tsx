@@ -30,6 +30,11 @@ const capabilityLabels: Record<NativeHarnessCapabilityId, string> = {
   nfc: "NFC readiness",
   video: "Video capture",
   network: "Network awareness",
+  appLauncher: "Open email app",
+  browser: "Trusted browser",
+  files: "Private file round trip",
+  barcode: "QR and barcode scan",
+  localNotifications: "Local reminder",
 };
 
 export function NativeTestHarness() {
@@ -283,6 +288,88 @@ export function NativeTestHarness() {
       const listener = await Network.addListener("networkStatusChange", () => undefined);
       await listener.remove();
       return passedNativeHarnessResult(`The native network plugin reported ${current.connected ? "connected" : "offline"} and accepted a change listener. Retry and no-data-loss behavior remain unverified.`);
+    },
+    appLauncher: async () => {
+      const { AppLauncher } = await import("@capacitor/app-launcher");
+      const url = "mailto:?subject=LaunchLift%20Practice%20App%20test";
+      const available = await AppLauncher.canOpenUrl({ url });
+      if (!available.value) {
+        return { status: "blocked", message: "No email app is available for this safe external-app handoff." };
+      }
+      const opened = await AppLauncher.openUrl({ url });
+      if (!opened.completed) throw new Error("The email app did not open.");
+      return passedNativeHarnessResult("The system opened an email draft target after your tap. No recipient, body, message, or send action was supplied.");
+    },
+    browser: async () => {
+      const { Browser } = await import("@capacitor/browser");
+      await Browser.open({
+        url: "https://launchliftai.com/privacy",
+        presentationStyle: "popover",
+        toolbarColor: "#06141d",
+      });
+      return passedNativeHarnessResult("The trusted LaunchLiftAI privacy page opened in the system browser surface. No form, login, permission, or submission was performed.");
+    },
+    files: async () => {
+      const { Directory, Encoding, Filesystem } = await import("@capacitor/filesystem");
+      const path = `launchlift-practice/evidence-${Date.now()}.json`;
+      const data = JSON.stringify({ kind: "native-file-round-trip", retained: false });
+      await Filesystem.writeFile({ path, data, directory: Directory.Cache, encoding: Encoding.UTF8, recursive: true });
+      try {
+        const read = await Filesystem.readFile({ path, directory: Directory.Cache, encoding: Encoding.UTF8 });
+        if (read.data !== data) throw new Error("Native file contents did not match the test payload.");
+      } finally {
+        await Filesystem.deleteFile({ path, directory: Directory.Cache });
+      }
+      return passedNativeHarnessResult("A non-sensitive JSON fixture was written, read, verified, and deleted from app cache. Persistent export, open, share, and user deletion flows remain unverified.");
+    },
+    barcode: async () => {
+      const {
+        CapacitorBarcodeScanner,
+        CapacitorBarcodeScannerAndroidScanningLibrary,
+        CapacitorBarcodeScannerCameraDirection,
+        CapacitorBarcodeScannerScanOrientation,
+        CapacitorBarcodeScannerTypeHint,
+      } = await import("@capacitor/barcode-scanner");
+      const result = await CapacitorBarcodeScanner.scanBarcode({
+        hint: CapacitorBarcodeScannerTypeHint.ALL,
+        cameraDirection: CapacitorBarcodeScannerCameraDirection.BACK,
+        scanOrientation: CapacitorBarcodeScannerScanOrientation.ADAPTIVE,
+        scanInstructions: "Scan a non-sensitive Practice test code",
+        scanButton: false,
+        cancelButtonAccessibilityLabel: "Cancel barcode scan",
+        torchButtonOnAccessibilityLabel: "Turn torch on",
+        torchButtonOffAccessibilityLabel: "Turn torch off",
+        android: { scanningLibrary: CapacitorBarcodeScannerAndroidScanningLibrary.ZXING },
+      });
+      if (!result.ScanResult) return { status: "idle", message: "Scan canceled safely. No code data was kept." };
+      return passedNativeHarnessResult(`A code was detected (${result.ScanResult.length} characters). Its content was not displayed, stored, trusted, opened, or acted upon.`);
+    },
+    localNotifications: async () => {
+      const { LocalNotifications } = await import("@capacitor/local-notifications");
+      let permission = await LocalNotifications.checkPermissions();
+      if (permission.display !== "granted") permission = await LocalNotifications.requestPermissions();
+      if (permission.display !== "granted") throw new Error("Local notification permission denied.");
+      const id = 810_021;
+      await LocalNotifications.schedule({
+        notifications: [{
+          id,
+          title: "LaunchLift Practice reminder",
+          body: "Temporary schedule/cancel test",
+          schedule: { at: new Date(Date.now() + 60_000) },
+          autoCancel: true,
+          extra: { targetPath: "/#native-test-harness", practiceOnly: true },
+        }],
+      });
+      const pending = await LocalNotifications.getPending();
+      if (!pending.notifications.some((notification) => notification.id === id)) {
+        throw new Error("The temporary local notification was not scheduled.");
+      }
+      await LocalNotifications.cancel({ notifications: [{ id }] });
+      const afterCancel = await LocalNotifications.getPending();
+      if (afterCancel.notifications.some((notification) => notification.id === id)) {
+        throw new Error("The temporary local notification was not canceled.");
+      }
+      return passedNativeHarnessResult("A temporary local reminder was scheduled, found, and canceled before display. Delivery, tap routing, edits, and user timing choices remain unverified.");
     },
   };
 

@@ -13,6 +13,7 @@ test("covers the first two bounded native slices without changing the canonical 
     "camera", "media", "share", "clipboard", "haptics", "toast",
     "sensors", "biometrics", "deepLinks", "offline", "background", "voice",
     "push", "location", "bluetooth", "nfc", "video", "network",
+    "appLauncher", "browser", "files", "barcode", "localNotifications",
   ]);
   const results = idleNativeHarnessResults();
   assert.deepEqual(Object.keys(results), nativeHarnessCapabilityIds);

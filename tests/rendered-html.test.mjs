@@ -113,6 +113,40 @@ test("wires the following six device probes while retaining downstream evidence 
   }
 });
 
+test("wires five reversible native utility probes without external side effects", async () => {
+  const [harnessSource, modelSource, manifestSource, packageText] = await Promise.all([
+    readFile(new URL("../app/NativeTestHarness.tsx", import.meta.url), "utf8"),
+    readFile(new URL("../app/nativeHarnessModel.ts", import.meta.url), "utf8"),
+    readFile(new URL("../android/app/src/main/AndroidManifest.xml", import.meta.url), "utf8"),
+    readFile(new URL("../package.json", import.meta.url), "utf8"),
+  ]);
+  const packageMetadata = JSON.parse(packageText);
+
+  for (const capability of ["appLauncher", "browser", "files", "barcode", "localNotifications"]) {
+    assert.match(modelSource, new RegExp(`\\b${capability}\\b`));
+  }
+  for (const signal of [
+    "AppLauncher.canOpenUrl", "AppLauncher.openUrl", "Browser.open", "Filesystem.writeFile",
+    "Filesystem.deleteFile", "CapacitorBarcodeScanner.scanBarcode", "LocalNotifications.schedule",
+    "LocalNotifications.cancel",
+  ]) {
+    assert.match(harnessSource, new RegExp(signal.replaceAll(".", "\\.")));
+  }
+  assert.match(harnessSource, /No recipient, body, message, or send action was supplied/);
+  assert.match(harnessSource, /No form, login, permission, or submission was performed/);
+  assert.match(harnessSource, /written, read, verified, and deleted from app cache/);
+  assert.match(harnessSource, /not displayed, stored, trusted, opened, or acted upon/);
+  assert.match(harnessSource, /canceled before display/);
+  assert.match(manifestSource, /android\.intent\.action\.SENDTO/);
+  assert.match(manifestSource, /android:scheme="mailto"/);
+  for (const dependency of [
+    "@capacitor/app-launcher", "@capacitor/browser", "@capacitor/filesystem",
+    "@capacitor/barcode-scanner", "@capacitor/local-notifications",
+  ]) {
+    assert.equal(typeof packageMetadata.dependencies[dependency], "string", `${dependency} must be installed`);
+  }
+});
+
 test("declares an immutable 28-capability source owned by the LaunchLift workflow", async () => {
   const [metadataText, packageText, source, manifestText, iconBytes] = await Promise.all([
     readFile(new URL("../public/launchlift-practice.json", import.meta.url), "utf8"),
