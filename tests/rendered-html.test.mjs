@@ -55,6 +55,36 @@ test("keeps the interactive test slice native-only and user-triggered", async ()
   }
 });
 
+test("wires the next six unimplemented native actions without claiming ordinal completion", async () => {
+  const [harnessSource, modelSource, configSource, runnerSource, manifestSource, packageText] = await Promise.all([
+    readFile(new URL("../app/NativeTestHarness.tsx", import.meta.url), "utf8"),
+    readFile(new URL("../app/nativeHarnessModel.ts", import.meta.url), "utf8"),
+    readFile(new URL("../capacitor.config.ts", import.meta.url), "utf8"),
+    readFile(new URL("../.launchlift/web/runners/practice-background.js", import.meta.url), "utf8"),
+    readFile(new URL("../android/app/src/main/AndroidManifest.xml", import.meta.url), "utf8"),
+    readFile(new URL("../package.json", import.meta.url), "utf8"),
+  ]);
+  const packageMetadata = JSON.parse(packageText);
+
+  for (const capability of ["sensors", "biometrics", "deepLinks", "offline", "background", "voice"]) {
+    assert.match(modelSource, new RegExp(`\\b${capability}\\b`));
+  }
+  for (const signal of ["DeviceMotionEvent", "BiometricAuth.authenticate", "App.getLaunchUrl", "Preferences.set", "BackgroundRunner.dispatchEvent", "getUserMedia"]) {
+    assert.match(harnessSource, new RegExp(signal.replaceAll(".", "\\.")));
+  }
+  assert.match(harnessSource, /OS-scheduled background execution and battery behavior are not yet proven/);
+  assert.match(harnessSource, /No audio was recorded, retained, uploaded, or transcribed/);
+  assert.match(configSource, /autoStart: false/);
+  assert.match(runnerSource, /user-triggered Practice run ID/);
+  assert.match(manifestSource, /android\.intent\.action\.VIEW/);
+  assert.match(manifestSource, /android\.permission\.RECORD_AUDIO/);
+  assert.match(manifestSource, /android\.permission\.USE_BIOMETRIC/);
+  assert.match(manifestSource, /ACCESS_BACKGROUND_LOCATION" tools:node="remove"/);
+  for (const dependency of ["@capacitor/app", "@capacitor/background-runner", "@aparajita/capacitor-biometric-auth"]) {
+    assert.equal(typeof packageMetadata.dependencies[dependency], "string", `${dependency} must be installed`);
+  }
+});
+
 test("declares an immutable 28-capability source owned by the LaunchLift workflow", async () => {
   const [metadataText, packageText, source, manifestText, iconBytes] = await Promise.all([
     readFile(new URL("../public/launchlift-practice.json", import.meta.url), "utf8"),

@@ -1,4 +1,7 @@
-export const nativeHarnessCapabilityIds = ["camera", "media", "share", "clipboard", "haptics", "toast"] as const;
+export const nativeHarnessCapabilityIds = [
+  "camera", "media", "share", "clipboard", "haptics", "toast",
+  "sensors", "biometrics", "deepLinks", "offline", "background", "voice",
+] as const;
 
 export type NativeHarnessCapabilityId = typeof nativeHarnessCapabilityIds[number];
 export type NativeHarnessResult = {
@@ -28,4 +31,13 @@ export function nativeHarnessFailure(error: unknown): NativeHarnessResult {
 
 export function passedNativeHarnessResult(message: string): NativeHarnessResult {
   return { status: "passed", message };
+}
+
+export function isTrustedPracticeAppLink(value: string) {
+  try {
+    const url = new URL(value);
+    return url.protocol === "https:" && url.hostname === "launchlift-practice-app.seelenbinder.chatgpt.site";
+  } catch {
+    return false;
+  }
 }

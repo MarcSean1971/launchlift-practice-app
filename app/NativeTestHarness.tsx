@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { Capacitor } from "@capacitor/core";
 import {
   idleNativeHarnessResults,
+  isTrustedPracticeAppLink,
   nativeHarnessFailure,
   passedNativeHarnessResult,
   type NativeHarnessCapabilityId,
@@ -17,6 +18,12 @@ const capabilityLabels: Record<NativeHarnessCapabilityId, string> = {
   clipboard: "Clipboard",
   haptics: "Touch feedback",
   toast: "Native toast",
+  sensors: "Motion sensors",
+  biometrics: "Biometric unlock",
+  deepLinks: "App links",
+  offline: "Offline storage",
+  background: "Background runner",
+  voice: "Microphone",
 };
 
 export function NativeTestHarness() {
@@ -87,6 +94,93 @@ export function NativeTestHarness() {
       const { Toast } = await import("@capacitor/toast");
       await Toast.show({ text: "Native toast test passed", duration: "short", position: "bottom" });
       return passedNativeHarnessResult("A short native confirmation was shown. Important errors still remain visible here.");
+    },
+    sensors: async () => {
+      const MotionEvent = window.DeviceMotionEvent as typeof DeviceMotionEvent & {
+        requestPermission?: () => Promise<"granted" | "denied">;
+      };
+      if (!MotionEvent) throw new Error("Device motion is unavailable on this phone.");
+      if (MotionEvent.requestPermission) {
+        const permission = await MotionEvent.requestPermission();
+        if (permission !== "granted") throw new Error("Motion sensor permission denied.");
+      }
+      await new Promise<void>((resolve, reject) => {
+        const timer = window.setTimeout(() => {
+          window.removeEventListener("devicemotion", handleMotion);
+          reject(new Error("Motion sensor event unavailable."));
+        }, 4_000);
+        const handleMotion = (event: DeviceMotionEvent) => {
+          if (!event.acceleration && !event.accelerationIncludingGravity && !event.rotationRate) return;
+          window.clearTimeout(timer);
+          window.removeEventListener("devicemotion", handleMotion);
+          resolve();
+        };
+        window.addEventListener("devicemotion", handleMotion);
+      });
+      return passedNativeHarnessResult("The WebView delivered one motion sample. No sensor stream was stored or transmitted.");
+    },
+    biometrics: async () => {
+      const { BiometricAuth } = await import("@aparajita/capacitor-biometric-auth");
+      const availability = await BiometricAuth.checkBiometry();
+      if (!availability.deviceIsSecure) {
+        return { status: "blocked", message: "This phone has no secure device credential configured, so the biometric test cannot run." };
+      }
+      if (!availability.isAvailable) {
+        return { status: "blocked", message: availability.reason || "No enrolled biometric method is available on this phone." };
+      }
+      await BiometricAuth.authenticate({
+        reason: "Unlock the Practice App test harness",
+        cancelTitle: "Cancel",
+        allowDeviceCredential: true,
+        androidTitle: "Practice App unlock test",
+        androidSubtitle: "No biometric data is stored by this app",
+      });
+      return passedNativeHarnessResult("The operating system confirmed device authentication. The app did not receive or store biometric data.");
+    },
+    deepLinks: async () => {
+      const { App } = await import("@capacitor/app");
+      const launch = await App.getLaunchUrl();
+      if (!launch?.url) {
+        return {
+          status: "blocked",
+          message: "No app-link launch was captured. Close the app, reopen the public Practice URL as an installed app link, then test again.",
+        };
+      }
+      if (!isTrustedPracticeAppLink(launch.url)) {
+        return { status: "blocked", message: "The captured launch URL was not the trusted HTTPS Practice App domain." };
+      }
+      return passedNativeHarnessResult("The installed app received the trusted HTTPS launch URL. Android domain association still requires published assetlinks certificate evidence.");
+    },
+    offline: async () => {
+      const { Preferences } = await import("@capacitor/preferences");
+      const key = "launchlift.practice.offline-probe";
+      const value = `local-${Date.now()}`;
+      await Preferences.set({ key, value });
+      const stored = await Preferences.get({ key });
+      await Preferences.remove({ key });
+      if (stored.value !== value) throw new Error("Offline preference round-trip failed.");
+      return passedNativeHarnessResult("A temporary native preference survived a write/read round trip and was deleted. Offline sync and conflict handling remain separate tests.");
+    },
+    background: async () => {
+      const { BackgroundRunner } = await import("@capacitor/background-runner");
+      const runId = `practice-${Date.now()}`;
+      const response = await BackgroundRunner.dispatchEvent<{ acknowledged?: boolean; runId?: string }>({
+        label: "site.chatgpt.seelenbinder.launchliftpracticeapp.background",
+        event: "practiceBackgroundProbe",
+        details: { runId },
+      });
+      if (!response?.acknowledged || response.runId !== runId) throw new Error("Background runner acknowledgement was invalid.");
+      return passedNativeHarnessResult("The isolated runner acknowledged a manual event. OS-scheduled background execution and battery behavior are not yet proven.");
+    },
+    voice: async () => {
+      if (!navigator.mediaDevices?.getUserMedia) throw new Error("Microphone capture is unavailable in this converted build.");
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true, video: false });
+      try {
+        await new Promise((resolve) => window.setTimeout(resolve, 600));
+      } finally {
+        stream.getTracks().forEach((track) => track.stop());
+      }
+      return passedNativeHarnessResult("Microphone permission and capture opened, then stopped. No audio was recorded, retained, uploaded, or transcribed.");
     },
   };
 
