@@ -27,7 +27,32 @@ test("server-renders the reusable Practice App", async () => {
   assert.match(html, /No native functions selected here/);
   assert.match(html, /Everything else happens in LaunchLiftAI/);
   assert.doesNotMatch(html, /Choose generated outputs|Choose destinations|AI Helper authority|Prepare implementation brief/);
+  assert.doesNotMatch(html, /Native test harness|Test Camera|Test Photo library/);
   assert.doesNotMatch(html, /Your site is taking shape|Building your site/);
+});
+
+test("keeps the interactive test slice native-only and user-triggered", async () => {
+  const [practiceSource, harnessSource, modelSource, packageText] = await Promise.all([
+    readFile(new URL("../app/PracticeApp.tsx", import.meta.url), "utf8"),
+    readFile(new URL("../app/NativeTestHarness.tsx", import.meta.url), "utf8"),
+    readFile(new URL("../app/nativeHarnessModel.ts", import.meta.url), "utf8"),
+    readFile(new URL("../package.json", import.meta.url), "utf8"),
+  ]);
+  const packageMetadata = JSON.parse(packageText);
+
+  assert.match(practiceSource, /nativeCapabilities\.map/);
+  assert.match(practiceSource, /<NativeTestHarness \/>/);
+  assert.match(harnessSource, /Capacitor\.isNativePlatform\(\)/);
+  assert.match(harnessSource, /if \(!native\) return null/);
+  assert.match(harnessSource, /onClick=\{\(\) => void run\(capability, actions\[capability\]\)\}/);
+  assert.match(harnessSource, /saveToGallery: false/);
+  assert.match(harnessSource, /It was not uploaded/);
+  assert.match(harnessSource, /not that every production workflow/);
+  assert.match(modelSource, /Permission was denied/);
+  assert.match(modelSource, /Canceled safely/);
+  for (const dependency of ["@capacitor/camera", "@capacitor/share", "@capacitor/clipboard", "@capacitor/haptics", "@capacitor/toast"]) {
+    assert.equal(typeof packageMetadata.dependencies[dependency], "string", `${dependency} must be installed`);
+  }
 });
 
 test("declares an immutable 28-capability source owned by the LaunchLift workflow", async () => {
