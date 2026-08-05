@@ -1,18 +1,16 @@
 # LaunchLift Practice App
 
-A reusable, disposable test app for learning LaunchLiftAI before connecting a real product.
-The code is the immutable template; each browser creates numbered practice runs that can be
-reset, revisited, compared with the original, or replaced without changing the template.
+A reusable source web app for learning LaunchLiftAI before connecting a real product.
+It lists all 28 possible native capabilities with short mobile-friendly explanations.
 
 ## Practice workflow
 
-1. Open a new numbered run.
-2. Select any number from zero through all 28 native capabilities and run the matching safe checks or native handoffs.
-3. Scan the public URL in LaunchLiftAI, or connect the GitHub repository after providing a deployable URL.
-4. Choose any of eight outputs and six destinations, then inspect the generated evidence and packages.
-5. Send one reviewed implementation contract through Codex MCP, Codex ACP, Lovable, Bubble, FlutterFlow, Base44, or a generic adapter; deploy the revision and rerun the scan.
-6. Repeat until the workflow is familiar; credentials, payments, signing, declarations,
-   store submission, publication, and rollout remain owner-controlled.
+1. Import the public URL or GitHub repository in LaunchLiftAI.
+2. Select zero through all 28 native capabilities inside LaunchLiftAI.
+3. Select outputs, assets and stores inside LaunchLiftAI.
+4. Send the implementation instructions manually, through MCP or through ACP.
+5. Let the connected platform update this app's source; LaunchLiftAI rescans and verifies it.
+6. Download the generated files from LaunchLiftAI and test the converted app on a phone or as a browser extension.
 
 The implementation uses [vinext](https://github.com/cloudflare/vinext), with optional
 Cloudflare D1 and Drizzle support inherited from the starter.

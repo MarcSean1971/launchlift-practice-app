@@ -92,6 +92,7 @@ button { cursor: pointer; }
   box-shadow: 0 24px 80px rgba(0, 0, 0, .2);
 }
 .hero-copy { padding: clamp(1.5rem, 5vw, 3.5rem); border-radius: 2rem; }
+.source-hero { margin-bottom: 1rem; }
 .eyebrow { display: inline-flex; padding: .45rem .68rem; margin-bottom: 1.1rem; }
 h1 { margin: 0; max-width: 13ch; font-size: clamp(2.55rem, 7vw, 5.4rem); line-height: .96; letter-spacing: -.065em; }
 .hero-copy > p { max-width: 58ch; color: #c4d8d6; font-size: clamp(1rem, 2vw, 1.18rem); line-height: 1.7; margin: 1.4rem 0 0; }
@@ -178,6 +179,14 @@ h1 { margin: 0; max-width: 13ch; font-size: clamp(2.55rem, 7vw, 5.4rem); line-he
 .section-heading { display: flex; align-items: flex-end; justify-content: space-between; gap: 1rem; margin-bottom: 1.3rem; }
 .section-heading p { color: var(--muted); max-width: 48ch; margin: 0; line-height: 1.55; }
 .lab-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .9rem; }
+.capability-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .7rem; }
+.capability-item { border: 1px solid var(--line); border-radius: 1rem; background: rgba(2,18,25,.55); overflow: hidden; }
+.capability-item summary { min-height: 4.25rem; display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: .75rem; padding: .75rem; cursor: pointer; list-style: none; }
+.capability-item summary::-webkit-details-marker { display: none; }
+.capability-item summary:focus-visible { outline: 2px solid var(--mint); outline-offset: -3px; }
+.capability-item p { margin: 0; padding: 0 1rem 1rem 3.7rem; color: var(--muted); line-height: 1.5; }
+.tooltip-cue { color: var(--sky); font-size: .72rem; font-weight: 800; }
+.capability-item[open] { border-color: rgba(121,242,192,.38); background: rgba(121,242,192,.055); }
 .lab-card { min-height: 14rem; border: 1px solid var(--line); border-radius: 1.3rem; padding: 1.1rem; background: rgba(2, 18, 25, .55); display: flex; flex-direction: column; }
 .lab-card-top { display: flex; justify-content: space-between; align-items: center; gap: .75rem; }
 .lab-icon { width: 2.2rem; height: 2.2rem; display: grid; place-items: center; border-radius: .8rem; background: rgba(112,200,255,.1); color: var(--sky); font-weight: 900; }
@@ -203,7 +212,7 @@ h1 { margin: 0; max-width: 13ch; font-size: clamp(2.55rem, 7vw, 5.4rem); line-he
 
 @media (max-width: 860px) {
   .hero-grid { grid-template-columns: 1fr; }
-  .guide-grid, .lab-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .guide-grid, .lab-grid, .capability-list { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .rehearsal-grid, .delivery-grid { grid-template-columns: 1fr; }
   .implementation-options { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .agent-cycle { grid-template-columns: repeat(2, 1fr); }
@@ -216,7 +225,9 @@ h1 { margin: 0; max-width: 13ch; font-size: clamp(2.55rem, 7vw, 5.4rem); line-he
   .practice-main { width: min(100% - 1rem, 1160px); padding-top: .75rem; }
   .hero-copy, .run-panel, .rehearsal-section, .lab-section { border-radius: 1.4rem; }
   .hero-copy { padding: 1.3rem; }
-  .guide-grid, .lab-grid { grid-template-columns: 1fr; }
+  .guide-grid, .lab-grid, .capability-list { grid-template-columns: 1fr; }
+  .capability-item summary { min-height: 3.75rem; }
+  .tooltip-cue { font-size: .68rem; }
   .choice-grid, .authority-options, .agent-cycle, .output-grid, .implementation-options { grid-template-columns: 1fr; }
   .implementation-review, .card-heading-row { align-items: stretch; flex-direction: column; }
   .lab-card { min-height: 12.5rem; }

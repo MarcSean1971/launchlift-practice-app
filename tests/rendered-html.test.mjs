@@ -21,20 +21,16 @@ test("server-renders the reusable Practice App", async () => {
 
   const html = await response.text();
   assert.match(html, /LaunchLift Practice App/);
-  assert.match(html, /Learn the launch flow safely\./);
-  assert.match(html, /Original always preserved/);
-  assert.match(html, /Start new run/);
-  assert.match(html, /All 28 capability checks/);
-  assert.match(html, /Choose what LaunchLiftAI should build/);
-  assert.match(html, /AI Helper authority/);
-  assert.match(html, /Chrome extension/);
-  assert.match(html, /Codex through MCP/);
-  assert.match(html, /Base44/);
-  assert.match(html, /Full authority has a clear safety boundary/);
+  assert.match(html, /One safe app\. All 28 possibilities\./);
+  assert.match(html, /Original preserved/);
+  assert.match(html, /All 28 native functions/);
+  assert.match(html, /No native functions selected here/);
+  assert.match(html, /Everything else happens in LaunchLiftAI/);
+  assert.doesNotMatch(html, /Choose generated outputs|Choose destinations|AI Helper authority|Prepare implementation brief/);
   assert.doesNotMatch(html, /Your site is taking shape|Building your site/);
 });
 
-test("declares an immutable template and repeatable disposable runs", async () => {
+test("declares an immutable 28-capability source owned by the LaunchLift workflow", async () => {
   const [metadataText, packageText, source, manifestText, iconBytes] = await Promise.all([
     readFile(new URL("../public/launchlift-practice.json", import.meta.url), "utf8"),
     readFile(new URL("../package.json", import.meta.url), "utf8"),
@@ -47,35 +43,19 @@ test("declares an immutable template and repeatable disposable runs", async () =
   const manifest = JSON.parse(manifestText);
 
   assert.equal(metadata.immutableOriginal, true);
-  assert.equal(metadata.repeatableRuns, true);
-  assert.equal(metadata.revision, "1.3.0");
-  assert.equal(metadata.sourceUpdateChannel, "codex-mcp-acp");
-  assert.deepEqual(metadata.authorityModes, ["guided", "full-safe"]);
-  assert.deepEqual(metadata.expectedOutputs, [
-    "pwa",
-    "android-apk",
-    "android-aab",
-    "chrome-extension",
-    "firefox-extension",
-    "ios-source",
-    "windows-package",
-    "store-assets",
-  ]);
+  assert.equal(metadata.revision, "1.3.1");
+  assert.equal(metadata.sourceUpdateChannel, "manual-mcp-acp");
+  assert.equal(metadata.selectionOwner, "launchliftai");
+  assert.equal(metadata.outputOwner, "launchliftai");
   assert.equal(metadata.capabilities.length, 28);
   assert.equal(new Set(metadata.capabilities).size, 28);
-  assert.equal(metadata.storeDestinations.length, 6);
-  assert.deepEqual(metadata.implementationChannels, ["codex-mcp", "codex-acp", "lovable", "bubble", "flutterflow", "base44", "generic"]);
   assert.equal(packageMetadata.name, "launchlift-practice-app");
-  assert.equal(packageMetadata.version, "1.3.0");
+  assert.equal(packageMetadata.version, "1.3.1");
   assert.equal(packageMetadata.homepage, "https://launchlift-practice-app.seelenbinder.chatgpt.site/");
   assert.equal(packageMetadata.repository.url, "https://github.com/MarcSean1971/launchlift-practice-app.git");
-  assert.match(source, /launchlift-practice-runs-v2/);
-  assert.match(source, /function createRun\(\)/);
-  assert.match(source, /untouched revision/);
-  assert.match(source, /localStorage\.setItem/);
-  assert.match(source, /nativeSelections/);
-  assert.match(source, /authorityMode/);
-  assert.match(source, /new URLSearchParams\(location\.search\)/);
+  assert.match(source, /nativeCapabilities\.map/);
+  assert.match(source, /manually, through MCP or ACP/);
+  assert.doesNotMatch(source, /outputSelections|storeSelections|implementationChannel|authorityMode/);
   assert.deepEqual(manifest.icons.map((icon) => icon.src), ["/icon-192.png", "/icon-512.png"]);
   assert.deepEqual([...iconBytes.subarray(0, 8)], [137, 80, 78, 71, 13, 10, 26, 10]);
 });
