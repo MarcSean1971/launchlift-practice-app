@@ -24,10 +24,12 @@ test("server-renders the reusable Practice App", async () => {
   assert.match(html, /Learn the launch flow safely\./);
   assert.match(html, /Original always preserved/);
   assert.match(html, /Start new run/);
-  assert.match(html, /Seven safe capability checks/);
+  assert.match(html, /All 28 capability checks/);
   assert.match(html, /Choose what LaunchLiftAI should build/);
   assert.match(html, /AI Helper authority/);
   assert.match(html, /Chrome extension/);
+  assert.match(html, /Codex through MCP/);
+  assert.match(html, /Base44/);
   assert.match(html, /Full authority has a clear safety boundary/);
   assert.doesNotMatch(html, /Your site is taking shape|Building your site/);
 });
@@ -46,7 +48,7 @@ test("declares an immutable template and repeatable disposable runs", async () =
 
   assert.equal(metadata.immutableOriginal, true);
   assert.equal(metadata.repeatableRuns, true);
-  assert.equal(metadata.revision, "1.2.0");
+  assert.equal(metadata.revision, "1.3.0");
   assert.equal(metadata.sourceUpdateChannel, "codex-mcp-acp");
   assert.deepEqual(metadata.authorityModes, ["guided", "full-safe"]);
   assert.deepEqual(metadata.expectedOutputs, [
@@ -54,14 +56,20 @@ test("declares an immutable template and repeatable disposable runs", async () =
     "android-apk",
     "android-aab",
     "chrome-extension",
-    "firefox-handoff",
+    "firefox-extension",
+    "ios-source",
+    "windows-package",
     "store-assets",
   ]);
+  assert.equal(metadata.capabilities.length, 28);
+  assert.equal(new Set(metadata.capabilities).size, 28);
+  assert.equal(metadata.storeDestinations.length, 6);
+  assert.deepEqual(metadata.implementationChannels, ["codex-mcp", "codex-acp", "lovable", "bubble", "flutterflow", "base44", "generic"]);
   assert.equal(packageMetadata.name, "launchlift-practice-app");
-  assert.equal(packageMetadata.version, "1.2.0");
+  assert.equal(packageMetadata.version, "1.3.0");
   assert.equal(packageMetadata.homepage, "https://launchlift-practice-app.seelenbinder.chatgpt.site/");
   assert.equal(packageMetadata.repository.url, "https://github.com/MarcSean1971/launchlift-practice-app.git");
-  assert.match(source, /launchlift-practice-runs-v1/);
+  assert.match(source, /launchlift-practice-runs-v2/);
   assert.match(source, /function createRun\(\)/);
   assert.match(source, /untouched revision/);
   assert.match(source, /localStorage\.setItem/);

@@ -7,10 +7,10 @@ reset, revisited, compared with the original, or replaced without changing the t
 ## Practice workflow
 
 1. Open a new numbered run.
-2. Test camera, location, notifications, sharing, clipboard, vibration, and evidence export.
-3. Scan the public URL in LaunchLiftAI and choose the corresponding native capabilities.
-4. Generate assets and platform packages, then inspect the results.
-5. Update this repository through Codex/GitHub, deploy the revision, and rerun the scan.
+2. Select any number from zero through all 28 native capabilities and run the matching safe checks or native handoffs.
+3. Scan the public URL in LaunchLiftAI, or connect the GitHub repository after providing a deployable URL.
+4. Choose any of eight outputs and six destinations, then inspect the generated evidence and packages.
+5. Send one reviewed implementation contract through Codex MCP, Codex ACP, Lovable, Bubble, FlutterFlow, Base44, or a generic adapter; deploy the revision and rerun the scan.
 6. Repeat until the workflow is familiar; credentials, payments, signing, declarations,
    store submission, publication, and rollout remain owner-controlled.
 

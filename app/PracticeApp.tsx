@@ -1,13 +1,22 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
+import {
+  implementationChannels,
+  nativeCapabilities,
+  outputOptions,
+  storeOptions,
+  type ImplementationChannel,
+  type NativeKey,
+  type OutputKey,
+  type StoreKey,
+} from "./practiceCatalog";
 
-const REVISION = "1.2.0";
-const STORAGE_KEY = "launchlift-practice-runs-v1";
+const REVISION = "1.3.0";
+const STORAGE_KEY = "launchlift-practice-runs-v2";
 
-type TestKey = "camera" | "location" | "notifications" | "share" | "clipboard" | "vibration" | "export";
-type TestState = "ready" | "passed" | "blocked";
-type NativeKey = "camera" | "location" | "notifications" | "share" | "clipboard" | "haptics";
+type TestKey = NativeKey;
+type TestState = "ready" | "passed" | "handoff" | "blocked";
 type AuthorityMode = "guided" | "full-safe";
 
 type PracticeRun = {
@@ -17,36 +26,16 @@ type PracticeRun = {
   revision: string;
   tests: Partial<Record<TestKey, TestState>>;
   nativeSelections?: NativeKey[];
+  outputSelections?: OutputKey[];
+  storeSelections?: StoreKey[];
+  implementationChannel?: ImplementationChannel;
   authorityMode?: AuthorityMode;
 };
 
-const labItems: Array<{ key: TestKey; icon: string; title: string; description: string; action: string }> = [
-  { key: "camera", icon: "01", title: "Camera", description: "Capture a real photo so wrapper permissions and upload behavior can be checked.", action: "Open camera" },
-  { key: "location", icon: "02", title: "Location", description: "Request coordinates and confirm the app explains permission outcomes clearly.", action: "Test location" },
-  { key: "notifications", icon: "03", title: "Notifications", description: "Exercise the browser permission path before native push credentials are connected.", action: "Request permission" },
-  { key: "share", icon: "04", title: "Native share", description: "Open the phone share sheet when available and fall back safely on desktop.", action: "Share practice app" },
-  { key: "clipboard", icon: "05", title: "Clipboard", description: "Copy a practice-run reference for support, QA or a LaunchLiftAI handoff.", action: "Copy run reference" },
-  { key: "vibration", icon: "06", title: "Haptics", description: "Use vibration as a lightweight proxy before a native haptics plugin is packaged.", action: "Test vibration" },
-  { key: "export", icon: "07", title: "File export", description: "Download a JSON evidence file without sending personal or production data anywhere.", action: "Export evidence" },
-];
-
-const nativeOptions: Array<{ key: NativeKey; label: string }> = [
-  { key: "camera", label: "Camera" },
-  { key: "location", label: "Location" },
-  { key: "notifications", label: "Notifications" },
-  { key: "share", label: "Native share" },
-  { key: "clipboard", label: "Clipboard" },
-  { key: "haptics", label: "Haptics" },
-];
-
-const expectedOutputs = [
-  ["PWA", "Installable web app"],
-  ["Android APK", "Real-device testing"],
-  ["Android AAB", "Play delivery package"],
-  ["Chrome extension", "Browser package"],
-  ["Firefox handoff", "Store-ready guidance"],
-  ["Store assets", "Icons, screenshots and copy"],
-] as const;
+const labItems = nativeCapabilities.map((capability, index) => ({
+  ...capability,
+  icon: String(index + 1).padStart(2, "0"),
+}));
 
 function makeRun(index: number): PracticeRun {
   return {
@@ -56,6 +45,9 @@ function makeRun(index: number): PracticeRun {
     revision: REVISION,
     tests: {},
     nativeSelections: [],
+    outputSelections: [],
+    storeSelections: [],
+    implementationChannel: "codex-mcp",
     authorityMode: "guided",
   };
 }
@@ -91,9 +83,9 @@ export function PracticeApp() {
   }, [runs]);
 
   const active = useMemo(() => runs.find((run) => run.id === activeId) ?? runs[0], [runs, activeId]);
-  const passed = active ? Object.values(active.tests).filter((value) => value === "passed").length : 0;
-  const progress = Math.round((passed / labItems.length) * 100);
-  const completedRuns = runs.filter((run) => Object.values(run.tests).some((value) => value === "passed")).length;
+  const completed = active ? Object.values(active.tests).filter((value) => value === "passed" || value === "handoff").length : 0;
+  const progress = Math.round((completed / labItems.length) * 100);
+  const completedRuns = runs.filter((run) => Object.values(run.tests).some((value) => value === "passed" || value === "handoff")).length;
 
   function createRun() {
     const next = makeRun(runs.length + 1);
@@ -126,9 +118,40 @@ export function PracticeApp() {
     }));
   }
 
+  function toggleOutputSelection(key: OutputKey) {
+    if (!active) return;
+    setRuns((current) => current.map((run) => {
+      if (run.id !== active.id) return run;
+      const selected = run.outputSelections ?? [];
+      return { ...run, outputSelections: selected.includes(key) ? selected.filter((value) => value !== key) : [...selected, key] };
+    }));
+  }
+
+  function toggleStoreSelection(key: StoreKey) {
+    if (!active) return;
+    setRuns((current) => current.map((run) => {
+      if (run.id !== active.id) return run;
+      const selected = run.storeSelections ?? [];
+      return { ...run, storeSelections: selected.includes(key) ? selected.filter((value) => value !== key) : [...selected, key] };
+    }));
+  }
+
+  function setImplementationChannel(implementationChannel: ImplementationChannel) {
+    if (!active) return;
+    setRuns((current) => current.map((run) => run.id === active.id ? { ...run, implementationChannel } : run));
+  }
+
   function setAuthorityMode(authorityMode: AuthorityMode) {
     if (!active) return;
     setRuns((current) => current.map((run) => run.id === active.id ? { ...run, authorityMode } : run));
+  }
+
+  function prepareImplementationBrief() {
+    if (!active) return;
+    const channel = implementationChannels.find((option) => option.key === active.implementationChannel)?.label ?? "selected builder";
+    setMessage(
+      `${channel} brief prepared: ${active.nativeSelections?.length ?? 0}/28 native functions, ${active.outputSelections?.length ?? 0}/${outputOptions.length} outputs and ${active.storeSelections?.length ?? 0}/${storeOptions.length} destinations. Review scope before sending.`,
+    );
   }
 
   async function runTest(key: TestKey) {
@@ -136,6 +159,17 @@ export function PracticeApp() {
     try {
       if (key === "camera") {
         cameraRef.current?.click();
+        return;
+      }
+      if (key === "push") {
+        const ready = "serviceWorker" in navigator && "Notification" in window;
+        updateTest(key, ready ? "handoff" : "blocked", ready
+          ? "Web push prerequisites are present. Firebase credentials, token registration and a real-device delivery test remain in the native implementation contract."
+          : "This browser cannot preview push prerequisites; the native Firebase handoff was recorded.");
+        return;
+      }
+      if (key === "media") {
+        updateTest(key, "passed", "Browser media selection is available. Native photo-library permission and Android device evidence remain scoped to the selected implementation.");
         return;
       }
       if (key === "location") {
@@ -147,10 +181,30 @@ export function PracticeApp() {
         );
         return;
       }
-      if (key === "notifications") {
+      if (key === "bluetooth") {
+        updateTest(key, "handoff", "Bluetooth capability was recorded without opening a pairing prompt. The native implementation must define devices, permissions and a real pairing test.");
+        return;
+      }
+      if (key === "nfc") {
+        updateTest(key, "handoff", "NFC capability was recorded. Android reader/writer behavior and device testing belong in the native implementation contract.");
+        return;
+      }
+      if (key === "sensors") {
+        const ready = "DeviceMotionEvent" in window || "DeviceOrientationEvent" in window;
+        updateTest(key, ready ? "passed" : "handoff", ready ? "Motion or orientation sensor APIs are visible." : "Browser sensor APIs are unavailable; native sensor setup and device testing were recorded.");
+        return;
+      }
+      if (key === "biometrics") {
+        const available = typeof PublicKeyCredential !== "undefined" && typeof PublicKeyCredential.isUserVerifyingPlatformAuthenticatorAvailable === "function"
+          ? await PublicKeyCredential.isUserVerifyingPlatformAuthenticatorAvailable()
+          : false;
+        updateTest(key, available ? "passed" : "handoff", available ? "A platform authenticator is available; no credential was created." : "A native biometric lock and secure fallback must be implemented and tested on-device.");
+        return;
+      }
+      if (key === "localNotifications") {
         if (!("Notification" in window)) throw new Error("Notifications are unavailable in this browser.");
         const permission = await Notification.requestPermission();
-        updateTest(key, permission === "granted" ? "passed" : "blocked", `Notification permission returned: ${permission}.`);
+        updateTest(key, permission === "granted" ? "passed" : "blocked", `Local notification permission returned: ${permission}. Native scheduling still requires an Android device check.`);
         return;
       }
       if (key === "share") {
@@ -159,25 +213,91 @@ export function PracticeApp() {
         updateTest(key, "passed", "The native share sheet opened successfully.");
         return;
       }
+      if (key === "deepLinks") {
+        history.replaceState(null, "", `${location.pathname}${location.search}#device-lab`);
+        updateTest(key, "passed", "The HTTPS practice route resolved. Android intent filters and assetlinks verification remain part of the native package test.");
+        return;
+      }
+      if (key === "offline") {
+        const ready = "serviceWorker" in navigator && typeof localStorage !== "undefined";
+        updateTest(key, ready ? "passed" : "blocked", ready ? "Practice-run state and the service-worker path are available for offline recovery." : "Offline prerequisites are unavailable in this browser.");
+        return;
+      }
+      if (key === "background") {
+        updateTest(key, "handoff", "The service-worker handoff is recorded. Native background work still needs a bounded task, retry policy, battery review and device proof.");
+        return;
+      }
+      if (key === "voice") {
+        const ready = "SpeechRecognition" in window || "webkitSpeechRecognition" in window;
+        updateTest(key, ready ? "passed" : "handoff", ready ? "Speech recognition is supported; microphone access was not requested automatically." : "Voice input requires a native or provider-specific implementation and permission test.");
+        return;
+      }
+      if (key === "video") {
+        const ready = Boolean(navigator.mediaDevices?.getUserMedia);
+        updateTest(key, ready ? "passed" : "handoff", ready ? "Video capture APIs are available; recording was not started automatically." : "Video capture requires a native implementation and device permission test.");
+        return;
+      }
+      if (key === "network") {
+        updateTest(key, "passed", `Network state is ${navigator.onLine ? "online" : "offline"}. The native build must verify reconnect and retry behavior.`);
+        return;
+      }
+      if (key === "appLauncher") {
+        updateTest(key, "handoff", "An external-app launch was not triggered. The implementation brief must name allowed schemes, fallbacks and owner-approved destinations.");
+        return;
+      }
+      if (key === "browser") {
+        updateTest(key, "handoff", "The trusted-browser handoff is ready to implement. OAuth return URLs, allowed domains and resume behavior require packaged-app evidence.");
+        return;
+      }
       if (key === "clipboard") {
         await navigator.clipboard.writeText(`LaunchLift practice evidence: ${active.name} · revision ${active.revision}`);
         updateTest(key, "passed", "Practice-run reference copied to the clipboard.");
         return;
       }
-      if (key === "vibration") {
+      if (key === "haptics") {
         if (!navigator.vibrate) throw new Error("Vibration is unavailable on this device.");
         navigator.vibrate([60, 40, 60]);
         updateTest(key, "passed", "The vibration request was sent to the device.");
         return;
       }
-      const evidence = JSON.stringify({ app: "LaunchLift Practice App", templateRevision: REVISION, run: active }, null, 2);
-      const url = URL.createObjectURL(new Blob([evidence], { type: "application/json" }));
-      const link = document.createElement("a");
-      link.href = url;
-      link.download = `${active.name.toLowerCase().replaceAll(" ", "-")}-evidence.json`;
-      link.click();
-      URL.revokeObjectURL(url);
-      updateTest(key, "passed", "A private practice evidence file was downloaded to this device.");
+      if (key === "files") {
+        const evidence = JSON.stringify({ app: "LaunchLift Practice App", templateRevision: REVISION, run: active }, null, 2);
+        const url = URL.createObjectURL(new Blob([evidence], { type: "application/json" }));
+        const link = document.createElement("a");
+        link.href = url;
+        link.download = `${active.name.toLowerCase().replaceAll(" ", "-")}-evidence.json`;
+        link.click();
+        URL.revokeObjectURL(url);
+        updateTest(key, "passed", "A private practice evidence file was downloaded to this device.");
+        return;
+      }
+      if (key === "barcode") {
+        const ready = "BarcodeDetector" in window;
+        updateTest(key, ready ? "passed" : "handoff", ready ? "Barcode detection is available; the camera was not opened automatically." : "Native QR/barcode scanning and camera permission evidence were added to the handoff.");
+        return;
+      }
+      if (key === "maps") {
+        updateTest(key, "passed", "A safe maps handoff can be generated from selected coordinates; no external maps app was opened.");
+        return;
+      }
+      if (key === "keyboard") {
+        updateTest(key, window.visualViewport ? "passed" : "handoff", window.visualViewport ? "Visual viewport support is available for mobile-keyboard layout checks." : "Native keyboard resize and focus behavior require packaged-app testing.");
+        return;
+      }
+      if (key === "deviceInfo") {
+        updateTest(key, "passed", `Safe device context recorded: ${navigator.platform || "platform unavailable"}, ${navigator.language}. No persistent fingerprint was created.`);
+        return;
+      }
+      if (key === "privacyScreen") {
+        updateTest(key, "handoff", "Visibility handling is present, but screenshot blocking is native-only and must be verified on the sensitive Android screens selected by the owner.");
+        return;
+      }
+      if (key === "screenReader") {
+        const ready = Boolean(document.querySelector("main") && document.querySelector('[aria-live="polite"]'));
+        updateTest(key, ready ? "passed" : "blocked", ready ? "Main landmarks, labels and a polite live status region are present." : "Accessibility landmarks or live status content are missing.");
+        return;
+      }
+      updateTest(key, "passed", "Practice confirmation shown. The packaged app can map this interaction to a native toast.");
     } catch (error) {
       updateTest(key, "blocked", error instanceof Error ? error.message : "This capability is unavailable here.");
     }
@@ -209,17 +329,17 @@ export function PracticeApp() {
             <div className="run-card">
               <div className="run-card-top">
                 <div><strong>Revision {active?.revision ?? REVISION}</strong><small>{active ? new Date(active.createdAt).toLocaleString() : "Starting now"}</small></div>
-                <span className="run-chip">{passed}/{labItems.length} passed</span>
+                <span className="run-chip">{completed}/{labItems.length} checked</span>
               </div>
               <div className="progress-track" aria-label={`${progress}% complete`}><span style={{ width: `${progress}%` }} /></div>
-              <small>{message}</small>
+              <small aria-live="polite">{message}</small>
             </div>
             <label className="run-picker">
               <span>Saved practice runs</span>
               <select value={active?.id ?? ""} onChange={(event) => setActiveId(event.currentTarget.value)}>
                 {runs.map((run) => {
-                  const runPassed = Object.values(run.tests).filter((value) => value === "passed").length;
-                  return <option key={run.id} value={run.id}>{run.name} · {runPassed}/{labItems.length} passed</option>;
+                  const runCompleted = Object.values(run.tests).filter((value) => value === "passed" || value === "handoff").length;
+                  return <option key={run.id} value={run.id}>{run.name} · {runCompleted}/{labItems.length} checked</option>;
                 })}
               </select>
               <small>{runs.length} reusable run{runs.length === 1 ? "" : "s"} saved on this device · {completedRuns} with evidence</small>
@@ -244,14 +364,17 @@ export function PracticeApp() {
           <div className="section-heading"><div><span className="panel-kicker">Launch rehearsal</span><h2 id="rehearsal-heading">Choose what LaunchLiftAI should build</h2></div><p>These choices stay inside this saved practice run. They teach the packaging workflow without changing the immutable original.</p></div>
           <div className="rehearsal-grid">
             <article className="rehearsal-card">
-              <span className="card-label">Native phone functions</span>
+              <div className="card-heading-row">
+                <span className="card-label">Native phone functions</span>
+                <div><button className="mini-action" onClick={() => setRuns((current) => current.map((run) => run.id === active?.id ? { ...run, nativeSelections: nativeCapabilities.map((item) => item.key) } : run))}>Select all 28</button><button className="mini-action" onClick={() => setRuns((current) => current.map((run) => run.id === active?.id ? { ...run, nativeSelections: [] } : run))}>Clear</button></div>
+              </div>
               <div className="choice-grid">
-                {nativeOptions.map((option) => {
+                {nativeCapabilities.map((option) => {
                   const selected = active?.nativeSelections?.includes(option.key) ?? false;
                   return <button key={option.key} className={`choice-button ${selected ? "selected" : ""}`} aria-pressed={selected} onClick={() => toggleNativeSelection(option.key)}><span aria-hidden="true">{selected ? "✓" : "+"}</span>{option.label}</button>;
                 })}
               </div>
-              <small>{active?.nativeSelections?.length ?? 0} selected for this run</small>
+              <small>{active?.nativeSelections?.length ?? 0}/28 selected for this run</small>
             </article>
             <article className="rehearsal-card">
               <span className="card-label">AI Helper authority</span>
@@ -262,23 +385,52 @@ export function PracticeApp() {
               <p className="authority-note">Full safe authority never includes credentials, payments, signing, legal declarations, final submission or public rollout.</p>
             </article>
           </div>
+          <div className="delivery-grid">
+            <article className="rehearsal-card">
+              <span className="card-label">Choose generated outputs</span>
+              <div className="choice-grid compact-choices">
+                {outputOptions.map((option) => {
+                  const selected = active?.outputSelections?.includes(option.key) ?? false;
+                  return <button key={option.key} className={`choice-button ${selected ? "selected" : ""}`} aria-pressed={selected} onClick={() => toggleOutputSelection(option.key)}><span aria-hidden="true">{selected ? "✓" : "+"}</span><strong>{option.label}</strong><small>{option.purpose}</small></button>;
+                })}
+              </div>
+              <small>{active?.outputSelections?.length ?? 0}/{outputOptions.length} outputs selected</small>
+            </article>
+            <article className="rehearsal-card">
+              <span className="card-label">Choose destinations</span>
+              <div className="choice-grid compact-choices">
+                {storeOptions.map((option) => {
+                  const selected = active?.storeSelections?.includes(option.key) ?? false;
+                  return <button key={option.key} className={`choice-button ${selected ? "selected" : ""}`} aria-pressed={selected} onClick={() => toggleStoreSelection(option.key)}><span aria-hidden="true">{selected ? "✓" : "+"}</span>{option.label}</button>;
+                })}
+              </div>
+              <small>{active?.storeSelections?.length ?? 0}/{storeOptions.length} destinations selected</small>
+            </article>
+          </div>
+          <article className="implementation-card">
+            <div className="section-heading compact-heading"><div><span className="panel-kicker">Implement for me</span><h3>Choose how LaunchLiftAI should deliver the work</h3></div><p>Every route uses the same scoped contract: selected features, allowed files, outputs, tests, evidence and owner gates.</p></div>
+            <div className="implementation-options" role="radiogroup" aria-label="Implementation channel">
+              {implementationChannels.map((option) => <button key={option.key} role="radio" aria-checked={(active?.implementationChannel ?? "codex-mcp") === option.key} onClick={() => setImplementationChannel(option.key)}><strong>{option.label}</strong><small>{option.detail}</small></button>)}
+            </div>
+            <div className="implementation-review"><div><strong>Review before sending</strong><small>{active?.nativeSelections?.length ?? 0} native functions · {active?.outputSelections?.length ?? 0} outputs · {active?.storeSelections?.length ?? 0} destinations · {(active?.authorityMode ?? "guided") === "full-safe" ? "Full safe authority" : "Guided"}</small></div><button className="button-primary" onClick={prepareImplementationBrief}>Prepare implementation brief</button></div>
+          </article>
           <article className="agent-cycle">
-            <div><span>1</span><strong>Codex updates source</strong><small>Change the practice copy through the connected repository.</small></div>
-            <div><span>2</span><strong>MCP or ACP reports activity</strong><small>Keep each change and tool result visible.</small></div>
+            <div><span>1</span><strong>You approve the scope</strong><small>See the exact features, outputs, destinations and files before execution.</small></div>
+            <div><span>2</span><strong>MCP, ACP or builder adapter works</strong><small>Codex or the selected no-code platform receives one structured contract.</small></div>
             <div><span>3</span><strong>LaunchLiftAI reruns</strong><small>Rescan, regenerate assets and rebuild selected packages.</small></div>
-            <div><span>4</span><strong>You inspect evidence</strong><small>Compare outputs, then repeat or reset safely.</small></div>
+            <div><span>4</span><strong>You see progress and evidence</strong><small>Resume after owner gates, compare outputs, then repeat or reset safely.</small></div>
           </article>
           <div className="output-grid" aria-label="Expected LaunchLiftAI outputs">
-            {expectedOutputs.map(([name, purpose]) => <article key={name}><span aria-hidden="true">→</span><div><strong>{name}</strong><small>{purpose}</small></div></article>)}
+            {outputOptions.map((option) => <article key={option.key}><span aria-hidden="true">→</span><div><strong>{option.label}</strong><small>{option.purpose}</small></div></article>)}
           </div>
         </section>
 
         <section className="lab-section" id="device-lab">
-          <div className="section-heading"><div><span className="panel-kicker">Device lab</span><h2>Seven safe capability checks</h2></div><p>Each result becomes simple evidence that can be compared between the web app, packaged Android app and browser extension.</p></div>
+          <div className="section-heading"><div><span className="panel-kicker">Device lab</span><h2>All 28 capability checks</h2></div><p>Each result distinguishes browser proof from a native implementation or real-device handoff. Unsupported browser APIs are never presented as completed native work.</p></div>
           <div className="lab-grid">
             {labItems.map((item) => {
               const state = active?.tests[item.key] ?? "ready";
-              return <article className="lab-card" key={item.key}>
+              return <article className="lab-card" key={item.key} data-capability={item.key}>
                 <div className="lab-card-top"><span className="lab-icon">{item.icon}</span><span className={`status-pill ${state}`}>{state}</span></div>
                 <h3>{item.title}</h3><p>{item.description}</p>
                 <button className="lab-action" onClick={() => runTest(item.key)}>{item.action}</button>
@@ -293,7 +445,7 @@ export function PracticeApp() {
 
         <section className="boundary-card">
           <span className="boundary-mark">!</span>
-          <div><h3>Full authority has a clear safety boundary</h3><p>The practice Agent may change code, rerun scans, create assets and packages, and verify outputs. Account passwords, payments, signing keys, legal declarations, final submissions and public rollouts still pause for the owner.</p></div>
+          <div><h3>Full authority has a clear safety boundary</h3><p>The practice Agent may change code, send an approved implementation contract through MCP, ACP or a supported builder adapter, rerun scans, create assets and packages, and verify outputs. Account passwords, payments, signing keys, legal declarations, final submissions and public rollouts still pause for the owner.</p></div>
         </section>
         <p className="footer-note">Practice template {REVISION} · Codex update proof ready for a LaunchLiftAI rerun</p>
       </main>
