@@ -1,12 +1,11 @@
 {
   "schemaVersion": 1,
   "template": "launchlift-practice-app",
-  "revision": "1.2.0",
+  "revision": "1.3.1",
   "immutableOriginal": true,
-  "repeatableRuns": true,
-  "sourceUpdateChannel": "codex-mcp-acp",
-  "authorityModes": ["guided", "full-safe"],
-  "capabilities": ["camera", "geolocation", "notifications", "share", "clipboard", "vibration", "file-export"],
-  "expectedOutputs": ["pwa", "android-apk", "android-aab", "chrome-extension", "firefox-handoff", "store-assets"],
+  "sourceUpdateChannel": "manual-mcp-acp",
+  "selectionOwner": "launchliftai",
+  "outputOwner": "launchliftai",
+  "capabilities": ["push", "camera", "media", "location", "bluetooth", "nfc", "sensors", "biometrics", "share", "deepLinks", "offline", "background", "voice", "video", "network", "appLauncher", "browser", "clipboard", "files", "haptics", "barcode", "localNotifications", "maps", "keyboard", "deviceInfo", "privacyScreen", "screenReader", "toast"],
   "ownerGates": ["credentials", "payments", "signing", "legal-declarations", "final-submission", "rollout"]
 }

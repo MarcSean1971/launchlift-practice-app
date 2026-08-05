@@ -1,7 +1,7 @@
 {
   "name": "LaunchLift Practice App",
   "short_name": "LiftLab",
-  "description": "A reusable practice app for learning the LaunchLiftAI workflow.",
+  "description": "A reusable source fixture that explains all 28 LaunchLiftAI native functions.",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#06141d",
@@ -13,7 +13,6 @@
     { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
   ],
   "shortcuts": [
-    { "name": "Start practice run", "short_name": "New run", "url": "/?action=new-run", "id": "new-run" },
-    { "name": "Open device lab", "short_name": "Device lab", "url": "/#device-lab", "id": "device-lab" }
+    { "name": "View native functions", "short_name": "28 functions", "url": "/#native-functions", "id": "native-functions" }
   ]
 }
