@@ -27,7 +27,155 @@ test("server-renders the reusable Practice App", async () => {
   assert.match(html, /No native functions selected here/);
   assert.match(html, /Everything else happens in LaunchLiftAI/);
   assert.doesNotMatch(html, /Choose generated outputs|Choose destinations|AI Helper authority|Prepare implementation brief/);
+  assert.doesNotMatch(html, /Native test harness|Test Camera|Test Photo library/);
   assert.doesNotMatch(html, /Your site is taking shape|Building your site/);
+});
+
+test("keeps the interactive test slice native-only and user-triggered", async () => {
+  const [practiceSource, harnessSource, modelSource, packageText] = await Promise.all([
+    readFile(new URL("../app/PracticeApp.tsx", import.meta.url), "utf8"),
+    readFile(new URL("../app/NativeTestHarness.tsx", import.meta.url), "utf8"),
+    readFile(new URL("../app/nativeHarnessModel.ts", import.meta.url), "utf8"),
+    readFile(new URL("../package.json", import.meta.url), "utf8"),
+  ]);
+  const packageMetadata = JSON.parse(packageText);
+
+  assert.match(practiceSource, /nativeCapabilities\.map/);
+  assert.match(practiceSource, /<NativeTestHarness \/>/);
+  assert.match(harnessSource, /Capacitor\.isNativePlatform\(\)/);
+  assert.match(harnessSource, /if \(!native\) return null/);
+  assert.match(harnessSource, /onClick=\{\(\) => void run\(capability, actions\[capability\]\)\}/);
+  assert.match(harnessSource, /saveToGallery: false/);
+  assert.match(harnessSource, /It was not uploaded/);
+  assert.match(harnessSource, /not that every production workflow/);
+  assert.match(modelSource, /Permission was denied/);
+  assert.match(modelSource, /Canceled safely/);
+  for (const dependency of ["@capacitor/camera", "@capacitor/share", "@capacitor/clipboard", "@capacitor/haptics", "@capacitor/toast"]) {
+    assert.equal(typeof packageMetadata.dependencies[dependency], "string", `${dependency} must be installed`);
+  }
+});
+
+test("wires the next six unimplemented native actions without claiming ordinal completion", async () => {
+  const [harnessSource, modelSource, configSource, runnerSource, manifestSource, packageText] = await Promise.all([
+    readFile(new URL("../app/NativeTestHarness.tsx", import.meta.url), "utf8"),
+    readFile(new URL("../app/nativeHarnessModel.ts", import.meta.url), "utf8"),
+    readFile(new URL("../capacitor.config.ts", import.meta.url), "utf8"),
+    readFile(new URL("../.launchlift/web/runners/practice-background.js", import.meta.url), "utf8"),
+    readFile(new URL("../android/app/src/main/AndroidManifest.xml", import.meta.url), "utf8"),
+    readFile(new URL("../package.json", import.meta.url), "utf8"),
+  ]);
+  const packageMetadata = JSON.parse(packageText);
+
+  for (const capability of ["sensors", "biometrics", "deepLinks", "offline", "background", "voice"]) {
+    assert.match(modelSource, new RegExp(`\\b${capability}\\b`));
+  }
+  for (const signal of ["DeviceMotionEvent", "BiometricAuth.authenticate", "App.getLaunchUrl", "Preferences.set", "BackgroundRunner.dispatchEvent", "getUserMedia"]) {
+    assert.match(harnessSource, new RegExp(signal.replaceAll(".", "\\.")));
+  }
+  assert.match(harnessSource, /OS-scheduled background execution and battery behavior are not yet proven/);
+  assert.match(harnessSource, /No audio was recorded, retained, uploaded, or transcribed/);
+  assert.match(configSource, /autoStart: false/);
+  assert.match(runnerSource, /user-triggered Practice run ID/);
+  assert.match(manifestSource, /android\.intent\.action\.VIEW/);
+  assert.match(manifestSource, /android\.permission\.RECORD_AUDIO/);
+  assert.match(manifestSource, /android\.permission\.USE_BIOMETRIC/);
+  assert.match(manifestSource, /ACCESS_BACKGROUND_LOCATION" tools:node="remove"/);
+  for (const dependency of ["@capacitor/app", "@capacitor/background-runner", "@aparajita/capacitor-biometric-auth"]) {
+    assert.equal(typeof packageMetadata.dependencies[dependency], "string", `${dependency} must be installed`);
+  }
+});
+
+test("wires the following six device probes while retaining downstream evidence gates", async () => {
+  const [harnessSource, modelSource, packageText] = await Promise.all([
+    readFile(new URL("../app/NativeTestHarness.tsx", import.meta.url), "utf8"),
+    readFile(new URL("../app/nativeHarnessModel.ts", import.meta.url), "utf8"),
+    readFile(new URL("../package.json", import.meta.url), "utf8"),
+  ]);
+  const packageMetadata = JSON.parse(packageText);
+
+  for (const capability of ["push", "location", "bluetooth", "nfc", "video", "network"]) {
+    assert.match(modelSource, new RegExp(`\\b${capability}\\b`));
+  }
+  for (const signal of [
+    "PushNotifications.register", "Geolocation.getCurrentPosition", "BluetoothLe.initialize",
+    "CapacitorNfc.getStatus", "facingMode", "Network.getStatus",
+  ]) {
+    assert.match(harnessSource, new RegExp(signal.replaceAll(".", "\\.")));
+  }
+  assert.match(harnessSource, /Backend storage, FCM delivery, tap routing, and notification preferences remain unverified/);
+  assert.match(harnessSource, /Coordinates were not displayed, stored, or transmitted/);
+  assert.match(harnessSource, /No devices were scanned, paired, connected, or queried/);
+  assert.match(harnessSource, /No tag was scanned, trusted, parsed, written, or acted upon/);
+  assert.match(harnessSource, /No frame, recording, audio, call, or upload was retained/);
+  assert.match(harnessSource, /Retry and no-data-loss behavior remain unverified/);
+  for (const dependency of ["@capacitor/push-notifications", "@capacitor-community/bluetooth-le", "@capgo/capacitor-nfc"]) {
+    assert.equal(typeof packageMetadata.dependencies[dependency], "string", `${dependency} must be installed`);
+  }
+});
+
+test("wires five reversible native utility probes without external side effects", async () => {
+  const [harnessSource, modelSource, manifestSource, packageText] = await Promise.all([
+    readFile(new URL("../app/NativeTestHarness.tsx", import.meta.url), "utf8"),
+    readFile(new URL("../app/nativeHarnessModel.ts", import.meta.url), "utf8"),
+    readFile(new URL("../android/app/src/main/AndroidManifest.xml", import.meta.url), "utf8"),
+    readFile(new URL("../package.json", import.meta.url), "utf8"),
+  ]);
+  const packageMetadata = JSON.parse(packageText);
+
+  for (const capability of ["appLauncher", "browser", "files", "barcode", "localNotifications"]) {
+    assert.match(modelSource, new RegExp(`\\b${capability}\\b`));
+  }
+  for (const signal of [
+    "AppLauncher.canOpenUrl", "AppLauncher.openUrl", "Browser.open", "Filesystem.writeFile",
+    "Filesystem.deleteFile", "CapacitorBarcodeScanner.scanBarcode", "LocalNotifications.schedule",
+    "LocalNotifications.cancel",
+  ]) {
+    assert.match(harnessSource, new RegExp(signal.replaceAll(".", "\\.")));
+  }
+  assert.match(harnessSource, /No recipient, body, message, or send action was supplied/);
+  assert.match(harnessSource, /No form, login, permission, or submission was performed/);
+  assert.match(harnessSource, /written, read, verified, and deleted from app cache/);
+  assert.match(harnessSource, /not displayed, stored, trusted, opened, or acted upon/);
+  assert.match(harnessSource, /canceled before display/);
+  assert.match(manifestSource, /android\.intent\.action\.SENDTO/);
+  assert.match(manifestSource, /android:scheme="mailto"/);
+  for (const dependency of [
+    "@capacitor/app-launcher", "@capacitor/browser", "@capacitor/filesystem",
+    "@capacitor/barcode-scanner", "@capacitor/local-notifications",
+  ]) {
+    assert.equal(typeof packageMetadata.dependencies[dependency], "string", `${dependency} must be installed`);
+  }
+});
+
+test("wires the final five bounded native probes without device-verification overclaims", async () => {
+  const [harnessSource, modelSource, packageText] = await Promise.all([
+    readFile(new URL("../app/NativeTestHarness.tsx", import.meta.url), "utf8"),
+    readFile(new URL("../app/nativeHarnessModel.ts", import.meta.url), "utf8"),
+    readFile(new URL("../package.json", import.meta.url), "utf8"),
+  ]);
+  const packageMetadata = JSON.parse(packageText);
+
+  for (const capability of ["maps", "keyboard", "deviceInfo", "privacyScreen", "screenReader"]) {
+    assert.match(modelSource, new RegExp(`\\b${capability}\\b`));
+  }
+  for (const signal of [
+    'Capacitor.isPluginAvailable("GoogleMaps")', "Keyboard.show", "Keyboard.hide", "Device.getInfo",
+    "PrivacyScreen.enable", "PrivacyScreen.disable", "PrivacyScreen.isEnabled", "ScreenReader.isEnabled", "ScreenReader.speak",
+  ]) {
+    assert.match(harnessSource, new RegExp(signal.replaceAll(".", "\\.").replaceAll("(", "\\(").replaceAll(")", "\\)")));
+  }
+  assert.doesNotMatch(harnessSource, /Device\.getId/);
+  assert.match(harnessSource, /No map, API key, coordinates, markers, route, or external service was used/);
+  assert.match(harnessSource, /Form resize, focus order, scroll behavior, and the device matrix remain unverified/);
+  assert.match(harnessSource, /No device name, model, identifier, memory, or battery data was displayed, stored, or transmitted/);
+  assert.match(harnessSource, /Screenshot and app-switcher behavior across real devices remains unverified/);
+  assert.match(harnessSource, /TalkBack navigation, focus order, labels, gestures, and the device matrix remain unverified/);
+  for (const dependency of [
+    "@capacitor/google-maps", "@capacitor/keyboard", "@capacitor/device",
+    "@capacitor/privacy-screen", "@capacitor/screen-reader",
+  ]) {
+    assert.equal(typeof packageMetadata.dependencies[dependency], "string", `${dependency} must be installed`);
+  }
 });
 
 test("declares an immutable 28-capability source owned by the LaunchLift workflow", async () => {

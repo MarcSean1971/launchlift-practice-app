@@ -1,6 +1,7 @@
 "use client";
 
 import { nativeCapabilities } from "./practiceCatalog";
+import { NativeTestHarness } from "./NativeTestHarness";
 
 const REVISION = "1.3.1";
 
@@ -54,6 +55,7 @@ export function PracticeApp() {
           <span className="boundary-mark">→</span>
           <div><h2>Everything else happens in LaunchLiftAI.</h2><p>Selection, manual/MCP/ACP instructions, code-change verification, asset generation, package downloads, store handoffs and post-conversion device or extension testing all belong to the LaunchLiftAI workflow.</p></div>
         </section>
+        <NativeTestHarness />
         <p className="footer-note">Practice source revision {REVISION} · ready to import into LaunchLiftAI</p>
       </main>
     </div>

@@ -5,7 +5,7 @@ android {
     compileSdk 36
     defaultConfig {
         applicationId "site.chatgpt.seelenbinder.launchliftpracticeapp.android"
-        minSdkVersion 24
+        minSdkVersion 26
         targetSdkVersion 35
         versionCode 4
         versionName "1.2.1"
@@ -27,6 +27,7 @@ android {
 repositories {
     flatDir{
         dirs '../capacitor-cordova-android-plugins/src/main/libs', 'libs'
+		dirs '../../node_modules/@capacitor/background-runner/android/src/main/libs', 'libs'
     }
 }
 

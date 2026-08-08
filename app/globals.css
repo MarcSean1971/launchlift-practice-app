@@ -210,6 +210,23 @@ h1 { margin: 0; max-width: 13ch; font-size: clamp(2.55rem, 7vw, 5.4rem); line-he
 .compare-drawer ul { margin: .6rem 0 0; padding-left: 1.1rem; color: var(--muted); }
 .footer-note { text-align: center; color: #719092; margin-top: 2.5rem; font-size: .82rem; }
 
+.native-harness { margin-top: 1rem; border: 1px solid rgba(112,200,255,.35); border-radius: 1.5rem; padding: 1.25rem; background: rgba(3,26,36,.94); box-shadow: 0 24px 80px rgba(0,0,0,.22); }
+.native-harness-heading { display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
+.native-harness-heading h2 { margin: .2rem 0 0; }
+.native-harness-boundary { color: var(--muted); max-width: 70ch; line-height: 1.55; }
+.native-harness-grid { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: .75rem; margin-top: 1rem; }
+.native-test-card, .native-preview-card { border: 1px solid var(--line); border-radius: 1rem; padding: 1rem; background: rgba(255,255,255,.03); }
+.native-test-card > div, .native-preview-card > div { display: flex; justify-content: space-between; align-items: center; gap: .75rem; }
+.native-test-card p { color: var(--muted); min-height: 3rem; line-height: 1.45; }
+.native-keyboard-probe { width: 100%; margin: 0 0 .75rem; border: 1px solid var(--line); border-radius: .75rem; padding: .72rem .8rem; color: var(--text); background: rgba(1,12,18,.72); font: inherit; }
+.native-keyboard-probe:focus { outline: 2px solid var(--mint); outline-offset: 2px; }
+.native-result { border-radius: 999px; padding: .25rem .5rem; font-size: .7rem; font-weight: 800; text-transform: uppercase; color: var(--muted); background: rgba(255,255,255,.05); }
+.native-result.running { color: var(--sky); }
+.native-result.passed { color: var(--mint); }
+.native-result.blocked { color: var(--amber); }
+.native-preview-card { grid-column: 1 / -1; }
+.native-preview-card img { display: block; width: 100%; max-height: 22rem; margin-top: .75rem; border-radius: .8rem; object-fit: contain; background: #020c11; }
+
 @media (max-width: 860px) {
   .hero-grid { grid-template-columns: 1fr; }
   .guide-grid, .lab-grid, .capability-list { grid-template-columns: repeat(2, minmax(0, 1fr)); }
@@ -217,6 +234,7 @@ h1 { margin: 0; max-width: 13ch; font-size: clamp(2.55rem, 7vw, 5.4rem); line-he
   .implementation-options { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .agent-cycle { grid-template-columns: repeat(2, 1fr); }
   .section-heading { align-items: flex-start; flex-direction: column; }
+  .native-harness-grid { grid-template-columns: 1fr; }
 }
 
 @media (max-width: 580px) {
@@ -232,5 +250,6 @@ h1 { margin: 0; max-width: 13ch; font-size: clamp(2.55rem, 7vw, 5.4rem); line-he
   .implementation-review, .card-heading-row { align-items: stretch; flex-direction: column; }
   .lab-card { min-height: 12.5rem; }
   .boundary-card { grid-template-columns: 1fr; }
+  .native-harness-heading { align-items: stretch; flex-direction: column; }
   .brand-lockup small { display: none; }
 }
