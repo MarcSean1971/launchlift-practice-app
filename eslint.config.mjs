@@ -11,6 +11,10 @@ const eslintConfig = defineConfig([
     ".next/**",
     "out/**",
     "build/**",
+    // Capacitor and Gradle copy generated JavaScript into Android build
+    // intermediates. It is not application source and must not affect the
+    // web application's lint result.
+    "android/**",
     "next-env.d.ts",
   ]),
 ]);
