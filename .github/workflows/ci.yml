@@ -86,14 +86,22 @@ jobs:
       - name: Sync native project
         run: npx cap sync android
 
-      - name: Build debug APK
+      - name: Build debug APK and release bundle
         working-directory: android
-        run: ./gradlew assembleDebug --no-daemon --stacktrace
+        run: ./gradlew assembleDebug bundleRelease --no-daemon --stacktrace
 
       - name: Preserve native test APK
         uses: actions/upload-artifact@v6
         with:
           name: practice-native-debug-apk
           path: android/app/build/outputs/apk/debug/app-debug.apk
+          if-no-files-found: error
+          retention-days: 7
+
+      - name: Preserve unsigned release AAB for verification
+        uses: actions/upload-artifact@v6
+        with:
+          name: practice-native-release-aab-unsigned
+          path: android/app/build/outputs/bundle/release/app-release.aab
           if-no-files-found: error
           retention-days: 7
