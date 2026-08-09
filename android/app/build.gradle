@@ -1,5 +1,30 @@
 apply plugin: 'com.android.application'
 
+def releaseSigningValue = { String name ->
+    def projectValue = project.findProperty(name)
+    if (projectValue != null && projectValue.toString().trim()) {
+        return projectValue.toString().trim()
+    }
+    return (System.getenv(name) ?: '').trim()
+}
+
+def releaseSigning = [
+    storeFile: releaseSigningValue('LAUNCHLIFT_UPLOAD_STORE_FILE'),
+    storePassword: releaseSigningValue('LAUNCHLIFT_UPLOAD_STORE_PASSWORD'),
+    keyAlias: releaseSigningValue('LAUNCHLIFT_UPLOAD_KEY_ALIAS'),
+    keyPassword: releaseSigningValue('LAUNCHLIFT_UPLOAD_KEY_PASSWORD'),
+]
+def releaseSigningValues = releaseSigning.values()
+def releaseSigningConfigured = releaseSigningValues.every { it }
+def releaseSigningPartiallyConfigured = releaseSigningValues.any { it } && !releaseSigningConfigured
+
+if (releaseSigningPartiallyConfigured) {
+    throw new GradleException('Release signing is only safe when all four LAUNCHLIFT_UPLOAD_* values are configured.')
+}
+if (releaseSigningConfigured && !file(releaseSigning.storeFile).isFile()) {
+    throw new GradleException('The configured LaunchLift upload keystore file does not exist.')
+}
+
 android {
     namespace "site.chatgpt.seelenbinder.launchliftpracticeapp.android"
     compileSdk 36
@@ -16,10 +41,33 @@ android {
             ignoreAssetsPattern = '!.svn:!.git:!.ds_store:!*.scc:.*:!CVS:!thumbs.db:!picasa.ini:!*~'
         }
     }
+    if (releaseSigningConfigured) {
+        signingConfigs {
+            release {
+                storeFile file(releaseSigning.storeFile)
+                storePassword releaseSigning.storePassword
+                keyAlias releaseSigning.keyAlias
+                keyPassword releaseSigning.keyPassword
+            }
+        }
+    }
     buildTypes {
         release {
+            if (releaseSigningConfigured) {
+                signingConfig signingConfigs.release
+            }
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+tasks.register('verifyReleaseSigning') {
+    group = 'verification'
+    description = 'Fails unless a complete LaunchLift upload-key configuration is available.'
+    doLast {
+        if (!releaseSigningConfigured) {
+            throw new GradleException('No upload signing material is configured. Provide all LAUNCHLIFT_UPLOAD_* values on a protected build runner.')
         }
     }
 }
