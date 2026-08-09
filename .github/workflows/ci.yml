@@ -86,9 +86,9 @@ jobs:
       - name: Sync native project
         run: npx cap sync android
 
-      - name: Build debug APK and release bundle
+      - name: Build debug APK
         working-directory: android
-        run: ./gradlew assembleDebug bundleRelease --no-daemon --stacktrace
+        run: ./gradlew assembleDebug --no-daemon --stacktrace
 
       - name: Preserve native test APK
         uses: actions/upload-artifact@v6
@@ -98,10 +98,43 @@ jobs:
           if-no-files-found: error
           retention-days: 7
 
-      - name: Preserve unsigned release AAB for verification
+      # Release signing material exists only as protected GitHub Actions
+      # secrets. This writes it to the ephemeral runner, invokes the
+      # fail-closed Gradle gate, then removes it before the job ends. PRs never
+      # produce a signed shipping artifact; canonical main does.
+      - name: Prepare protected release signing material
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        env:
+          ANDROID_SIGNING_KEYSTORE_BASE64: ${{ secrets.ANDROID_SIGNING_KEYSTORE_BASE64 }}
+          ANDROID_SIGNING_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_SIGNING_KEYSTORE_PASSWORD }}
+          ANDROID_SIGNING_KEY_ALIAS: ${{ secrets.ANDROID_SIGNING_KEY_ALIAS }}
+          ANDROID_SIGNING_KEY_PASSWORD: ${{ secrets.ANDROID_SIGNING_KEY_PASSWORD }}
+        run: |
+          set -euo pipefail
+          test -n "$ANDROID_SIGNING_KEYSTORE_BASE64"
+          test -n "$ANDROID_SIGNING_KEYSTORE_PASSWORD"
+          test -n "$ANDROID_SIGNING_KEY_ALIAS"
+          test -n "$ANDROID_SIGNING_KEY_PASSWORD"
+          key_path="$RUNNER_TEMP/launchlift-practice-upload.keystore"
+          printf '%s' "$ANDROID_SIGNING_KEYSTORE_BASE64" | base64 --decode > "$key_path"
+          test -s "$key_path"
+          {
+            echo "LAUNCHLIFT_UPLOAD_STORE_FILE=$key_path"
+            echo "LAUNCHLIFT_UPLOAD_STORE_PASSWORD=$ANDROID_SIGNING_KEYSTORE_PASSWORD"
+            echo "LAUNCHLIFT_UPLOAD_KEY_ALIAS=$ANDROID_SIGNING_KEY_ALIAS"
+            echo "LAUNCHLIFT_UPLOAD_KEY_PASSWORD=$ANDROID_SIGNING_KEY_PASSWORD"
+          } >> "$GITHUB_ENV"
+
+      - name: Build and verify signed release bundle
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        working-directory: android
+        run: ./gradlew verifyReleaseSigning bundleRelease --no-daemon --stacktrace
+
+      - name: Preserve signed release AAB
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         uses: actions/upload-artifact@v6
         with:
-          name: practice-native-release-aab-unsigned
+          name: practice-native-release-aab-signed
           path: android/app/build/outputs/bundle/release/app-release.aab
           if-no-files-found: error
           retention-days: 7
