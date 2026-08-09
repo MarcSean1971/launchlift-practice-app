@@ -128,7 +128,9 @@ jobs:
       - name: Build and verify signed release bundle
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         working-directory: android
-        run: ./gradlew verifyReleaseSigning bundleRelease --no-daemon --stacktrace
+        run: |
+          ./gradlew verifyReleaseSigning bundleRelease --no-daemon --stacktrace
+          jarsigner -verify -certs app/build/outputs/bundle/release/app-release.aab
 
       - name: Preserve signed release AAB
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
