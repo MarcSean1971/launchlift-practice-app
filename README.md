@@ -105,6 +105,28 @@ actions tied to the current ChatGPT user. Leave public content anonymous.
 - `npm test`: build the starter and verify its rendered loading skeleton
 - `npm run db:generate`: generate Drizzle migrations after schema changes
 
+## Android release signing
+
+The checked-in Android project deliberately has no signing material. Local and CI
+`bundleRelease` builds without it are **unsigned compile-verification artifacts**
+only; they are not eligible for a Play upload.
+
+On a protected build runner, a release can be signed with an owner-managed Play
+upload key by supplying all four values below through that runner's masked secret
+store or its protected environment. Never commit a key, `signing.properties`, or
+the values themselves.
+
+- `LAUNCHLIFT_UPLOAD_STORE_FILE` — absolute path to the upload-key file on that runner
+- `LAUNCHLIFT_UPLOAD_STORE_PASSWORD`
+- `LAUNCHLIFT_UPLOAD_KEY_ALIAS`
+- `LAUNCHLIFT_UPLOAD_KEY_PASSWORD`
+
+Then run `./gradlew bundleRelease verifyReleaseSigning` from `android/`. The
+Gradle configuration fails closed if the values are partial or the key file is
+missing, and it does not log signing values. A signed AAB still requires the
+separate owner-controlled Play App Signing, policy, store-listing, and submission
+steps.
+
 ## Learn More
 
 - [vinext Documentation](https://github.com/cloudflare/vinext)

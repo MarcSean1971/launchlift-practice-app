@@ -9,7 +9,7 @@ It does not pretend that selecting an output here has already created it.
 | --- | --- | --- |
 | Web/PWA | `public/manifest.webmanifest`, `public/sw.js`, and branded 192/512px icons | `npm run build` produces `dist/`; the test suite server-renders the bundle. |
 | Android debug APK | Capacitor Android project plus all 24 installed Android bridge plugins | CI builds `app-debug.apk`; local build requires an installed Android SDK. |
-| Android release AAB | Same generated Android project and versioned Gradle release target | CI runs `bundleRelease` and retains an **unsigned** `app-release.aab` for compile verification only. A Play upload key and Play App Signing remain owner-controlled. |
+| Android release AAB | Same generated Android project and versioned Gradle release target | CI runs `bundleRelease` and retains an **unsigned** `app-release.aab` for compile verification only. A protected runner can opt into the complete `LAUNCHLIFT_UPLOAD_*` configuration and run `bundleRelease verifyReleaseSigning` for a signed upload-key AAB. Play App Signing remains owner-controlled. |
 | Source | Git repository and immutable `launchlift-practice.json` contract | `npm test` validates the 28-capability catalogue and 28 native-harness actions. |
 
 ## Intentionally not manufactured by this fixture
