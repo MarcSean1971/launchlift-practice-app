@@ -60,7 +60,7 @@ test("wires the next six unimplemented native actions without claiming ordinal c
     readFile(new URL("../app/NativeTestHarness.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/nativeHarnessModel.ts", import.meta.url), "utf8"),
     readFile(new URL("../capacitor.config.ts", import.meta.url), "utf8"),
-    readFile(new URL("../.launchlift/web/runners/practice-background.js", import.meta.url), "utf8"),
+    readFile(new URL("../android/runners/practice-background.js", import.meta.url), "utf8"),
     readFile(new URL("../android/app/src/main/AndroidManifest.xml", import.meta.url), "utf8"),
     readFile(new URL("../package.json", import.meta.url), "utf8"),
   ]);

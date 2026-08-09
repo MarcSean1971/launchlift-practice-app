@@ -39,6 +39,7 @@ dev-server.stderr.log
 # typescript
 next-env.d.ts
 /dist/
+/.launchlift/web/
 /.wrangler/
 /outputs/
 /work/
