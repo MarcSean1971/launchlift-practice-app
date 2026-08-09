@@ -107,9 +107,11 @@ actions tied to the current ChatGPT user. Leave public content anonymous.
 
 ## Android release signing
 
-The checked-in Android project deliberately has no signing material. Local and CI
+The checked-in Android project deliberately has no signing material. Local
 `bundleRelease` builds without it are **unsigned compile-verification artifacts**
-only; they are not eligible for a Play upload.
+only; they are not eligible for a Play upload. The canonical `main` CI build
+uses protected signing secrets to create a separate signed AAB artifact only
+after the fail-closed signing gate passes; pull-request builds remain unsigned.
 
 On a protected build runner, a release can be signed with an owner-managed Play
 upload key by supplying all four values below through that runner's masked secret
