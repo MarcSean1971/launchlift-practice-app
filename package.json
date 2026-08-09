@@ -13,6 +13,8 @@
   "scripts": {
     "dev": "vinext dev",
     "build": "vinext build",
+    "build:android-web": "npm run build && node scripts/build-android-web.mjs",
+    "verify:android-web": "node scripts/verify-android-web-bundle.mjs",
     "start": "vinext start",
     "test": "npm run build && node --experimental-strip-types --test tests/*.test.mjs",
     "lint": "eslint . --ignore-pattern dist --ignore-pattern .next",

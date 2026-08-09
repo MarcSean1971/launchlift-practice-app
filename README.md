@@ -27,6 +27,21 @@ npm run dev
 npm run build
 ```
 
+### Reproducible Android web bundle
+
+Native builds never redirect to the hosted Practice URL. Before `npx cap sync
+android`, run the following command to render the locally-built Practice App,
+copy its generated client assets, preserve the bundled native runner, and reject
+absolute machine paths or remote redirects:
+
+```bash
+npm run build:android-web
+npm run verify:android-web
+```
+
+The generated `.launchlift/web` directory is intentionally ignored. It is a
+derived build input, not a second editable copy of the product.
+
 This starter does not use `wrangler.jsonc`.
 
 ## Included Shape

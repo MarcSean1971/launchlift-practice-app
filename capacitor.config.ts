@@ -3,8 +3,10 @@ import type { CapacitorConfig } from '@capacitor/cli';
 const config: CapacitorConfig = {
   appId: "site.chatgpt.seelenbinder.launchliftpracticeapp.android",
   appName: "LaunchLift Practice App",
+  // A release must execute the generated Practice bundle on-device.  The old
+  // redirect shell caused Android to load whichever remote page the URL served,
+  // so native verification could exercise the wrong product.
   webDir: ".launchlift/web",
-  server: { url: "https://launchlift-practice-app.seelenbinder.chatgpt.site/", cleartext: false },
   plugins: {
     BackgroundRunner: {
       label: "site.chatgpt.seelenbinder.launchliftpracticeapp.background",
