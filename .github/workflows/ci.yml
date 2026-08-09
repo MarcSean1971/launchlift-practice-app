@@ -101,9 +101,11 @@ jobs:
       # Release signing material exists only as protected GitHub Actions
       # secrets. This writes it to the ephemeral runner, invokes the
       # fail-closed Gradle gate, then removes it before the job ends. PRs never
-      # produce a signed shipping artifact; canonical main does.
+      # produce a signed shipping artifact; canonical main does only when all
+      # four repository signing secrets are configured.
       - name: Prepare protected release signing material
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        id: release_signing
         env:
           ANDROID_SIGNING_KEYSTORE_BASE64: ${{ secrets.ANDROID_SIGNING_KEYSTORE_BASE64 }}
           ANDROID_SIGNING_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_SIGNING_KEYSTORE_PASSWORD }}
@@ -111,10 +113,11 @@ jobs:
           ANDROID_SIGNING_KEY_PASSWORD: ${{ secrets.ANDROID_SIGNING_KEY_PASSWORD }}
         run: |
           set -euo pipefail
-          test -n "$ANDROID_SIGNING_KEYSTORE_BASE64"
-          test -n "$ANDROID_SIGNING_KEYSTORE_PASSWORD"
-          test -n "$ANDROID_SIGNING_KEY_ALIAS"
-          test -n "$ANDROID_SIGNING_KEY_PASSWORD"
+          if [[ -z "$ANDROID_SIGNING_KEYSTORE_BASE64" || -z "$ANDROID_SIGNING_KEYSTORE_PASSWORD" || -z "$ANDROID_SIGNING_KEY_ALIAS" || -z "$ANDROID_SIGNING_KEY_PASSWORD" ]]; then
+            echo "available=false" >> "$GITHUB_OUTPUT"
+            echo "::notice title=Signed AAB not created::Configure all four protected Android signing secrets in this repository to enable the fail-closed release-signing gate."
+            exit 0
+          fi
           key_path="$RUNNER_TEMP/launchlift-practice-upload.keystore"
           printf '%s' "$ANDROID_SIGNING_KEYSTORE_BASE64" | base64 --decode > "$key_path"
           test -s "$key_path"
@@ -124,16 +127,17 @@ jobs:
             echo "LAUNCHLIFT_UPLOAD_KEY_ALIAS=$ANDROID_SIGNING_KEY_ALIAS"
             echo "LAUNCHLIFT_UPLOAD_KEY_PASSWORD=$ANDROID_SIGNING_KEY_PASSWORD"
           } >> "$GITHUB_ENV"
+          echo "available=true" >> "$GITHUB_OUTPUT"
 
       - name: Build and verify signed release bundle
-        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main' && steps.release_signing.outputs.available == 'true'
         working-directory: android
         run: |
           ./gradlew verifyReleaseSigning bundleRelease --no-daemon --stacktrace
           jarsigner -verify -certs app/build/outputs/bundle/release/app-release.aab
 
       - name: Preserve signed release AAB
-        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main' && steps.release_signing.outputs.available == 'true'
         uses: actions/upload-artifact@v6
         with:
           name: practice-native-release-aab-signed
