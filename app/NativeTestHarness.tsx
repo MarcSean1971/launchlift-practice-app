@@ -262,6 +262,11 @@ export function NativeTestHarness() {
     voice: async () => {
       if (!navigator.mediaDevices?.getUserMedia) throw new Error("Microphone capture is unavailable in this converted build.");
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true, video: false });
+      const audioTracks = stream.getAudioTracks();
+      if (!audioTracks.length) {
+        stream.getTracks().forEach((track) => track.stop());
+        throw new Error("Microphone capture did not return an audio track.");
+      }
       try {
         await new Promise((resolve) => window.setTimeout(resolve, 600));
       } finally {
