@@ -506,14 +506,14 @@ export function NativeTestHarness() {
     <section className="native-harness" id="native-test-harness" aria-labelledby="native-harness-heading">
       <div className="native-harness-heading">
         <div>
-          <span className="panel-kicker">Converted app only</span>
-          <h2 id="native-harness-heading">Native test harness</h2>
+          <span className="panel-kicker">Interactive device demo</span>
+          <h2 id="native-harness-heading">Test your converted app</h2>
         </div>
         <button className="button-secondary" type="button" onClick={() => setOpen((value) => !value)} aria-expanded={open}>
           {open ? "Close native tests" : "Open native tests"}
         </button>
       </div>
-      <p className="native-harness-boundary">Each action runs only after you press it. A passed action proves that single interaction on this device—not that every production workflow for the capability is complete.</p>
+      <p className="native-harness-boundary">Try the device features in this downloadable demo. Each action runs only after you press it, and a passed action proves that single interaction on this phone—not every production workflow for the capability.</p>
       <div className="native-harness-progress" aria-live="polite">
         <div><span className="panel-kicker">Device checklist</span><strong>{passedCount} of {Object.keys(capabilityLabels).length} tests passed on this phone</strong></div>
         <span className={attentionCount ? "native-progress-attention" : "native-progress-ready"}>
@@ -521,8 +521,13 @@ export function NativeTestHarness() {
         </span>
       </div>
       {open ? (
-        <div className="native-harness-grid">
-          {(Object.keys(capabilityLabels) as NativeHarnessCapabilityId[]).map((capability) => {
+        <div className="native-harness-checks">
+          <div className="native-harness-checks-heading">
+            <div><span className="panel-kicker">Guided device checks</span><strong>Choose a feature to try on this phone</strong></div>
+            <span>Every result stays visible below.</span>
+          </div>
+          <div className="native-harness-grid">
+            {(Object.keys(capabilityLabels) as NativeHarnessCapabilityId[]).map((capability) => {
             const result = results[capability];
             return (
               <article className="native-test-card" key={capability}>
@@ -542,15 +547,16 @@ export function NativeTestHarness() {
                 </button>
               </article>
             );
-          })}
-          {previewUrl ? (
-            <article className="native-preview-card">
-              <div><strong>Private preview</strong><button type="button" className="text-button" onClick={() => setPreviewUrl(null)}>Remove</button></div>
-              {/* The selected URI remains local to this rendered preview and is never sent by this harness. */}
-              {/* eslint-disable-next-line @next/next/no-img-element -- Capacitor returns a device-local URI that must not pass through a web image optimizer. */}
-              <img src={previewUrl} alt="Temporary camera or photo-library preview" />
-            </article>
-          ) : null}
+            })}
+            {previewUrl ? (
+              <article className="native-preview-card">
+                <div><strong>Private preview</strong><button type="button" className="text-button" onClick={() => setPreviewUrl(null)}>Remove</button></div>
+                {/* The selected URI remains local to this rendered preview and is never sent by this harness. */}
+                {/* eslint-disable-next-line @next/next/no-img-element -- Capacitor returns a device-local URI that must not pass through a web image optimizer. */}
+                <img src={previewUrl} alt="Temporary camera or photo-library preview" />
+              </article>
+            ) : null}
+          </div>
         </div>
       ) : null}
     </section>

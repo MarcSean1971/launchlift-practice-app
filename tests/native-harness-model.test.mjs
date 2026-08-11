@@ -81,17 +81,21 @@ test("makes every successful native probe perceptible on the handset", () => {
 test("keeps downloadable native-demo actions visually separated from their explanation", () => {
   const harness = readFileSync(new URL("../app/NativeTestHarness.tsx", import.meta.url), "utf8");
   const styles = readFileSync(new URL("../app/globals.css", import.meta.url), "utf8");
+  assert.match(harness, /Interactive device demo/u);
+  assert.match(harness, /Test your converted app/u);
+  assert.match(harness, /Guided device checks/u);
   assert.match(harness, /const passedCount = resultEntries\.filter\(\(result\) => result\.status === "passed"\)\.length;/u);
   assert.match(harness, /className="native-harness-progress" aria-live="polite"/u);
   assert.match(harness, /\{passedCount\} of \{Object\.keys\(capabilityLabels\)\.length\} tests passed on this phone/u);
-  assert.match(styles, /\.native-test-card \{ display: flex; flex-direction: column; min-height: 14\.5rem; \}/u);
+  assert.match(styles, /\.native-test-card \{ display: flex; flex-direction: column; min-height: 15rem;/u);
   assert.match(styles, /\.native-test-card p \{ flex: 1; color: var\(--muted\); min-height: 3rem; margin: \.9rem 0 0; line-height: 1\.5; \}/u);
-  assert.match(styles, /\.native-test-card \.lab-action \{ margin-top: 1\.2rem; min-height: 2\.9rem; \}/u);
+  assert.match(styles, /\.native-test-card \.lab-action \{ margin-top: 1\.45rem; min-height: 2\.9rem; \}/u);
+  assert.match(styles, /\.native-harness-checks-heading \{ display: flex; align-items: end; justify-content: space-between;/u);
   assert.match(styles, /\.native-test-card > div \{ padding-bottom: \.8rem; border-bottom: 1px solid rgba\(171,225,229,\.11\); \}/u);
   assert.match(styles, /\.native-result\.passed \{ color: var\(--mint\); background: rgba\(121,242,192,\.12\); \}/u);
   assert.match(styles, /\.native-result\.blocked \{ color: var\(--amber\); background: rgba\(255,190,92,\.12\); \}/u);
   assert.match(styles, /@media \(max-width: 860px\) \{[\s\S]*?\.native-harness-grid \{ grid-template-columns: 1fr; \}[\s\S]*?\.native-test-card \{ min-height: 0; \}/u);
-  assert.match(styles, /@media \(max-width: 580px\) \{[\s\S]*?\.native-test-card \{ padding: 1\.1rem; \}[\s\S]*?\.native-test-card \.lab-action \{ margin-top: 1rem; \}/u);
+  assert.match(styles, /@media \(max-width: 580px\) \{[\s\S]*?\.native-test-card \{ padding: 1\.1rem; \}[\s\S]*?\.native-test-card \.lab-action \{ margin-top: 1\.15rem; \}/u);
   assert.match(styles, /\.native-harness-progress \{ display: flex; align-items: center; justify-content: space-between;/u);
   assert.match(styles, /\.native-progress-attention \{ color: var\(--amber\); background: rgba\(255,190,92,\.11\); \}/u);
 });

@@ -210,22 +210,25 @@ h1 { margin: 0; max-width: 13ch; font-size: clamp(2.55rem, 7vw, 5.4rem); line-he
 .compare-drawer ul { margin: .6rem 0 0; padding-left: 1.1rem; color: var(--muted); }
 .footer-note { text-align: center; color: #719092; margin-top: 2.5rem; font-size: .82rem; }
 
-.native-harness { margin-top: 1rem; border: 1px solid rgba(112,200,255,.35); border-radius: 1.5rem; padding: 1.25rem; background: rgba(3,26,36,.94); box-shadow: 0 24px 80px rgba(0,0,0,.22); }
+.native-harness { margin-top: 1rem; border: 1px solid rgba(112,200,255,.35); border-radius: 1.5rem; padding: 1.25rem; background: linear-gradient(145deg, rgba(10,51,67,.98), rgba(3,26,36,.94) 44%, rgba(3,26,36,.94)); box-shadow: 0 24px 80px rgba(0,0,0,.22); }
 .native-harness-heading { display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
-.native-harness-heading h2 { margin: .2rem 0 0; }
+.native-harness-heading h2 { margin: .2rem 0 0; max-width: 19ch; }
 .native-harness-boundary { color: var(--muted); max-width: 70ch; line-height: 1.55; }
 .native-harness-progress { display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin: 1.25rem 0 0; padding: .9rem 1rem; border: 1px solid rgba(112,200,255,.2); border-radius: 1rem; background: rgba(112,200,255,.055); }
 .native-harness-progress strong { display: block; margin-top: .25rem; color: #dceceb; font-size: .94rem; }
 .native-progress-ready, .native-progress-attention { flex: 0 0 auto; border-radius: 999px; padding: .42rem .62rem; font-size: .76rem; font-weight: 760; }
 .native-progress-ready { color: var(--mint); background: rgba(121,242,192,.1); }
 .native-progress-attention { color: var(--amber); background: rgba(255,190,92,.11); }
-.native-harness-grid { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: .75rem; margin-top: 1rem; }
+.native-harness-checks { margin-top: 1.5rem; }
+.native-harness-checks-heading { display: flex; align-items: end; justify-content: space-between; gap: 1rem; padding: 0 .2rem; color: var(--muted); font-size: .82rem; }
+.native-harness-checks-heading strong { display: block; margin-top: .25rem; color: var(--text); font-size: 1rem; }
+.native-harness-grid { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: .75rem; margin-top: .85rem; }
 .native-test-card, .native-preview-card { border: 1px solid var(--line); border-radius: 1rem; padding: 1rem; background: rgba(255,255,255,.03); }
-.native-test-card { display: flex; flex-direction: column; min-height: 14.5rem; }
+.native-test-card { display: flex; flex-direction: column; min-height: 15rem; background: linear-gradient(180deg, rgba(255,255,255,.055), rgba(255,255,255,.025)); }
 .native-test-card > div, .native-preview-card > div { display: flex; justify-content: space-between; align-items: center; gap: .75rem; }
 .native-test-card > div { padding-bottom: .8rem; border-bottom: 1px solid rgba(171,225,229,.11); }
 .native-test-card p { flex: 1; color: var(--muted); min-height: 3rem; margin: .9rem 0 0; line-height: 1.5; }
-.native-test-card .lab-action { margin-top: 1.2rem; min-height: 2.9rem; }
+.native-test-card .lab-action { margin-top: 1.45rem; min-height: 2.9rem; }
 .native-keyboard-probe { width: 100%; margin: 0 0 .75rem; border: 1px solid var(--line); border-radius: .75rem; padding: .72rem .8rem; color: var(--text); background: rgba(1,12,18,.72); font: inherit; }
 .native-keyboard-probe:focus { outline: 2px solid var(--mint); outline-offset: 2px; }
 .native-result { border-radius: 999px; padding: .32rem .58rem; font-size: .7rem; font-weight: 800; letter-spacing: .04em; text-transform: uppercase; color: var(--muted); background: rgba(255,255,255,.05); }
@@ -244,7 +247,7 @@ h1 { margin: 0; max-width: 13ch; font-size: clamp(2.55rem, 7vw, 5.4rem); line-he
   .section-heading { align-items: flex-start; flex-direction: column; }
   .native-harness-grid { grid-template-columns: 1fr; }
   .native-test-card { min-height: 0; }
-  .native-harness-progress { align-items: flex-start; flex-direction: column; }
+  .native-harness-progress, .native-harness-checks-heading { align-items: flex-start; flex-direction: column; }
 }
 
 @media (max-width: 580px) {
@@ -262,6 +265,6 @@ h1 { margin: 0; max-width: 13ch; font-size: clamp(2.55rem, 7vw, 5.4rem); line-he
   .boundary-card { grid-template-columns: 1fr; }
   .native-harness-heading { align-items: stretch; flex-direction: column; }
   .native-test-card { padding: 1.1rem; }
-  .native-test-card .lab-action { margin-top: 1rem; }
+  .native-test-card .lab-action { margin-top: 1.15rem; }
   .brand-lockup small { display: none; }
 }
