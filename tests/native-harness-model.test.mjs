@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
 import test from "node:test";
 import {
   idleNativeHarnessResults,
@@ -38,4 +39,10 @@ test("keeps cancellation, permission denial, unsupported plugins, and success di
   assert.equal(nativeHarnessFailure(new Error("Permission denied")).status, "blocked");
   assert.equal(nativeHarnessFailure(new Error("Plugin not implemented")).status, "blocked");
   assert.deepEqual(passedNativeHarnessResult("One action passed."), { status: "passed", message: "One action passed." });
+});
+
+test("opens the installed native test surface without a WebView entry tap", () => {
+  const source = readFileSync(new URL("../app/NativeTestHarness.tsx", import.meta.url), "utf8");
+  assert.match(source, /const \[open, setOpen\] = useState\(true\);/u);
+  assert.match(source, /if \(!native\) return null;/u, "the public web source must remain free of the native-only harness");
 });

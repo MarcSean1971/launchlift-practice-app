@@ -44,7 +44,10 @@ const capabilityLabels: Record<NativeHarnessCapabilityId, string> = {
 
 export function NativeTestHarness() {
   const [native, setNative] = useState(false);
-  const [open, setOpen] = useState(false);
+  // The installed Practice APK is a bounded device-test surface. Opening this
+  // section by default removes the remote-WebView-style entry dependency while
+  // the native-platform guard below keeps the public source page unchanged.
+  const [open, setOpen] = useState(true);
   const [results, setResults] = useState(idleNativeHarnessResults);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
 
