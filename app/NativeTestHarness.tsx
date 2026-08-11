@@ -42,13 +42,49 @@ const capabilityLabels: Record<NativeHarnessCapabilityId, string> = {
   screenReader: "Screen reader",
 };
 
+// Every passed probe must leave a physical, native acknowledgement on the
+// handset. Some probes already do that through a system UI (camera, keyboard,
+// share sheet, biometric prompt, etc.); quiet read/write/readiness probes use
+// this dedicated native confirmation instead of asking a tester to trust the
+// WebView result card.
+const successEvidenceMessages: Record<NativeHarnessCapabilityId, string> = {
+  camera: "Camera test completed",
+  media: "Photo library test completed",
+  share: "Native share test completed",
+  clipboard: "Clipboard test completed",
+  haptics: "Touch feedback test completed",
+  toast: "Native toast test passed",
+  sensors: "Motion sensor test completed",
+  biometrics: "Biometric unlock test completed",
+  deepLinks: "App links test completed",
+  offline: "Offline storage test completed",
+  background: "Background runner test completed",
+  voice: "Microphone test completed",
+  push: "Push registration test completed",
+  location: "Location test completed",
+  bluetooth: "Bluetooth readiness test completed",
+  nfc: "NFC readiness test completed",
+  video: "Video capture test completed",
+  network: "Network awareness test completed",
+  appLauncher: "Open email app test completed",
+  browser: "Trusted browser test completed",
+  files: "Private file round trip completed",
+  barcode: "QR and barcode scan completed",
+  localNotifications: "Local reminder test completed",
+  maps: "Native maps test completed",
+  keyboard: "Software keyboard test completed",
+  deviceInfo: "Device context test completed",
+  privacyScreen: "Privacy screen test completed",
+  screenReader: "Screen reader test completed",
+};
+
 async function showNativeSuccessFeedback(capability: NativeHarnessCapabilityId, result: NativeHarnessResult) {
   // A completed test must be perceptible on the handset, not merely reflected
-  // in a WebView status card. The Toast test itself already owns that feedback.
+  // in a WebView status card. The Toast test itself owns its physical feedback.
   if (result.status !== "passed" || capability === "toast") return;
   try {
     const { Toast } = await import("@capacitor/toast");
-    await Toast.show({ text: `${capabilityLabels[capability]} test passed`, duration: "short", position: "bottom" });
+    await Toast.show({ text: successEvidenceMessages[capability], duration: "short", position: "bottom" });
   } catch {
     // Do not turn a proven native action into a failure only because its
     // optional confirmation surface is unavailable on this device.
@@ -398,7 +434,7 @@ export function NativeTestHarness() {
       if (!GoogleMap || !Capacitor.isPluginAvailable("GoogleMaps")) {
         return { status: "blocked", message: "The native Google Maps bridge is unavailable in this converted build." };
       }
-      return passedNativeHarnessResult("The native Google Maps bridge is registered. No map, API key, coordinates, markers, route, or external service was used; provider configuration and real map rendering remain unverified.");
+      return { status: "blocked", message: "The native maps bridge is present, but this test cannot pass until it renders a real map with the approved provider configuration. No map, key, coordinates, marker, route, or external service was used." };
     },
     keyboard: async () => {
       const { Keyboard } = await import("@capacitor/keyboard");

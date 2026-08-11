@@ -47,10 +47,17 @@ test("opens the installed native test surface without a WebView entry tap", () =
   assert.match(source, /if \(!native\) return null;/u, "the public web source must remain free of the native-only harness");
 });
 
-test("makes each successful native test perceptible on the handset", () => {
+test("makes every successful native probe perceptible on the handset", () => {
   const source = readFileSync(new URL("../app/NativeTestHarness.tsx", import.meta.url), "utf8");
+  assert.equal(nativeHarnessCapabilityIds.length, 28);
+  for (const capability of nativeHarnessCapabilityIds) {
+    assert.match(source, new RegExp(`^  ${capability}:`, "mu"), `${capability} must remain a real harness action`);
+    assert.match(source, new RegExp(`^  ${capability}: "`, "mu"), `${capability} must retain visible native evidence text`);
+  }
   assert.match(source, /async function showNativeSuccessFeedback/u);
   assert.match(source, /result\.status !== "passed" \|\| capability === "toast"/u);
-  assert.match(source, /Toast\.show\(\{ text: `\$\{capabilityLabels\[capability\]\} test passed`/u);
+  assert.match(source, /Toast\.show\(\{ text: successEvidenceMessages\[capability\]/u);
   assert.match(source, /await showNativeSuccessFeedback\(capability, result\);/u);
+  assert.match(source, /toast: async \(\) => \{[\s\S]*?Toast\.show\(\{ text: "Native toast test passed"/u);
+  assert.match(source, /maps: async \(\) => \{[\s\S]*?cannot pass until it renders a real map/u);
 });
