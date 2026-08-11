@@ -86,4 +86,6 @@ test("keeps downloadable native-demo actions visually separated from their expla
   assert.match(styles, /\.native-test-card > div \{ padding-bottom: \.8rem; border-bottom: 1px solid rgba\(171,225,229,\.11\); \}/u);
   assert.match(styles, /\.native-result\.passed \{ color: var\(--mint\); background: rgba\(121,242,192,\.12\); \}/u);
   assert.match(styles, /\.native-result\.blocked \{ color: var\(--amber\); background: rgba\(255,190,92,\.12\); \}/u);
+  assert.match(styles, /@media \(max-width: 860px\) \{[\s\S]*?\.native-harness-grid \{ grid-template-columns: 1fr; \}[\s\S]*?\.native-test-card \{ min-height: 0; \}/u);
+  assert.match(styles, /@media \(max-width: 580px\) \{[\s\S]*?\.native-test-card \{ padding: 1\.1rem; \}[\s\S]*?\.native-test-card \.lab-action \{ margin-top: 1rem; \}/u);
 });

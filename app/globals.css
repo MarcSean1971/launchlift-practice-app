@@ -238,6 +238,7 @@ h1 { margin: 0; max-width: 13ch; font-size: clamp(2.55rem, 7vw, 5.4rem); line-he
   .agent-cycle { grid-template-columns: repeat(2, 1fr); }
   .section-heading { align-items: flex-start; flex-direction: column; }
   .native-harness-grid { grid-template-columns: 1fr; }
+  .native-test-card { min-height: 0; }
 }
 
 @media (max-width: 580px) {
@@ -254,5 +255,7 @@ h1 { margin: 0; max-width: 13ch; font-size: clamp(2.55rem, 7vw, 5.4rem); line-he
   .lab-card { min-height: 12.5rem; }
   .boundary-card { grid-template-columns: 1fr; }
   .native-harness-heading { align-items: stretch; flex-direction: column; }
+  .native-test-card { padding: 1.1rem; }
+  .native-test-card .lab-action { margin-top: 1rem; }
   .brand-lockup small { display: none; }
 }
