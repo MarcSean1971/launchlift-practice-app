@@ -106,6 +106,10 @@ export function NativeTestHarness() {
 
   if (!native) return null;
 
+  const resultEntries = Object.values(results);
+  const passedCount = resultEntries.filter((result) => result.status === "passed").length;
+  const attentionCount = resultEntries.filter((result) => result.status === "blocked").length;
+
   const run = async (capability: NativeHarnessCapabilityId, action: () => Promise<NativeHarnessResult>) => {
     setResults((current) => ({ ...current, [capability]: { status: "running", message: "Waiting for the phone…" } }));
     try {
@@ -510,6 +514,12 @@ export function NativeTestHarness() {
         </button>
       </div>
       <p className="native-harness-boundary">Each action runs only after you press it. A passed action proves that single interaction on this device—not that every production workflow for the capability is complete.</p>
+      <div className="native-harness-progress" aria-live="polite">
+        <div><span className="panel-kicker">Device checklist</span><strong>{passedCount} of {Object.keys(capabilityLabels).length} tests passed on this phone</strong></div>
+        <span className={attentionCount ? "native-progress-attention" : "native-progress-ready"}>
+          {attentionCount ? `${attentionCount} need phone setup` : "No setup blockers reported"}
+        </span>
+      </div>
       {open ? (
         <div className="native-harness-grid">
           {(Object.keys(capabilityLabels) as NativeHarnessCapabilityId[]).map((capability) => {

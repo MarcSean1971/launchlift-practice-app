@@ -214,6 +214,11 @@ h1 { margin: 0; max-width: 13ch; font-size: clamp(2.55rem, 7vw, 5.4rem); line-he
 .native-harness-heading { display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
 .native-harness-heading h2 { margin: .2rem 0 0; }
 .native-harness-boundary { color: var(--muted); max-width: 70ch; line-height: 1.55; }
+.native-harness-progress { display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin: 1.25rem 0 0; padding: .9rem 1rem; border: 1px solid rgba(112,200,255,.2); border-radius: 1rem; background: rgba(112,200,255,.055); }
+.native-harness-progress strong { display: block; margin-top: .25rem; color: #dceceb; font-size: .94rem; }
+.native-progress-ready, .native-progress-attention { flex: 0 0 auto; border-radius: 999px; padding: .42rem .62rem; font-size: .76rem; font-weight: 760; }
+.native-progress-ready { color: var(--mint); background: rgba(121,242,192,.1); }
+.native-progress-attention { color: var(--amber); background: rgba(255,190,92,.11); }
 .native-harness-grid { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: .75rem; margin-top: 1rem; }
 .native-test-card, .native-preview-card { border: 1px solid var(--line); border-radius: 1rem; padding: 1rem; background: rgba(255,255,255,.03); }
 .native-test-card { display: flex; flex-direction: column; min-height: 14.5rem; }
@@ -239,6 +244,7 @@ h1 { margin: 0; max-width: 13ch; font-size: clamp(2.55rem, 7vw, 5.4rem); line-he
   .section-heading { align-items: flex-start; flex-direction: column; }
   .native-harness-grid { grid-template-columns: 1fr; }
   .native-test-card { min-height: 0; }
+  .native-harness-progress { align-items: flex-start; flex-direction: column; }
 }
 
 @media (max-width: 580px) {
