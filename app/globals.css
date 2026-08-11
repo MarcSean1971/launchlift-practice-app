@@ -216,8 +216,10 @@ h1 { margin: 0; max-width: 13ch; font-size: clamp(2.55rem, 7vw, 5.4rem); line-he
 .native-harness-boundary { color: var(--muted); max-width: 70ch; line-height: 1.55; }
 .native-harness-grid { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: .75rem; margin-top: 1rem; }
 .native-test-card, .native-preview-card { border: 1px solid var(--line); border-radius: 1rem; padding: 1rem; background: rgba(255,255,255,.03); }
+.native-test-card { display: flex; flex-direction: column; min-height: 14.5rem; }
 .native-test-card > div, .native-preview-card > div { display: flex; justify-content: space-between; align-items: center; gap: .75rem; }
-.native-test-card p { color: var(--muted); min-height: 3rem; line-height: 1.45; }
+.native-test-card p { color: var(--muted); min-height: 3rem; margin: .9rem 0 0; line-height: 1.5; }
+.native-test-card .lab-action { margin-top: 1.2rem; min-height: 2.9rem; }
 .native-keyboard-probe { width: 100%; margin: 0 0 .75rem; border: 1px solid var(--line); border-radius: .75rem; padding: .72rem .8rem; color: var(--text); background: rgba(1,12,18,.72); font: inherit; }
 .native-keyboard-probe:focus { outline: 2px solid var(--mint); outline-offset: 2px; }
 .native-result { border-radius: 999px; padding: .25rem .5rem; font-size: .7rem; font-weight: 800; text-transform: uppercase; color: var(--muted); background: rgba(255,255,255,.05); }

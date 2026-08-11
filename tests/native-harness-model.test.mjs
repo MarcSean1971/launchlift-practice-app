@@ -77,3 +77,10 @@ test("makes every successful native probe perceptible on the handset", () => {
   assert.match(source, /toast: async \(\) => \{[\s\S]*?Toast\.show\(\{ text: "Native toast test passed"/u);
   assert.match(source, /maps: async \(\) => \{[\s\S]*?cannot pass until it renders a real map/u);
 });
+
+test("keeps downloadable native-demo actions visually separated from their explanation", () => {
+  const styles = readFileSync(new URL("../app/globals.css", import.meta.url), "utf8");
+  assert.match(styles, /\.native-test-card \{ display: flex; flex-direction: column; min-height: 14\.5rem; \}/u);
+  assert.match(styles, /\.native-test-card p \{ color: var\(--muted\); min-height: 3rem; margin: \.9rem 0 0; line-height: 1\.5; \}/u);
+  assert.match(styles, /\.native-test-card \.lab-action \{ margin-top: 1\.2rem; min-height: 2\.9rem; \}/u);
+});
