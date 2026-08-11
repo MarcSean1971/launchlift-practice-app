@@ -84,7 +84,12 @@ test("makes every successful native probe perceptible on the handset", () => {
   assert.match(source, /Toast\.show\(\{ text: successEvidenceMessages\[capability\]/u);
   assert.match(source, /await showNativeSuccessFeedback\(capability, result\);/u);
   assert.match(source, /toast: async \(\) => \{[\s\S]*?Toast\.show\(\{ text: "Native toast test passed"/u);
-  assert.match(source, /maps: async \(\) => \{[\s\S]*?cannot pass until it renders a real map/u);
+  assert.match(source, /maps: async \(\) => \{[\s\S]*?setNativeMapVisible\(true\)/u);
+  assert.match(source, /maps: async \(\) => \{[\s\S]*?nativeMapHost\.current/u);
+  assert.match(source, /maps: async \(\) => \{[\s\S]*?bounds\.width < 80 \|\| bounds\.height < 80/u);
+  assert.match(source, /maps: async \(\) => \{[\s\S]*?GoogleMap\.create\(\{[\s\S]*?element: host,[\s\S]*?forceCreate: true/u);
+  assert.match(source, /maps: async \(\) => \{[\s\S]*?A native Google Map view initialized in the visible panel below/u);
+  assert.match(source, /id="native-google-map-probe" ref=\{nativeMapHost\} className="native-google-map-probe"/u);
 });
 
 test("keeps downloadable native-demo actions visually separated from their explanation", () => {

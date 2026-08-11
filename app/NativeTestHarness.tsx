@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Capacitor } from "@capacitor/core";
 import {
   idleNativeHarnessResults,
@@ -99,6 +99,8 @@ export function NativeTestHarness() {
   const [open, setOpen] = useState(true);
   const [results, setResults] = useState(idleNativeHarnessResults);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+  const [nativeMapVisible, setNativeMapVisible] = useState(false);
+  const nativeMapHost = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     setNative(Capacitor.isNativePlatform());
@@ -438,7 +440,29 @@ export function NativeTestHarness() {
       if (!GoogleMap || !Capacitor.isPluginAvailable("GoogleMaps")) {
         return { status: "blocked", message: "The native Google Maps bridge is unavailable in this converted build." };
       }
-      return { status: "blocked", message: "The native maps bridge is present, but this test cannot pass until it renders a real map with the approved provider configuration. No map, key, coordinates, marker, route, or external service was used." };
+      setNativeMapVisible(true);
+      // Let React commit the visible host before Capacitor measures it for the
+      // native MapView. A zero-sized/hidden host must never be accepted.
+      await new Promise<void>((resolve) => window.requestAnimationFrame(() => window.requestAnimationFrame(() => resolve())));
+      const host = nativeMapHost.current;
+      const bounds = host?.getBoundingClientRect();
+      if (!host || !host.isConnected || !bounds || bounds.width < 80 || bounds.height < 80) {
+        throw new Error("Native map display host was not visible.");
+      }
+      // Android obtains provider credentials from the installed native
+      // configuration. Do not embed or expose a key in this web source.
+      await GoogleMap.create({
+        id: "launchlift-practice-native-map-probe",
+        element: host,
+        apiKey: "",
+        forceCreate: true,
+        config: {
+          center: { lat: 0, lng: 0 },
+          zoom: 2,
+          androidLiteMode: false,
+        },
+      });
+      return passedNativeHarnessResult("A native Google Map view initialized in the visible panel below and remains on screen for inspection. This proves only this rendered map on this phone; provider policy, credentials, tiles, location, routes, and production map workflows remain separate evidence.");
     },
     keyboard: async () => {
       const { Keyboard } = await import("@capacitor/keyboard");
@@ -554,6 +578,12 @@ export function NativeTestHarness() {
                 {/* The selected URI remains local to this rendered preview and is never sent by this harness. */}
                 {/* eslint-disable-next-line @next/next/no-img-element -- Capacitor returns a device-local URI that must not pass through a web image optimizer. */}
                 <img src={previewUrl} alt="Temporary camera or photo-library preview" />
+              </article>
+            ) : null}
+            {nativeMapVisible ? (
+              <article className="native-map-preview-card" aria-label="Native Google map test surface">
+                <div><strong>Native Google map</strong><span>Keep this panel visible while inspecting the rendered map.</span></div>
+                <div id="native-google-map-probe" ref={nativeMapHost} className="native-google-map-probe" aria-label="Native Google map rendering surface" />
               </article>
             ) : null}
           </div>

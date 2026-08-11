@@ -165,8 +165,13 @@ test("wires the final five bounded native probes without device-verification ove
     assert.match(harnessSource, new RegExp(signal.replaceAll(".", "\\.").replaceAll("(", "\\(").replaceAll(")", "\\)")));
   }
   assert.doesNotMatch(harnessSource, /Device\.getId/);
-  assert.match(harnessSource, /cannot pass until it renders a real map with the approved provider configuration/);
-  assert.match(harnessSource, /No map, key, coordinates, marker, route, or external service was used/);
+  assert.match(harnessSource, /GoogleMap\.create\(\{/);
+  assert.match(harnessSource, /id: "launchlift-practice-native-map-probe"/);
+  assert.match(harnessSource, /element: host/);
+  assert.match(harnessSource, /forceCreate: true/);
+  assert.match(harnessSource, /Native map display host was not visible/);
+  assert.match(harnessSource, /provider policy, credentials, tiles, location, routes, and production map workflows remain separate evidence/);
+  assert.match(harnessSource, /id="native-google-map-probe" ref=\{nativeMapHost\} className="native-google-map-probe"/);
   assert.match(harnessSource, /Form resize, focus order, scroll behavior, and the device matrix remain unverified/);
   assert.match(harnessSource, /No device name, model, identifier, memory, or battery data was displayed, stored, or transmitted/);
   assert.match(harnessSource, /Screenshot and app-switcher behavior across real devices remains unverified/);
