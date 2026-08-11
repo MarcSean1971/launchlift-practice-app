@@ -513,7 +513,7 @@ export function NativeTestHarness() {
           {open ? "Close native tests" : "Open native tests"}
         </button>
       </div>
-      <p className="native-harness-boundary">Try the device features in this downloadable demo. Each action runs only after you press it, and a passed action proves that single interaction on this phone—not every production workflow for the capability.</p>
+      <p className="native-harness-boundary">Try the device features in this downloadable demo. Each action runs only after you press it. A passed action proves that single interaction on this phone—not that every production workflow for the capability is complete.</p>
       <div className="native-harness-progress" aria-live="polite">
         <div><span className="panel-kicker">Device checklist</span><strong>{passedCount} of {Object.keys(capabilityLabels).length} tests passed on this phone</strong></div>
         <span className={attentionCount ? "native-progress-attention" : "native-progress-ready"}>
