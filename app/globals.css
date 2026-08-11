@@ -130,6 +130,12 @@ h1 { margin: 0; max-width: 13ch; font-size: clamp(2.55rem, 7vw, 5.4rem); line-he
 .guide-card h3 { margin: 1rem 0 .45rem; }
 .guide-card p { color: var(--muted); line-height: 1.55; margin: 0; font-size: .92rem; }
 
+.conversion-brief { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(19rem, .8fr); gap: 1.25rem; margin: 0 0 3rem; border: 1px solid rgba(112,200,255,.3); border-radius: 1.5rem; padding: clamp(1.25rem, 3vw, 2rem); background: linear-gradient(135deg, rgba(112,200,255,.09), rgba(121,242,192,.045)); box-shadow: 0 24px 80px rgba(0,0,0,.16); }
+.conversion-brief h2 { margin: .35rem 0 .7rem; max-width: 28ch; font-size: clamp(1.4rem, 3vw, 2rem); letter-spacing: -.035em; }
+.conversion-brief p { max-width: 67ch; margin: .65rem 0 0; color: var(--muted); line-height: 1.58; }
+.conversion-brief ul { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .55rem; align-content: start; margin: 0; padding: 0; list-style: none; }
+.conversion-brief li { min-height: 3.1rem; display: flex; align-items: center; border: 1px solid rgba(162,217,205,.2); border-radius: .85rem; padding: .65rem .75rem; color: #dceceb; font-size: .86rem; font-weight: 760; background: rgba(2,18,25,.38); }
+
 .rehearsal-section { border-radius: 2rem; padding: clamp(1.2rem, 4vw, 2rem); margin-bottom: 1rem; }
 .rehearsal-grid { display: grid; grid-template-columns: 1fr 1fr; gap: .9rem; }
 .rehearsal-card { border: 1px solid var(--line); border-radius: 1.3rem; padding: 1.1rem; background: rgba(2, 18, 25, .55); }
@@ -253,6 +259,7 @@ h1 { margin: 0; max-width: 13ch; font-size: clamp(2.55rem, 7vw, 5.4rem); line-he
   .native-harness-grid { grid-template-columns: 1fr; }
   .native-test-card { min-height: 0; }
   .native-harness-progress, .native-harness-checks-heading { align-items: flex-start; flex-direction: column; }
+  .conversion-brief { grid-template-columns: 1fr; }
 }
 
 @media (max-width: 580px) {
@@ -269,6 +276,8 @@ h1 { margin: 0; max-width: 13ch; font-size: clamp(2.55rem, 7vw, 5.4rem); line-he
   .lab-card { min-height: 12.5rem; }
   .boundary-card { grid-template-columns: 1fr; }
   .native-harness-heading { align-items: stretch; flex-direction: column; }
+  .conversion-brief { margin-bottom: 2rem; padding: 1.1rem; }
+  .conversion-brief ul { grid-template-columns: 1fr; }
   .native-test-card { padding: 1.1rem; }
   .native-test-card .lab-action { margin-top: 1.35rem; }
   .brand-lockup small { display: none; }

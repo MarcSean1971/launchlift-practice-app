@@ -7,5 +7,12 @@
   "selectionOwner": "launchliftai",
   "outputOwner": "launchliftai",
   "capabilities": ["push", "camera", "media", "location", "bluetooth", "nfc", "sensors", "biometrics", "share", "deepLinks", "offline", "background", "voice", "video", "network", "appLauncher", "browser", "clipboard", "files", "haptics", "barcode", "localNotifications", "maps", "keyboard", "deviceInfo", "privacyScreen", "screenReader", "toast"],
+  "conversionContract": {
+    "outputs": ["android-apk", "android-aab", "pwa", "chrome-extension-zip", "firefox-xpi", "ios-ipa", "windows-msix", "vendor-export"],
+    "deliveryChannels": ["manual", "mcp", "acp"],
+    "requiredPerFeatureTargetEvidence": ["target-specific-code", "rebuilt-artifact", "artifact-sha256", "applicable-physical-device-or-system-evidence"],
+    "insufficientEvidence": ["receipt", "dependency", "source-edit", "browser-preview", "unrelated-artifact"],
+    "requiresBuilderApplicationAndRebuildReference": true
+  },
   "ownerGates": ["credentials", "payments", "signing", "legal-declarations", "final-submission", "rollout"]
 }

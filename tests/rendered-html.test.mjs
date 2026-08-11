@@ -206,11 +206,25 @@ test("declares an immutable 28-capability source owned by the LaunchLift workflo
   assert.equal(metadata.outputOwner, "launchliftai");
   assert.equal(metadata.capabilities.length, 28);
   assert.equal(new Set(metadata.capabilities).size, 28);
+  assert.deepEqual(metadata.conversionContract.outputs, [
+    "android-apk", "android-aab", "pwa", "chrome-extension-zip",
+    "firefox-xpi", "ios-ipa", "windows-msix", "vendor-export",
+  ]);
+  assert.deepEqual(metadata.conversionContract.deliveryChannels, ["manual", "mcp", "acp"]);
+  assert.deepEqual(metadata.conversionContract.requiredPerFeatureTargetEvidence, [
+    "target-specific-code", "rebuilt-artifact", "artifact-sha256", "applicable-physical-device-or-system-evidence",
+  ]);
+  assert.deepEqual(metadata.conversionContract.insufficientEvidence, [
+    "receipt", "dependency", "source-edit", "browser-preview", "unrelated-artifact",
+  ]);
+  assert.equal(metadata.conversionContract.requiresBuilderApplicationAndRebuildReference, true);
   assert.equal(packageMetadata.name, "launchlift-practice-app");
   assert.equal(packageMetadata.version, "1.3.1");
   assert.equal(packageMetadata.homepage, "https://launchlift-practice-app.seelenbinder.chatgpt.site/");
   assert.equal(packageMetadata.repository.url, "https://github.com/MarcSean1971/launchlift-practice-app.git");
   assert.match(source, /nativeCapabilities\.map/);
+  assert.match(source, /Conversion handoff contract/);
+  assert.match(source, /practiceConversionContract\.outputs\.map/);
   assert.match(source, /manually, through MCP or ACP/);
   assert.doesNotMatch(source, /outputSelections|storeSelections|implementationChannel|authorityMode/);
   assert.deepEqual(manifest.icons.map((icon) => icon.src), ["/icon-192.png", "/icon-512.png"]);

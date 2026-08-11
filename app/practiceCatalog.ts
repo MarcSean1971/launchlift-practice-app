@@ -28,3 +28,22 @@ export const nativeCapabilities = [
   { key: "screenReader", label: "Screen reader", description: "Verify landmarks, labels, and live status content for assistive technology.", action: "Check accessibility" },
   { key: "toast", label: "Native toast", description: "Show a lightweight practice confirmation and map it to a native toast later.", action: "Show confirmation" },
 ] as const;
+
+// This is an instruction boundary for the conversion workflow, not a claim
+// that the untouched source has already produced any of these deliverables.
+// Keeping the format names with the immutable capability catalogue makes the
+// expected builder handoff visible to a person importing the Practice source.
+export const practiceConversionContract = {
+  outputs: [
+    "Android APK",
+    "Android AAB",
+    "Installable PWA",
+    "Chrome Extension ZIP",
+    "Firefox XPI",
+    "iOS IPA",
+    "Windows MSIX",
+    "Vendor export",
+  ],
+  evidenceRule: "For every selected feature and target, require target-specific code, a rebuilt artifact and hash, and applicable physical device or system evidence. A receipt, dependency, source edit, browser preview, or unrelated package is not completion.",
+  deliveryRule: "Instructions may be delivered manually, through MCP, or through ACP. The selected builder must apply them to this source and record its application and rebuild reference before LaunchLiftAI can accept the conversion.",
+} as const;

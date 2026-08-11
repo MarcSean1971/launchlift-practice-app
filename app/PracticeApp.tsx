@@ -1,6 +1,6 @@
 "use client";
 
-import { nativeCapabilities } from "./practiceCatalog";
+import { nativeCapabilities, practiceConversionContract } from "./practiceCatalog";
 import { NativeTestHarness } from "./NativeTestHarness";
 
 const REVISION = "1.3.1";
@@ -30,6 +30,18 @@ export function PracticeApp() {
           <article className="guide-card"><span className="guide-number">1</span><h2>Import</h2><p>Add this URL or GitHub repository inside LaunchLiftAI.</p></article>
           <article className="guide-card"><span className="guide-number">2</span><h2>Select</h2><p>Choose zero through all 28 functions, outputs, assets and stores in LaunchLiftAI.</p></article>
           <article className="guide-card"><span className="guide-number">3</span><h2>Implement and test</h2><p>Send instructions manually, through MCP or ACP; rescan, download from LaunchLiftAI, then test on the phone or browser.</p></article>
+        </section>
+
+        <section className="conversion-brief" aria-labelledby="conversion-brief-heading">
+          <div>
+            <span className="panel-kicker">Conversion handoff contract</span>
+            <h2 id="conversion-brief-heading">Build the selected features for the selected targets.</h2>
+            <p>{practiceConversionContract.evidenceRule}</p>
+            <p>{practiceConversionContract.deliveryRule}</p>
+          </div>
+          <ul aria-label="Supported conversion outputs">
+            {practiceConversionContract.outputs.map((output) => <li key={output}>{output}</li>)}
+          </ul>
         </section>
 
         <section className="lab-section" id="native-functions" aria-labelledby="native-functions-heading">
