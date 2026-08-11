@@ -218,14 +218,15 @@ h1 { margin: 0; max-width: 13ch; font-size: clamp(2.55rem, 7vw, 5.4rem); line-he
 .native-test-card, .native-preview-card { border: 1px solid var(--line); border-radius: 1rem; padding: 1rem; background: rgba(255,255,255,.03); }
 .native-test-card { display: flex; flex-direction: column; min-height: 14.5rem; }
 .native-test-card > div, .native-preview-card > div { display: flex; justify-content: space-between; align-items: center; gap: .75rem; }
-.native-test-card p { color: var(--muted); min-height: 3rem; margin: .9rem 0 0; line-height: 1.5; }
+.native-test-card > div { padding-bottom: .8rem; border-bottom: 1px solid rgba(171,225,229,.11); }
+.native-test-card p { flex: 1; color: var(--muted); min-height: 3rem; margin: .9rem 0 0; line-height: 1.5; }
 .native-test-card .lab-action { margin-top: 1.2rem; min-height: 2.9rem; }
 .native-keyboard-probe { width: 100%; margin: 0 0 .75rem; border: 1px solid var(--line); border-radius: .75rem; padding: .72rem .8rem; color: var(--text); background: rgba(1,12,18,.72); font: inherit; }
 .native-keyboard-probe:focus { outline: 2px solid var(--mint); outline-offset: 2px; }
-.native-result { border-radius: 999px; padding: .25rem .5rem; font-size: .7rem; font-weight: 800; text-transform: uppercase; color: var(--muted); background: rgba(255,255,255,.05); }
-.native-result.running { color: var(--sky); }
-.native-result.passed { color: var(--mint); }
-.native-result.blocked { color: var(--amber); }
+.native-result { border-radius: 999px; padding: .32rem .58rem; font-size: .7rem; font-weight: 800; letter-spacing: .04em; text-transform: uppercase; color: var(--muted); background: rgba(255,255,255,.05); }
+.native-result.running { color: var(--sky); background: rgba(112,200,255,.12); }
+.native-result.passed { color: var(--mint); background: rgba(121,242,192,.12); }
+.native-result.blocked { color: var(--amber); background: rgba(255,190,92,.12); }
 .native-preview-card { grid-column: 1 / -1; }
 .native-preview-card img { display: block; width: 100%; max-height: 22rem; margin-top: .75rem; border-radius: .8rem; object-fit: contain; background: #020c11; }
 

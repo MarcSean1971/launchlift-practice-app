@@ -81,6 +81,9 @@ test("makes every successful native probe perceptible on the handset", () => {
 test("keeps downloadable native-demo actions visually separated from their explanation", () => {
   const styles = readFileSync(new URL("../app/globals.css", import.meta.url), "utf8");
   assert.match(styles, /\.native-test-card \{ display: flex; flex-direction: column; min-height: 14\.5rem; \}/u);
-  assert.match(styles, /\.native-test-card p \{ color: var\(--muted\); min-height: 3rem; margin: \.9rem 0 0; line-height: 1\.5; \}/u);
+  assert.match(styles, /\.native-test-card p \{ flex: 1; color: var\(--muted\); min-height: 3rem; margin: \.9rem 0 0; line-height: 1\.5; \}/u);
   assert.match(styles, /\.native-test-card \.lab-action \{ margin-top: 1\.2rem; min-height: 2\.9rem; \}/u);
+  assert.match(styles, /\.native-test-card > div \{ padding-bottom: \.8rem; border-bottom: 1px solid rgba\(171,225,229,\.11\); \}/u);
+  assert.match(styles, /\.native-result\.passed \{ color: var\(--mint\); background: rgba\(121,242,192,\.12\); \}/u);
+  assert.match(styles, /\.native-result\.blocked \{ color: var\(--amber\); background: rgba\(255,190,92,\.12\); \}/u);
 });
