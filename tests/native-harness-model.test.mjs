@@ -47,6 +47,15 @@ test("publishes the Android association for the installed Practice package", () 
   }]);
 });
 
+test("keeps the Android App Links intent contract aligned with the trusted public host", () => {
+  const manifest = readFileSync(new URL("../android/app/src/main/AndroidManifest.xml", import.meta.url), "utf8");
+
+  assert.match(manifest, /android:name="\.MainActivity"/u);
+  assert.match(manifest, /android:launchMode="singleTask"/u);
+  assert.match(manifest, /<intent-filter android:autoVerify="true">[\s\S]*?<action android:name="android\.intent\.action\.VIEW"\s*\/>[\s\S]*?<category android:name="android\.intent\.category\.DEFAULT"\s*\/>[\s\S]*?<category android:name="android\.intent\.category\.BROWSABLE"\s*\/>[\s\S]*?<data[\s\S]*?android:scheme="https"[\s\S]*?android:host="launchlift-practice-app\.seelenbinder\.chatgpt\.site"[\s\S]*?android:pathPrefix="\/"[\s\S]*?\/>[\s\S]*?<\/intent-filter>/u);
+  assert.doesNotMatch(manifest, /android:scheme="http"/u);
+});
+
 test("keeps cancellation, permission denial, unsupported plugins, and success distinct", () => {
   assert.deepEqual(nativeHarnessFailure(new Error("User cancelled photos app")), {
     status: "idle",
