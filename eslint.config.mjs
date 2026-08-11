@@ -15,6 +15,10 @@ const eslintConfig = defineConfig([
     // intermediates. It is not application source and must not affect the
     // web application's lint result.
     "android/**",
+    // Local Android dependency caches are protected build inputs, not source.
+    // Ignoring them keeps lint deterministic for a checkout with a retained
+    // signing/build cache and matches the clean CI workspace.
+    ".launchlift/**",
     "next-env.d.ts",
   ]),
 ]);
