@@ -228,7 +228,7 @@ h1 { margin: 0; max-width: 13ch; font-size: clamp(2.55rem, 7vw, 5.4rem); line-he
 .native-test-card > div, .native-preview-card > div { display: flex; justify-content: space-between; align-items: center; gap: .75rem; }
 .native-test-card > div { padding-bottom: .8rem; border-bottom: 1px solid rgba(171,225,229,.11); }
 .native-test-card p { flex: 1; color: var(--muted); min-height: 3rem; margin: .9rem 0 0; line-height: 1.5; }
-.native-test-card .lab-action { margin-top: 1.45rem; min-height: 2.9rem; }
+.native-test-card .lab-action { margin-top: 1.8rem; min-height: 2.9rem; }
 .native-test-card .lab-action:disabled { cursor: wait; opacity: .58; border-color: rgba(112,200,255,.22); background: rgba(112,200,255,.055); }
 .native-keyboard-probe { width: 100%; margin: 0 0 .75rem; border: 1px solid var(--line); border-radius: .75rem; padding: .72rem .8rem; color: var(--text); background: rgba(1,12,18,.72); font: inherit; }
 .native-keyboard-probe:focus { outline: 2px solid var(--mint); outline-offset: 2px; }
@@ -266,6 +266,6 @@ h1 { margin: 0; max-width: 13ch; font-size: clamp(2.55rem, 7vw, 5.4rem); line-he
   .boundary-card { grid-template-columns: 1fr; }
   .native-harness-heading { align-items: stretch; flex-direction: column; }
   .native-test-card { padding: 1.1rem; }
-  .native-test-card .lab-action { margin-top: 1.15rem; }
+  .native-test-card .lab-action { margin-top: 1.35rem; }
   .brand-lockup small { display: none; }
 }
