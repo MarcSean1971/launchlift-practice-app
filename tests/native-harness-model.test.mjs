@@ -46,3 +46,11 @@ test("opens the installed native test surface without a WebView entry tap", () =
   assert.match(source, /const \[open, setOpen\] = useState\(true\);/u);
   assert.match(source, /if \(!native\) return null;/u, "the public web source must remain free of the native-only harness");
 });
+
+test("makes each successful native test perceptible on the handset", () => {
+  const source = readFileSync(new URL("../app/NativeTestHarness.tsx", import.meta.url), "utf8");
+  assert.match(source, /async function showNativeSuccessFeedback/u);
+  assert.match(source, /result\.status !== "passed" \|\| capability === "toast"/u);
+  assert.match(source, /Toast\.show\(\{ text: `\$\{capabilityLabels\[capability\]\} test passed`/u);
+  assert.match(source, /await showNativeSuccessFeedback\(capability, result\);/u);
+});

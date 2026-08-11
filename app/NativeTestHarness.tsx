@@ -42,6 +42,19 @@ const capabilityLabels: Record<NativeHarnessCapabilityId, string> = {
   screenReader: "Screen reader",
 };
 
+async function showNativeSuccessFeedback(capability: NativeHarnessCapabilityId, result: NativeHarnessResult) {
+  // A completed test must be perceptible on the handset, not merely reflected
+  // in a WebView status card. The Toast test itself already owns that feedback.
+  if (result.status !== "passed" || capability === "toast") return;
+  try {
+    const { Toast } = await import("@capacitor/toast");
+    await Toast.show({ text: `${capabilityLabels[capability]} test passed`, duration: "short", position: "bottom" });
+  } catch {
+    // Do not turn a proven native action into a failure only because its
+    // optional confirmation surface is unavailable on this device.
+  }
+}
+
 export function NativeTestHarness() {
   const [native, setNative] = useState(false);
   // The installed Practice APK is a bounded device-test surface. Opening this
@@ -61,6 +74,7 @@ export function NativeTestHarness() {
     setResults((current) => ({ ...current, [capability]: { status: "running", message: "Waiting for the phone…" } }));
     try {
       const result = await action();
+      await showNativeSuccessFeedback(capability, result);
       setResults((current) => ({ ...current, [capability]: result }));
     } catch (error) {
       setResults((current) => ({ ...current, [capability]: nativeHarnessFailure(error) }));
