@@ -31,6 +31,22 @@ test("accepts only the trusted HTTPS Practice App link", () => {
   assert.equal(isTrustedPracticeAppLink("not a url"), false);
 });
 
+test("publishes the Android association for the installed Practice package", () => {
+  const assetLinks = JSON.parse(
+    readFileSync(new URL("../public/.well-known/assetlinks.json", import.meta.url), "utf8"),
+  );
+  assert.deepEqual(assetLinks, [{
+    relation: ["delegate_permission/common.handle_all_urls"],
+    target: {
+      namespace: "android_app",
+      package_name: "site.chatgpt.seelenbinder.launchliftpracticeapp.android",
+      sha256_cert_fingerprints: [
+        "EF:C8:3E:B0:FA:E9:F4:C7:51:FF:41:BE:EB:9A:60:E4:4E:6B:9B:5A:F2:4F:BA:42:ED:79:E9:51:6C:53:6A:81",
+      ],
+    },
+  }]);
+});
+
 test("keeps cancellation, permission denial, unsupported plugins, and success distinct", () => {
   assert.deepEqual(nativeHarnessFailure(new Error("User cancelled photos app")), {
     status: "idle",
