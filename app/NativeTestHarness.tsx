@@ -78,6 +78,12 @@ const successEvidenceMessages: Record<NativeHarnessCapabilityId, string> = {
   screenReader: "Screen reader test completed",
 };
 
+type NativeGoogleMap = { destroy: () => Promise<void> };
+
+async function destroyNativeMap(map: NativeGoogleMap | null) {
+  if (map) await map.destroy().catch(() => undefined);
+}
+
 async function showNativeSuccessFeedback(capability: NativeHarnessCapabilityId, result: NativeHarnessResult) {
   // A completed test must be perceptible on the handset, not merely reflected
   // in a WebView status card. The Toast test itself owns its physical feedback.
@@ -101,14 +107,14 @@ export function NativeTestHarness() {
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [nativeMapVisible, setNativeMapVisible] = useState(false);
   const nativeMapHost = useRef<HTMLDivElement>(null);
-  const nativeMap = useRef<{ destroy: () => Promise<void> } | null>(null);
+  const nativeMap = useRef<NativeGoogleMap | null>(null);
 
   useEffect(() => {
     setNative(Capacitor.isNativePlatform());
     return () => {
       const activeMap = nativeMap.current;
       nativeMap.current = null;
-      if (activeMap) void activeMap.destroy().catch(() => undefined);
+      void destroyNativeMap(activeMap);
     };
   }, []);
 
@@ -448,7 +454,7 @@ export function NativeTestHarness() {
       }
       const previousMap = nativeMap.current;
       nativeMap.current = null;
-      if (previousMap) await previousMap.destroy().catch(() => undefined);
+      await destroyNativeMap(previousMap);
       setNativeMapVisible(true);
       // Let React commit the visible host before Capacitor measures it for the
       // native MapView. A zero-sized/hidden host must never be accepted.
@@ -461,7 +467,6 @@ export function NativeTestHarness() {
       // Android obtains provider credentials from the installed native
       // configuration. Do not embed or expose a key in this web source.
       const mapId = "launchlift-practice-native-map-probe";
-      let createdMap: { destroy: () => Promise<void> } | null = null;
       try {
         await new Promise<void>((resolve, reject) => {
           const timer = window.setTimeout(() => reject(new Error("Native map did not report ready on this phone.")), 8_000);
@@ -480,7 +485,6 @@ export function NativeTestHarness() {
             window.clearTimeout(timer);
             resolve();
           }).then((map) => {
-            createdMap = map;
             nativeMap.current = map;
           }).catch((error: unknown) => {
             window.clearTimeout(timer);
@@ -488,8 +492,9 @@ export function NativeTestHarness() {
           });
         });
       } catch (error) {
-        if (createdMap) await createdMap.destroy().catch(() => undefined);
-        if (nativeMap.current === createdMap) nativeMap.current = null;
+        const failedMap = nativeMap.current;
+        nativeMap.current = null;
+        await destroyNativeMap(failedMap);
         setNativeMapVisible(false);
         throw error;
       }

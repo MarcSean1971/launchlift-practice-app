@@ -91,8 +91,9 @@ test("makes every successful native probe perceptible on the handset", () => {
   assert.match(source, /maps: async \(\) => \{[\s\S]*?\(\{ mapId: readyMapId \}\) => \{[\s\S]*?readyMapId !== mapId/u);
   assert.match(source, /maps: async \(\) => \{[\s\S]*?Native map did not report ready on this phone/u);
   assert.match(source, /maps: async \(\) => \{[\s\S]*?A native Google Map view reported ready in the visible panel below/u);
-  assert.match(source, /const nativeMap = useRef<\{ destroy: \(\) => Promise<void> \} \| null>\(null\)/u);
-  assert.match(source, /if \(activeMap\) void activeMap\.destroy\(\)\.catch\(\(\) => undefined\)/u);
+  assert.match(source, /type NativeGoogleMap = \{ destroy: \(\) => Promise<void> \}/u);
+  assert.match(source, /async function destroyNativeMap\(map: NativeGoogleMap \| null\)/u);
+  assert.match(source, /void destroyNativeMap\(activeMap\)/u);
   assert.match(source, /id="native-google-map-probe" ref=\{nativeMapHost\} className="native-google-map-probe"/u);
 });
 
