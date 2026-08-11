@@ -165,7 +165,8 @@ test("wires the final five bounded native probes without device-verification ove
     assert.match(harnessSource, new RegExp(signal.replaceAll(".", "\\.").replaceAll("(", "\\(").replaceAll(")", "\\)")));
   }
   assert.doesNotMatch(harnessSource, /Device\.getId/);
-  assert.match(harnessSource, /No map, API key, coordinates, markers, route, or external service was used/);
+  assert.match(harnessSource, /cannot pass until it renders a real map with the approved provider configuration/);
+  assert.match(harnessSource, /No map, key, coordinates, marker, route, or external service was used/);
   assert.match(harnessSource, /Form resize, focus order, scroll behavior, and the device matrix remain unverified/);
   assert.match(harnessSource, /No device name, model, identifier, memory, or battery data was displayed, stored, or transmitted/);
   assert.match(harnessSource, /Screenshot and app-switcher behavior across real devices remains unverified/);
