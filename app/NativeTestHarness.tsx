@@ -282,7 +282,7 @@ export function NativeTestHarness() {
 
         async function cleanup() {
           if (timer !== undefined) window.clearTimeout(timer);
-          await Promise.all(handles.map((handle) => handle.remove()));
+          await Promise.all(handles.map((handle) => handle.remove().catch(() => undefined)));
         }
         async function finish(result: NativeHarnessResult) {
           if (settled) return;
@@ -302,15 +302,15 @@ export function NativeTestHarness() {
             if (!value) return;
             void finish(passedNativeHarnessResult("The device returned a push registration token. Backend storage, FCM delivery, tap routing, and notification preferences remain unverified."));
           }),
-          PushNotifications.addListener("registrationError", (error) => {
-            void fail(new Error(error.error || "Push registration failed."));
+          PushNotifications.addListener("registrationError", () => {
+            void fail(new Error("Push registration failed."));
           }),
         ]).then(async (registeredHandles) => {
           handles = registeredHandles;
           timer = window.setTimeout(() => void fail(new Error("Push registration unavailable or timed out.")), 15_000);
           await PushNotifications.register();
-        }).catch((error: unknown) => {
-          void fail(error instanceof Error ? error : new Error("Push registration failed."));
+        }).catch(() => {
+          void fail(new Error("Push registration failed."));
         });
       });
     },

@@ -83,6 +83,9 @@ test("makes every successful native probe perceptible on the handset", () => {
   assert.match(source, /result\.status !== "passed" \|\| capability === "toast"/u);
   assert.match(source, /Toast\.show\(\{ text: successEvidenceMessages\[capability\]/u);
   assert.match(source, /await showNativeSuccessFeedback\(capability, result\);/u);
+  assert.match(source, /PushNotifications\.addListener\("registrationError", \(\) => \{[\s\S]*?new Error\("Push registration failed\."\)/u);
+  assert.match(source, /handles\.map\(\(handle\) => handle\.remove\(\)\.catch\(\(\) => undefined\)\)/u);
+  assert.doesNotMatch(source, /error\.error/u, "provider error details must not enter the Practice harness result");
   assert.match(source, /toast: async \(\) => \{[\s\S]*?Toast\.show\(\{ text: "Native toast test passed"/u);
   assert.match(source, /maps: async \(\) => \{[\s\S]*?setNativeMapVisible\(true\)/u);
   assert.match(source, /maps: async \(\) => \{[\s\S]*?nativeMapHost\.current/u);
