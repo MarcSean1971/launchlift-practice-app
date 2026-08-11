@@ -101,9 +101,15 @@ export function NativeTestHarness() {
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [nativeMapVisible, setNativeMapVisible] = useState(false);
   const nativeMapHost = useRef<HTMLDivElement>(null);
+  const nativeMap = useRef<{ destroy: () => Promise<void> } | null>(null);
 
   useEffect(() => {
     setNative(Capacitor.isNativePlatform());
+    return () => {
+      const activeMap = nativeMap.current;
+      nativeMap.current = null;
+      if (activeMap) void activeMap.destroy().catch(() => undefined);
+    };
   }, []);
 
   if (!native) return null;
@@ -440,6 +446,9 @@ export function NativeTestHarness() {
       if (!GoogleMap || !Capacitor.isPluginAvailable("GoogleMaps")) {
         return { status: "blocked", message: "The native Google Maps bridge is unavailable in this converted build." };
       }
+      const previousMap = nativeMap.current;
+      nativeMap.current = null;
+      if (previousMap) await previousMap.destroy().catch(() => undefined);
       setNativeMapVisible(true);
       // Let React commit the visible host before Capacitor measures it for the
       // native MapView. A zero-sized/hidden host must never be accepted.
@@ -451,18 +460,40 @@ export function NativeTestHarness() {
       }
       // Android obtains provider credentials from the installed native
       // configuration. Do not embed or expose a key in this web source.
-      await GoogleMap.create({
-        id: "launchlift-practice-native-map-probe",
-        element: host,
-        apiKey: "",
-        forceCreate: true,
-        config: {
-          center: { lat: 0, lng: 0 },
-          zoom: 2,
-          androidLiteMode: false,
-        },
-      });
-      return passedNativeHarnessResult("A native Google Map view initialized in the visible panel below and remains on screen for inspection. This proves only this rendered map on this phone; provider policy, credentials, tiles, location, routes, and production map workflows remain separate evidence.");
+      const mapId = "launchlift-practice-native-map-probe";
+      let createdMap: { destroy: () => Promise<void> } | null = null;
+      try {
+        await new Promise<void>((resolve, reject) => {
+          const timer = window.setTimeout(() => reject(new Error("Native map did not report ready on this phone.")), 8_000);
+          void GoogleMap.create({
+            id: mapId,
+            element: host,
+            apiKey: "",
+            forceCreate: true,
+            config: {
+              center: { lat: 0, lng: 0 },
+              zoom: 2,
+              androidLiteMode: false,
+            },
+          }, ({ mapId: readyMapId }) => {
+            if (readyMapId !== mapId) return;
+            window.clearTimeout(timer);
+            resolve();
+          }).then((map) => {
+            createdMap = map;
+            nativeMap.current = map;
+          }).catch((error: unknown) => {
+            window.clearTimeout(timer);
+            reject(error instanceof Error ? error : new Error("Native map creation failed."));
+          });
+        });
+      } catch (error) {
+        if (createdMap) await createdMap.destroy().catch(() => undefined);
+        if (nativeMap.current === createdMap) nativeMap.current = null;
+        setNativeMapVisible(false);
+        throw error;
+      }
+      return passedNativeHarnessResult("A native Google Map view reported ready in the visible panel below and remains on screen for inspection. This proves only this rendered map on this phone; provider policy, credentials, tiles, location, routes, and production map workflows remain separate evidence.");
     },
     keyboard: async () => {
       const { Keyboard } = await import("@capacitor/keyboard");
