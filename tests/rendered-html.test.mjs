@@ -47,7 +47,7 @@ test("keeps the interactive test slice native-only and user-triggered", async ()
   assert.match(harnessSource, /onClick=\{\(\) => void run\(capability, actions\[capability\]\)\}/);
   assert.match(harnessSource, /saveToGallery: false/);
   assert.match(harnessSource, /It was not uploaded/);
-  assert.match(harnessSource, /not that every production workflow/);
+  assert.match(harnessSource, /not that every production workflow for the capability is complete/);
   assert.match(modelSource, /Permission was denied/);
   assert.match(modelSource, /Canceled safely/);
   for (const dependency of ["@capacitor/camera", "@capacitor/share", "@capacitor/clipboard", "@capacitor/haptics", "@capacitor/toast"]) {
