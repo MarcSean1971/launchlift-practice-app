@@ -63,7 +63,8 @@ test("fails closed before native Push registration when Firebase is not configur
 
   assert.match(activity, /registerPlugin\(PushRuntimePlugin\.class\)/u);
   assert.match(plugin, /@CapacitorPlugin\(name = "PushRuntime"\)/u);
-  assert.match(plugin, /FirebaseApp\.initializeApp\(getContext\(\)\) != null/u);
+  assert.match(plugin, /getIdentifier\([\s\S]*?"google_app_id"[\s\S]*?getContext\(\)\.getPackageName\(\)/u);
+  assert.doesNotMatch(plugin, /com\.google\.firebase/u, "the config-free debug build must not need Firebase classes to fail closed");
   assert.match(harness, /push: async \(\) => \{[\s\S]*?PushRuntime\.getRuntimeStatus\(\)[\s\S]*?!runtime\.firebaseConfigured[\s\S]*?Firebase is not configured[\s\S]*?PushNotifications\.register\(\)/u);
 });
 
