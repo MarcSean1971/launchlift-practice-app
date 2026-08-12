@@ -84,6 +84,22 @@ async function destroyNativeMap(map: NativeGoogleMap | null) {
   if (map) await map.destroy().catch(() => undefined);
 }
 
+function settleNativePromptWithin<T>(promise: Promise<T>, timeoutMessage: string, timeoutMs = 12_000): Promise<T> {
+  return new Promise((resolve, reject) => {
+    const timer = window.setTimeout(() => reject(new Error(timeoutMessage)), timeoutMs);
+    promise.then(
+      (value) => {
+        window.clearTimeout(timer);
+        resolve(value);
+      },
+      (error: unknown) => {
+        window.clearTimeout(timer);
+        reject(error);
+      },
+    );
+  });
+}
+
 async function showNativeSuccessFeedback(capability: NativeHarnessCapabilityId, result: NativeHarnessResult) {
   // A completed test must be perceptible on the handset, not merely reflected
   // in a WebView status card. The Toast test itself owns its physical feedback.
@@ -215,13 +231,16 @@ export function NativeTestHarness() {
       if (!availability.isAvailable) {
         return { status: "blocked", message: availability.reason || "No enrolled biometric method is available on this phone." };
       }
-      await BiometricAuth.authenticate({
-        reason: "Unlock the Practice App test harness",
-        cancelTitle: "Cancel",
-        allowDeviceCredential: true,
-        androidTitle: "Practice App unlock test",
-        androidSubtitle: "No biometric data is stored by this app",
-      });
+      await settleNativePromptWithin(
+        BiometricAuth.authenticate({
+          reason: "Unlock the Practice App test harness",
+          cancelTitle: "Cancel",
+          allowDeviceCredential: true,
+          androidTitle: "Practice App unlock test",
+          androidSubtitle: "No biometric data is stored by this app",
+        }),
+        "Biometric confirmation did not complete. Cancel or complete the phone prompt, then try again.",
+      );
       return passedNativeHarnessResult("The operating system confirmed device authentication. The app did not receive or store biometric data.");
     },
     deepLinks: async () => {
