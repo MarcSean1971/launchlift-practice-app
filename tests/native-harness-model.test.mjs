@@ -90,6 +90,7 @@ test("makes every successful native probe perceptible on the handset", () => {
   assert.match(source, /handles\.map\(\(handle\) => handle\.remove\(\)\.catch\(\(\) => undefined\)\)/u);
   assert.doesNotMatch(source, /error\.error/u, "provider error details must not enter the Practice harness result");
   assert.match(source, /toast: async \(\) => \{[\s\S]*?Toast\.show\(\{ text: "Native toast test passed"/u);
+  assert.match(source, /clipboard: async \(\) => \{[\s\S]*?const previous = await Clipboard\.read\(\);[\s\S]*?const verified = await Clipboard\.read\(\);[\s\S]*?Clipboard\.write\(\{ string: previous\.value \?\? "" \}\);/u);
   assert.match(source, /function settleNativePromptWithin<T>\(/u);
   assert.match(source, /biometrics: async \(\) => \{[\s\S]*?settleNativePromptWithin\([\s\S]*?BiometricAuth\.authenticate/u);
   assert.match(source, /Biometric confirmation did not complete\. Cancel or complete the phone prompt, then try again\./u);

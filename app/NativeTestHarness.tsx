@@ -185,8 +185,15 @@ export function NativeTestHarness() {
     clipboard: async () => {
       const { Clipboard } = await import("@capacitor/clipboard");
       const reference = `launchlift-practice-${new Date().toISOString().slice(0, 10)}`;
-      await Clipboard.write({ string: reference });
-      return passedNativeHarnessResult(`Copied a non-sensitive test reference: ${reference}`);
+      const previous = await Clipboard.read();
+      try {
+        await Clipboard.write({ string: reference });
+        const verified = await Clipboard.read();
+        if (verified.value !== reference) throw new Error("Clipboard round-trip failed.");
+      } finally {
+        await Clipboard.write({ string: previous.value ?? "" });
+      }
+      return passedNativeHarnessResult("A non-sensitive clipboard reference was written, verified, and the prior clipboard value was restored.");
     },
     haptics: async () => {
       const { Haptics, ImpactStyle } = await import("@capacitor/haptics");
