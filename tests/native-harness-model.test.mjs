@@ -56,6 +56,17 @@ test("keeps the Android App Links intent contract aligned with the trusted publi
   assert.doesNotMatch(manifest, /android:scheme="http"/u);
 });
 
+test("fails closed before native Push registration when Firebase is not configured", () => {
+  const harness = readFileSync(new URL("../app/NativeTestHarness.tsx", import.meta.url), "utf8");
+  const activity = readFileSync(new URL("../android/app/src/main/java/site/chatgpt/seelenbinder/launchliftpracticeapp/android/MainActivity.java", import.meta.url), "utf8");
+  const plugin = readFileSync(new URL("../android/app/src/main/java/site/chatgpt/seelenbinder/launchliftpracticeapp/android/PushRuntimePlugin.java", import.meta.url), "utf8");
+
+  assert.match(activity, /registerPlugin\(PushRuntimePlugin\.class\)/u);
+  assert.match(plugin, /@CapacitorPlugin\(name = "PushRuntime"\)/u);
+  assert.match(plugin, /FirebaseApp\.initializeApp\(getContext\(\)\) != null/u);
+  assert.match(harness, /push: async \(\) => \{[\s\S]*?PushRuntime\.getRuntimeStatus\(\)[\s\S]*?!runtime\.firebaseConfigured[\s\S]*?Firebase is not configured[\s\S]*?PushNotifications\.register\(\)/u);
+});
+
 test("keeps cancellation, permission denial, unsupported plugins, and success distinct", () => {
   assert.deepEqual(nativeHarnessFailure(new Error("User cancelled photos app")), {
     status: "idle",

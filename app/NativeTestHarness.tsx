@@ -301,6 +301,15 @@ export function NativeTestHarness() {
       return passedNativeHarnessResult("Microphone permission and capture opened, then stopped. No audio was recorded, retained, uploaded, or transcribed.");
     },
     push: async () => {
+      const { registerPlugin } = await import("@capacitor/core");
+      const PushRuntime = registerPlugin<{ getRuntimeStatus: () => Promise<{ firebaseConfigured: boolean }> }>("PushRuntime");
+      const runtime = await PushRuntime.getRuntimeStatus();
+      if (!runtime.firebaseConfigured) {
+        return {
+          status: "blocked",
+          message: "Push registration is unavailable in this converted build because Firebase is not configured. The app stayed open; no token was requested.",
+        };
+      }
       const { PushNotifications } = await import("@capacitor/push-notifications");
       let permission = await PushNotifications.checkPermissions();
       if (permission.receive !== "granted") permission = await PushNotifications.requestPermissions();
