@@ -68,6 +68,22 @@ test("fails closed before native Push registration when Firebase is not configur
   assert.match(harness, /push: async \(\) => \{[\s\S]*?PushRuntime\.getRuntimeStatus\(\)[\s\S]*?!runtime\.firebaseConfigured[\s\S]*?Firebase is not configured[\s\S]*?PushNotifications\.register\(\)/u);
 });
 
+test("uses one native non-persistent microphone capture instead of the WebView permission path", () => {
+  const harness = readFileSync(new URL("../app/NativeTestHarness.tsx", import.meta.url), "utf8");
+  const activity = readFileSync(new URL("../android/app/src/main/java/site/chatgpt/seelenbinder/launchliftpracticeapp/android/MainActivity.java", import.meta.url), "utf8");
+  const plugin = readFileSync(new URL("../android/app/src/main/java/site/chatgpt/seelenbinder/launchliftpracticeapp/android/MicrophoneRuntimePlugin.java", import.meta.url), "utf8");
+
+  assert.match(activity, /registerPlugin\(MicrophoneRuntimePlugin\.class\)/u);
+  assert.match(plugin, /@Permission\(alias = "microphone", strings = \{ Manifest\.permission\.RECORD_AUDIO \}\)/u);
+  assert.match(plugin, /requestPermissionForAlias\("microphone", call, "runProbe"\)/u);
+  assert.match(plugin, /AudioRecord\.getMinBufferSize/u);
+  assert.match(plugin, /recorder\.startRecording\(\)/u);
+  assert.match(plugin, /recorder\.stop\(\)/u);
+  assert.match(plugin, /recorder\.release\(\)/u);
+  assert.match(harness, /voice: async \(\) => \{[\s\S]*?MicrophoneRuntime\.probe\(\)[\s\S]*?audioCaptureStarted/u);
+  assert.doesNotMatch(harness.match(/voice: async \(\) => \{[\s\S]*?\n    \},\n    push:/u)?.[0] ?? "", /getUserMedia/u);
+});
+
 test("keeps cancellation, permission denial, unsupported plugins, and success distinct", () => {
   assert.deepEqual(nativeHarnessFailure(new Error("User cancelled photos app")), {
     status: "idle",
@@ -95,9 +111,8 @@ test("makes every successful native probe perceptible on the handset", () => {
   assert.match(source, /result\.status !== "passed" \|\| capability === "toast"/u);
   assert.match(source, /Toast\.show\(\{ text: successEvidenceMessages\[capability\]/u);
   assert.match(source, /await showNativeSuccessFeedback\(capability, result\);/u);
-  assert.match(source, /const audioTracks = stream\.getAudioTracks\(\);[\s\S]*?if \(!audioTracks\.length\)/u);
-  assert.match(source, /Microphone capture did not return an audio track/u);
-  assert.match(source, /stream\.getTracks\(\)\.forEach\(\(track\) => track\.stop\(\)\)/u);
+  assert.match(source, /MicrophoneRuntime\.probe\(\)/u);
+  assert.match(source, /Native microphone capture opened and stopped\. No audio was recorded, retained, uploaded, or transcribed\./u);
   assert.match(source, /PushNotifications\.addListener\("registrationError", \(\) => \{[\s\S]*?new Error\("Push registration failed\."\)/u);
   assert.match(source, /handles\.map\(\(handle\) => handle\.remove\(\)\.catch\(\(\) => undefined\)\)/u);
   assert.doesNotMatch(source, /error\.error/u, "provider error details must not enter the Practice harness result");

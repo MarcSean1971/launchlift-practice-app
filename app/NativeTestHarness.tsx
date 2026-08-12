@@ -286,19 +286,11 @@ export function NativeTestHarness() {
       return passedNativeHarnessResult("The isolated runner acknowledged a manual event. OS-scheduled background execution and battery behavior are not yet proven.");
     },
     voice: async () => {
-      if (!navigator.mediaDevices?.getUserMedia) throw new Error("Microphone capture is unavailable in this converted build.");
-      const stream = await navigator.mediaDevices.getUserMedia({ audio: true, video: false });
-      const audioTracks = stream.getAudioTracks();
-      if (!audioTracks.length) {
-        stream.getTracks().forEach((track) => track.stop());
-        throw new Error("Microphone capture did not return an audio track.");
-      }
-      try {
-        await new Promise((resolve) => window.setTimeout(resolve, 600));
-      } finally {
-        stream.getTracks().forEach((track) => track.stop());
-      }
-      return passedNativeHarnessResult("Microphone permission and capture opened, then stopped. No audio was recorded, retained, uploaded, or transcribed.");
+      const { registerPlugin } = await import("@capacitor/core");
+      const MicrophoneRuntime = registerPlugin<{ probe: () => Promise<{ audioCaptureStarted: boolean }> }>("MicrophoneRuntime");
+      const capture = await MicrophoneRuntime.probe();
+      if (!capture.audioCaptureStarted) throw new Error("Microphone capture did not start.");
+      return passedNativeHarnessResult("Native microphone capture opened and stopped. No audio was recorded, retained, uploaded, or transcribed.");
     },
     push: async () => {
       const { registerPlugin } = await import("@capacitor/core");
