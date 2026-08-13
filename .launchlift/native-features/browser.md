@@ -1,11 +1,11 @@
-# Files and downloads
+# In-app browser
 
 ## Evidence for this selected feature
 
 - No repository code signal was attached for this feature. Treat this as planned until a new scan finds code, setup, backend, policy, and device-test evidence.
 
 ## What the user gets
-Users can save, open, or share documents, receipts, tickets, exports, or attachments on Android.
+Trusted help, policy, checkout, or external pages open without losing the Android app context.
 
 ## What LaunchLift can prepare
 - Add Capacitor dependency where safe.
@@ -13,27 +13,27 @@ Users can save, open, or share documents, receipts, tickets, exports, or attachm
 - Add acceptance checklist for human/device testing.
 
 ## Capacitor / Android wrapper work
-- Choose @capacitor/filesystem, @capacitor/file-transfer, or @capacitor/file-viewer based on the flow.
-- Use Android storage access only where needed.
+- Install @capacitor/browser or use @capacitor/inappbrowser when the app needs embedded browser controls.
+- Define trusted domains and return behavior.
 
 ## Account or service setup
 - No extra third-party account is normally required unless the app already uses a provider for this feature.
 
 ## App code work
-- Define file types and names.
-- Handle progress, errors, and retries.
-- Give users a way to find, share, or delete files.
+- Choose which links open in-app.
+- Keep untrusted links in the system browser.
+- Show a clear close/back path.
 
 ## Backend work
 - Connect backend storage, permissions, or triggers only when the product flow requires it.
 
 ## Play Store and policy notes
-- Match Data Safety answers to file storage, retention, sharing, and deletion behavior.
+- Do not hide third-party checkout, policy, or account ownership from the user.
 
 ## Ready only when this is verified
-- File saves.
-- File opens or shares.
-- Invalid or failed downloads do not leave the user stuck.
+- Trusted links open.
+- Users can return to the app.
+- Untrusted links do not get privileged treatment.
 
 ## Feature status meanings
 - Planned means LaunchLift has the setup path, but the feature is not live yet.
