@@ -75,6 +75,9 @@ test("uses one native non-persistent microphone capture instead of the WebView p
 
   assert.match(activity, /registerPlugin\(MicrophoneRuntimePlugin\.class\)/u);
   assert.match(plugin, /@Permission\(alias = "microphone", strings = \{ Manifest\.permission\.RECORD_AUDIO \}\)/u);
+  assert.match(plugin, /getContext\(\)\.checkSelfPermission\(Manifest\.permission\.RECORD_AUDIO\)/u);
+  assert.match(plugin, /PackageManager\.PERMISSION_GRANTED/u);
+  assert.doesNotMatch(plugin, /getPermissionState\("microphone"\)/u);
   assert.match(plugin, /requestPermissionForAlias\("microphone", call, "runProbe"\)/u);
   assert.match(plugin, /AudioRecord\.getMinBufferSize/u);
   assert.match(plugin, /recorder\.startRecording\(\)/u);
