@@ -1,11 +1,11 @@
-# Offline storage
+# Barcode or QR scan
 
 ## Evidence for this selected feature
 
 - No repository code signal was attached for this feature. Treat this as planned until a new scan finds code, setup, backend, policy, and device-test evidence.
 
 ## What the user gets
-Useful app data, drafts, or settings survive weak signal without losing user work.
+Users can scan trusted QR or barcode content and land on the correct app action.
 
 ## What LaunchLift can prepare
 - Add Capacitor dependency where safe.
@@ -13,27 +13,27 @@ Useful app data, drafts, or settings survive weak signal without losing user wor
 - Add acceptance checklist for human/device testing.
 
 ## Capacitor / Android wrapper work
-- Install @capacitor/preferences when local key/value storage is enough.
-- Choose secure storage for sensitive data.
+- Install @capacitor/barcode-scanner or choose a scanner bridge that matches the target format.
+- Add camera permission wording.
 
 ## Account or service setup
 - No extra third-party account is normally required unless the app already uses a provider for this feature.
 
 ## App code work
-- Define what can be stored locally.
-- Add offline UI.
-- Add sync and conflict rules.
+- Define valid code formats.
+- Reject invalid or unsafe codes.
+- Add manual fallback where practical.
 
 ## Backend work
 - Connect backend storage, permissions, or triggers only when the product flow requires it.
 
 ## Play Store and policy notes
-- Explain local storage and deletion behavior where relevant.
+- Explain camera use and any scanned data collection or sharing.
 
 ## Ready only when this is verified
-- Offline mode shows clearly.
-- Drafts/settings persist.
-- Reconnect sync does not duplicate or lose data.
+- Valid code works.
+- Invalid code is rejected.
+- Denied camera permission has a fallback.
 
 ## Feature status meanings
 - Planned means LaunchLift has the setup path, but the feature is not live yet.
@@ -46,4 +46,4 @@ Useful app data, drafts, or settings survive weak signal without losing user wor
 - Mark the feature live before a real Android device test.
 
 Project: LaunchLift Practice App
-Generated: 2026-08-13T04:12:00.481Z
+Generated: 2026-08-13T04:12:00.482Z

@@ -2,15 +2,13 @@
 
 App: LaunchLift Practice App
 Package: site.chatgpt.seelenbinder.launchliftpracticeapp.android
-Version: 1.2.1 (4)
+Version: 1.3.1 (8)
 Source URL: https://launchlift-practice-app.seelenbinder.chatgpt.site/
 ## AI scan evidence attached to this build
-- Scan: deterministic or fallback review.
-- Readiness score: 85%.
+- Scan: AI-reviewed with gpt-5.6-luna.
+- Readiness score: 78%.
 - App type: Marketplace-style web app.
-- Website/GitHub match: The selected repository references launchlift-practice-app.seelenbinder.chatgpt.site, which matches the scanned website launchlift-practice-app.seelenbinder.chatgpt.site.
-- Repository inspected: MarcSean1971/launchlift-practice-app.
-- Frameworks: React, Vite, Next.js.
+- Website/GitHub match: GitHub was selected, but LaunchLift could not confirm repository access for this signed-in workspace. Reconnect GitHub or choose the repository again, then scan once more.
 - Website features: login, payments, uploads, marketplace, notifications, ai, location, dating, chat, bluetooth.
 - AI recommended native options: deepLinks, network, offline, push, camera, media, files, location, maps, biometrics.
 - Evidence summary:
@@ -21,11 +19,11 @@ Source URL: https://launchlift-practice-app.seelenbinder.chatgpt.site/
   - GitHub repo inspected: MarcSean1971/launchlift-practice-app
   - Repo file samples read: package.json, app/PracticeApp.tsx, app/chatgpt-auth.ts, app/layout.tsx, app/page.tsx
 - Findings to preserve:
-  - Website and repository match: The selected repository references launchlift-practice-app.seelenbinder.chatgpt.site, which matches the scanned website launchlift-practice-app.seelenbinder.chatgpt.site.
-  - Push notification flow required: Add FCM token registration, notification preferences, Android channels, and tap routing.
-  - Native Android shell recommended: Package the app with Capacitor and keep browser/PWA behavior behind platform-safe checks.
-  - Play Store policy pack needed: Prepare data safety, permissions wording, privacy policy, and release notes before submission.
-  - Visual capture ready: Desktop and mobile screenshots can be used for store screenshot guidance and brand consistency checks.
+  - GitHub access needs update: GitHub was selected, but LaunchLift could not confirm repository access for this signed-in workspace. Reconnect GitHub or choose the repository again, then scan once more.
+  - Scan finding: 
+  - Scan finding: 
+  - Scan finding: 
+  - Scan finding: 
 
 This file is written for a layman and a developer/AI builder. Native Android features are not checkboxes. LaunchLift can prepare code, instructions, and checks, but a feature is only live when app code, service setup, backend behavior, Play policy notes, and real-device tests are complete.
 
@@ -33,15 +31,34 @@ This file is written for a layman and a developer/AI builder. Native Android fea
 
 | Feature | Status | First proof needed |
 | --- | --- | --- |
+| Push notifications | Guided setup + verification required | Firebase config exists. |
 | Camera | Guided setup + verification required | Camera opens on Android. |
+| Photo and media picker | Guided setup + verification required | Picker opens. |
 | Location | Guided setup + verification required | Android permission prompt appears at the right time. |
+| Bluetooth and BLE | Guided setup + verification required | Real hardware pairs. |
+| NFC tap | Guided setup + verification required | Valid tag works. |
+| Device sensors | Guided setup + verification required | Sensor works on real Android hardware. |
+| Biometric lock | Guided setup + verification required | Unlock works. |
 | Native share | Guided setup + verification required | Share sheet opens. |
+| App links and deep links | Guided setup + verification required | Domain verification passes. |
 | Offline storage | Guided setup + verification required | Offline mode shows clearly. |
+| Background tasks | Guided setup + verification required | Task runs under Android limits. |
+| Microphone and voice | Guided setup + verification required | Permission prompt works. |
+| Video calls | Guided setup + verification required | Camera works. |
 | Network awareness | Guided setup + verification required | Offline state appears. |
+| Open other apps | Guided setup + verification required | Target app opens. |
+| In-app browser | Guided setup + verification required | Trusted links open. |
 | Copy to clipboard | Guided setup + verification required | Copy succeeds. |
 | Files and downloads | Guided setup + verification required | File saves. |
 | Touch feedback | Guided setup + verification required | Feedback happens only where expected. |
+| Barcode or QR scan | Guided setup + verification required | Valid code works. |
 | On-device reminders | Guided setup + verification required | Reminder schedules. |
+| Native maps | Guided setup + verification required | Map loads. |
+| Keyboard polish | Guided setup + verification required | Keyboard does not cover key controls. |
+| Device info | Guided setup + verification required | Device details read correctly. |
+| Privacy screen | Guided setup + verification required | Sensitive route is protected. |
+| Screen reader support | Guided setup + verification required | Android screen reader can complete key flows. |
+| Native toast messages | Guided setup + verification required | Toast appears. |
 
 ## How to use this pack
 

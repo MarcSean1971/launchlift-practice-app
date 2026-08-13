@@ -2,12 +2,7 @@
 
 ## Evidence for this selected feature
 
-- Current code-inspection status: missing (0% confidence).
-- Still missing:
-  - Camera plugin
-  - capture UI
-  - permission denied fallback
-  - upload/storage path
+- No repository code signal was attached for this feature. Treat this as planned until a new scan finds code, setup, backend, policy, and device-test evidence.
 
 ## What the user gets
 Users can take a photo in the Android app where the product genuinely needs it.
@@ -53,4 +48,4 @@ Users can take a photo in the Android app where the product genuinely needs it.
 - Mark the feature live before a real Android device test.
 
 Project: LaunchLift Practice App
-Generated: 2026-08-02T08:39:54.978Z
+Generated: 2026-08-13T04:12:00.480Z
