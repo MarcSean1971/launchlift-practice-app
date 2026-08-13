@@ -2,7 +2,10 @@
 
 ## Evidence for this selected feature
 
-- No repository code signal was attached for this feature. Treat this as planned until a new scan finds code, setup, backend, policy, and device-test evidence.
+- Current code-inspection status: found (100% confidence).
+- Evidence found:
+  - @capacitor/geolocation dependency present
+  - Location/map naming appears in repo tree
 
 ## What the user gets
 Users can use nearby, map, route, safety, or local discovery features on Android.
@@ -47,4 +50,4 @@ Users can use nearby, map, route, safety, or local discovery features on Android
 - Mark the feature live before a real Android device test.
 
 Project: LaunchLift Practice App
-Generated: 2026-08-13T04:12:00.480Z
+Generated: 2026-08-13T14:08:47.048Z
