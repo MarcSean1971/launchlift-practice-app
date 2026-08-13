@@ -2,7 +2,10 @@
 
 ## Evidence for this selected feature
 
-- No repository code signal was attached for this feature. Treat this as planned until a new scan finds code, setup, backend, policy, and device-test evidence.
+- Current code-inspection status: found (100% confidence).
+- Evidence found:
+  - @capacitor/background-runner dependency present
+  - Background/scheduler naming appears in repo tree
 
 ## What the user gets
 Allowed work can happen when the app is not open, without abusing battery or Play policy.
@@ -46,4 +49,4 @@ Allowed work can happen when the app is not open, without abusing battery or Pla
 - Mark the feature live before a real Android device test.
 
 Project: LaunchLift Practice App
-Generated: 2026-08-13T04:12:00.481Z
+Generated: 2026-08-13T13:17:30.831Z

@@ -2,7 +2,10 @@
 
 ## Evidence for this selected feature
 
-- No repository code signal was attached for this feature. Treat this as planned until a new scan finds code, setup, backend, policy, and device-test evidence.
+- Current code-inspection status: found (100% confidence).
+- Evidence found:
+  - @capacitor/app-launcher dependency present
+  - Open-other-app naming appears in repo tree
 
 ## What the user gets
 Users can open maps, email, calls, or another installed app from an intentional tap.
@@ -46,4 +49,4 @@ Users can open maps, email, calls, or another installed app from an intentional 
 - Mark the feature live before a real Android device test.
 
 Project: LaunchLift Practice App
-Generated: 2026-08-13T04:12:00.482Z
+Generated: 2026-08-13T13:17:30.832Z
