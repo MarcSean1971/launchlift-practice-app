@@ -5,6 +5,8 @@ import handler from "vinext/server/app-router-entry";
 interface Env {
   ASSETS: Fetcher;
   DB: D1Database;
+  /** GitHub source revision served by this deployment; set only at publish time. */
+  LAUNCHLIFT_SOURCE_REVISION?: string;
   IMAGES: {
     input(stream: ReadableStream): {
       transform(options: Record<string, unknown>): {
@@ -31,17 +33,30 @@ const worker = {
 
     if (url.pathname === "/_vinext/image") {
       const allowedWidths = [...DEFAULT_DEVICE_SIZES, ...DEFAULT_IMAGE_SIZES];
-      return handleImageOptimization(request, {
+      const response = await handleImageOptimization(request, {
         fetchAsset: (path) => env.ASSETS.fetch(new Request(new URL(path, request.url))),
         transformImage: async (body, { width, format, quality }) => {
           const result = await env.IMAGES.input(body).transform(width > 0 ? { width } : {}).output({ format, quality });
           return result.response();
         },
       }, allowedWidths);
+      return withSourceRevision(response, env.LAUNCHLIFT_SOURCE_REVISION);
     }
 
-    return handler.fetch(request, env, ctx);
+    return withSourceRevision(await handler.fetch(request, env, ctx), env.LAUNCHLIFT_SOURCE_REVISION);
   },
 };
+
+function withSourceRevision(response: Response, value: string | undefined) {
+  const revision = value?.trim();
+  if (!revision || !/^[0-9a-f]{40}$/iu.test(revision)) return response;
+  const headers = new Headers(response.headers);
+  headers.set("x-launchlift-source-revision", revision);
+  return new Response(response.body, {
+    status: response.status,
+    statusText: response.statusText,
+    headers,
+  });
+}
 
 export default worker;
