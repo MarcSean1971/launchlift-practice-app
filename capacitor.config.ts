@@ -17,7 +17,6 @@ const config: CapacitorConfig = {
       autoStart: false,
     },
   },
-  server: { url: "https://launchlift-practice-app.seelenbinder.chatgpt.site/", cleartext: false },
 };
 
 export default config;

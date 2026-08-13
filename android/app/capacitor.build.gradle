@@ -19,10 +19,9 @@ dependencies {
     implementation project(':capacitor-camera')
     implementation project(':capacitor-clipboard')
     implementation project(':capacitor-device')
-    implementation project(':capacitor-file-transfer')
-    implementation project(':capacitor-file-viewer')
     implementation project(':capacitor-filesystem')
     implementation project(':capacitor-geolocation')
+    implementation project(':capacitor-google-maps')
     implementation project(':capacitor-haptics')
     implementation project(':capacitor-keyboard')
     implementation project(':capacitor-local-notifications')
@@ -34,7 +33,6 @@ dependencies {
     implementation project(':capacitor-share')
     implementation project(':capacitor-toast')
     implementation project(':capgo-capacitor-nfc')
-    implementation project(':capacitor-native-biometric')
 
 }
 

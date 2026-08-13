@@ -43,6 +43,3 @@ next-env.d.ts
 /.wrangler/
 /outputs/
 /work/
-/android/app/google-services.json
-/.launchlift/firebase/google-services.json
-/google-services.json

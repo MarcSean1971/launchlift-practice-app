@@ -2,7 +2,14 @@
 
 ## Evidence for this selected feature
 
-- No repository code signal was attached for this feature. Treat this as planned until a new scan finds code, setup, backend, policy, and device-test evidence.
+- Current code-inspection status: partial (50% confidence).
+- Evidence found:
+  - Service worker/offline file detected
+- Still missing:
+  - Network listener
+  - offline UI state
+  - retry behavior
+  - lost-work protection
 
 ## What the user gets
 Users see helpful offline/retry states instead of broken screens.
@@ -46,4 +53,4 @@ Users see helpful offline/retry states instead of broken screens.
 - Mark the feature live before a real Android device test.
 
 Project: LaunchLift Practice App
-Generated: 2026-08-13T04:12:00.481Z
+Generated: 2026-08-02T08:39:54.978Z
