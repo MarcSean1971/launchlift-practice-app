@@ -1,31 +1,50 @@
 {
-  "jobId": "1b0d43d0-54e2-48d9-9b2e-0842b1d5372e",
+  "jobId": "1528102a-c052-4087-acfa-65b825191ffd",
   "projectId": "42314633-00ce-4de8-87ed-112740414b4b",
   "sourceUrl": "https://launchlift-practice-app.seelenbinder.chatgpt.site/",
   "appName": "LaunchLift Practice App",
   "packageName": "site.chatgpt.seelenbinder.launchliftpracticeapp.android",
-  "versionName": "1.2.1",
-  "versionCode": 4,
+  "versionName": "1.3.1",
+  "versionCode": 7,
   "launchMode": "Closed beta",
   "releaseFiles": "signed",
   "nativeCapabilities": [
+    "push",
     "camera",
+    "media",
     "location",
+    "bluetooth",
+    "nfc",
+    "sensors",
+    "biometrics",
     "share",
+    "deepLinks",
     "offline",
+    "background",
+    "voice",
+    "video",
     "network",
+    "appLauncher",
+    "browser",
     "clipboard",
     "files",
     "haptics",
-    "localNotifications"
+    "barcode",
+    "localNotifications",
+    "maps",
+    "keyboard",
+    "deviceInfo",
+    "privacyScreen",
+    "screenReader",
+    "toast"
   ],
   "featureLabels": [],
   "pushEvents": [],
   "scanEvidence": {
-    "scanId": "f74cedea-ff73-4221-8c75-be1066393f02",
-    "readinessScore": 85,
+    "scanId": "9fc5f2a6-768b-4496-8689-a8059bef0e95",
+    "readinessScore": 78,
     "appType": "Marketplace-style web app",
-    "aiReviewed": false,
+    "aiReviewed": true,
     "scanModel": "gpt-5.6-luna",
     "evidenceSummary": [
       "Website fetched: https://launchlift-practice-app.seelenbinder.chatgpt.site/ (200)",
@@ -82,284 +101,67 @@
     ],
     "findings": [
       {
-        "id": "source-repository-match",
-        "label": "Website and repository match",
-        "detail": "The selected repository references launchlift-practice-app.seelenbinder.chatgpt.site, which matches the scanned website launchlift-practice-app.seelenbinder.chatgpt.site.",
+        "id": "source-repository-access-error",
+        "label": "GitHub access needs update",
+        "detail": "GitHub was selected, but LaunchLift could not confirm repository access for this signed-in workspace. Reconnect GitHub or choose the repository again, then scan once more.",
+        "severity": "blocker"
+      },
+      {
+        "id": "scan-finding",
+        "label": "Scan finding",
         "severity": "info"
       },
       {
-        "id": "push-token-flow",
-        "label": "Push notification flow required",
-        "detail": "Add FCM token registration, notification preferences, Android channels, and tap routing.",
-        "severity": "warning"
-      },
-      {
-        "id": "native-shell",
-        "label": "Native Android shell recommended",
-        "detail": "Package the app with Capacitor and keep browser/PWA behavior behind platform-safe checks.",
+        "id": "scan-finding",
+        "label": "Scan finding",
         "severity": "info"
       },
       {
-        "id": "play-store-policy",
-        "label": "Play Store policy pack needed",
-        "detail": "Prepare data safety, permissions wording, privacy policy, and release notes before submission.",
-        "severity": "warning"
-      },
-      {
-        "id": "visual-capture-ready",
-        "label": "Visual capture ready",
-        "detail": "Desktop and mobile screenshots can be used for store screenshot guidance and brand consistency checks.",
+        "id": "scan-finding",
+        "label": "Scan finding",
         "severity": "info"
       },
       {
-        "id": "source-inspection",
-        "label": "Source inspection complete",
-        "detail": "Fetched https://launchlift-practice-app.seelenbinder.chatgpt.site/ with status 200. Signals: Vite, PWA manifest.",
+        "id": "scan-finding",
+        "label": "Scan finding",
         "severity": "info"
       },
       {
-        "id": "repository-inspection",
-        "label": "Repository inspection complete",
-        "detail": "Inspected MarcSean1971/launchlift-practice-app. Frameworks: React, Vite, Next.js. Config files: 1.",
+        "id": "scan-finding",
+        "label": "Scan finding",
         "severity": "info"
       },
       {
-        "id": "visual-inspection",
-        "label": "Visual inspection status",
-        "detail": "Screenshots available for store guidance. Mobile viewport captured. Additional phone screenshot captured for Play Store upload. Five app screenshots captured for automated assets. Desktop viewport captured",
+        "id": "scan-finding",
+        "label": "Scan finding",
+        "severity": "info"
+      },
+      {
+        "id": "scan-finding",
+        "label": "Scan finding",
         "severity": "info"
       }
     ],
     "sourceMatch": {
-      "status": "matched",
-      "label": "Website and repository match",
-      "detail": "The selected repository references launchlift-practice-app.seelenbinder.chatgpt.site, which matches the scanned website launchlift-practice-app.seelenbinder.chatgpt.site.",
+      "status": "access_error",
+      "label": "GitHub access needs update",
+      "detail": "GitHub was selected, but LaunchLift could not confirm repository access for this signed-in workspace. Reconnect GitHub or choose the repository again, then scan once more.",
       "evidence": [
         "Scanned website: launchlift-practice-app.seelenbinder.chatgpt.site",
-        "Connected repository: MarcSean1971/launchlift-practice-app",
-        "Repository URL evidence: launchlift-practice-app.seelenbinder.chatgpt.site"
+        "Selected repository: MarcSean1971/launchlift-practice-app",
+        "GitHub App installation: not confirmed"
       ]
     },
     "codeInspection": {
-      "repository": "MarcSean1971/launchlift-practice-app",
-      "checkedAt": "2026-08-02T08:32:43.380Z",
-      "frameworks": [
-        "React",
-        "Vite",
-        "Next.js"
-      ],
+      "frameworks": [],
       "nativeSignals": [],
-      "configFiles": [
-        "package.json"
-      ],
-      "routeFiles": [
-        "app/PracticeApp.tsx",
-        "app/chatgpt-auth.ts",
-        "app/layout.tsx",
-        "app/page.tsx",
-        "examples/d1/app/api/notes/route.ts"
-      ],
+      "configFiles": [],
+      "routeFiles": [],
       "riskSignals": [],
-      "nativeCodeSignals": [
-        {
-          "capability": "push",
-          "status": "missing",
-          "confidence": 0,
-          "evidence": [],
-          "missing": [
-            "Capacitor push plugin",
-            "Firebase/FCM config",
-            "device token registration/storage",
-            "notification tap routing"
-          ]
-        },
-        {
-          "capability": "camera",
-          "status": "missing",
-          "confidence": 0,
-          "evidence": [],
-          "missing": [
-            "Camera plugin",
-            "capture UI",
-            "permission denied fallback",
-            "upload/storage path"
-          ]
-        },
-        {
-          "capability": "media",
-          "status": "missing",
-          "confidence": 0,
-          "evidence": [],
-          "missing": [
-            "Media picker",
-            "file validation",
-            "storage/upload path",
-            "delete/remove user media"
-          ]
-        },
-        {
-          "capability": "location",
-          "status": "missing",
-          "confidence": 0,
-          "evidence": [],
-          "missing": [
-            "Geolocation plugin",
-            "clear user-facing location feature",
-            "permission fallback",
-            "privacy wording"
-          ]
-        },
-        {
-          "capability": "biometrics",
-          "status": "missing",
-          "confidence": 0,
-          "evidence": [],
-          "missing": [
-            "Biometric plugin",
-            "protected screens/actions",
-            "fallback login",
-            "session handling"
-          ]
-        },
-        {
-          "capability": "share",
-          "status": "missing",
-          "confidence": 0,
-          "evidence": [],
-          "missing": [
-            "Native share plugin",
-            "real share button/action",
-            "share URL routing"
-          ]
-        },
-        {
-          "capability": "deepLinks",
-          "status": "missing",
-          "confidence": 0,
-          "evidence": [],
-          "missing": [
-            "App link configuration",
-            "assetlinks.json domain verification",
-            "route mapping",
-            "tap/open tests"
-          ]
-        },
-        {
-          "capability": "offline",
-          "status": "partial",
-          "confidence": 50,
-          "evidence": [
-            "Service worker/offline file detected"
-          ],
-          "missing": [
-            "Local storage layer",
-            "safe offline data map",
-            "sync/retry behavior",
-            "clear/delete controls"
-          ]
-        },
-        {
-          "capability": "background",
-          "status": "partial",
-          "confidence": 50,
-          "evidence": [
-            "Background/scheduler naming appears in repo tree"
-          ],
-          "missing": [
-            "Allowed background job",
-            "Android battery-limit review",
-            "user-facing explanation",
-            "test plan"
-          ]
-        },
-        {
-          "capability": "voice",
-          "status": "missing",
-          "confidence": 0,
-          "evidence": [],
-          "missing": [
-            "Microphone capture flow",
-            "start/stop/delete controls",
-            "audio storage/transmission handling",
-            "privacy wording"
-          ]
-        },
-        {
-          "capability": "video",
-          "status": "missing",
-          "confidence": 0,
-          "evidence": [],
-          "missing": [
-            "Video call provider/flow",
-            "camera and microphone permissions",
-            "moderation/blocking",
-            "poor-network states"
-          ]
-        },
-        {
-          "capability": "network",
-          "status": "partial",
-          "confidence": 50,
-          "evidence": [
-            "Service worker/offline file detected"
-          ],
-          "missing": [
-            "Network listener",
-            "offline UI state",
-            "retry behavior",
-            "lost-work protection"
-          ]
-        },
-        {
-          "capability": "appLauncher",
-          "status": "missing",
-          "confidence": 0,
-          "evidence": [],
-          "missing": [
-            "App launcher plugin",
-            "can-open check",
-            "fallback route or link"
-          ]
-        },
-        {
-          "capability": "browser",
-          "status": "missing",
-          "confidence": 0,
-          "evidence": [],
-          "missing": [
-            "Browser plugin",
-            "trusted-domain rules",
-            "return-to-app behavior"
-          ]
-        },
-        {
-          "capability": "clipboard",
-          "status": "missing",
-          "confidence": 0,
-          "evidence": [],
-          "missing": [
-            "Clipboard plugin",
-            "copy action",
-            "copied confirmation",
-            "sensitive-data review"
-          ]
-        },
-        {
-          "capability": "files",
-          "status": "missing",
-          "confidence": 0,
-          "evidence": [],
-          "missing": [
-            "File plugin",
-            "save/open/share flow",
-            "failure handling",
-            "privacy notes"
-          ]
-        }
-      ]
+      "nativeCodeSignals": []
     }
   },
-  "rebuildOfBuildId": "d24a5c5e-43de-4510-ba84-42d805d128ec",
-  "rebuildReason": "UI, OAuth, branding, blog, navigation, AI Helper, and privacy corrections from corrected source 1a2dfe810e1bb6cab8399a201bfeaf7e26032a35 code 4.",
-  "generatedAt": "2026-08-02T08:39:54.976Z"
+  "rebuildOfBuildId": "1b0d43d0-54e2-48d9-9b2e-0842b1d5372e",
+  "rebuildReason": "UI, OAuth, branding, blog, navigation, AI Helper, and privacy corrections from corrected source 0b411a9ade34d441b14c7341f2275933aafeaa7d code 7.",
+  "generatedAt": "2026-08-13T03:58:21.388Z"
 }

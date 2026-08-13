@@ -1,11 +1,11 @@
-# Files and downloads
+# Barcode or QR scan
 
 ## Evidence for this selected feature
 
 - No repository code signal was attached for this feature. Treat this as planned until a new scan finds code, setup, backend, policy, and device-test evidence.
 
 ## What the user gets
-Users can save, open, or share documents, receipts, tickets, exports, or attachments on Android.
+Users can scan trusted QR or barcode content and land on the correct app action.
 
 ## What LaunchLift can prepare
 - Add Capacitor dependency where safe.
@@ -13,27 +13,27 @@ Users can save, open, or share documents, receipts, tickets, exports, or attachm
 - Add acceptance checklist for human/device testing.
 
 ## Capacitor / Android wrapper work
-- Choose @capacitor/filesystem, @capacitor/file-transfer, or @capacitor/file-viewer based on the flow.
-- Use Android storage access only where needed.
+- Install @capacitor/barcode-scanner or choose a scanner bridge that matches the target format.
+- Add camera permission wording.
 
 ## Account or service setup
 - No extra third-party account is normally required unless the app already uses a provider for this feature.
 
 ## App code work
-- Define file types and names.
-- Handle progress, errors, and retries.
-- Give users a way to find, share, or delete files.
+- Define valid code formats.
+- Reject invalid or unsafe codes.
+- Add manual fallback where practical.
 
 ## Backend work
 - Connect backend storage, permissions, or triggers only when the product flow requires it.
 
 ## Play Store and policy notes
-- Match Data Safety answers to file storage, retention, sharing, and deletion behavior.
+- Explain camera use and any scanned data collection or sharing.
 
 ## Ready only when this is verified
-- File saves.
-- File opens or shares.
-- Invalid or failed downloads do not leave the user stuck.
+- Valid code works.
+- Invalid code is rejected.
+- Denied camera permission has a fallback.
 
 ## Feature status meanings
 - Planned means LaunchLift has the setup path, but the feature is not live yet.
@@ -46,4 +46,4 @@ Users can save, open, or share documents, receipts, tickets, exports, or attachm
 - Mark the feature live before a real Android device test.
 
 Project: LaunchLift Practice App
-Generated: 2026-08-13T03:58:21.399Z
+Generated: 2026-08-13T03:58:21.400Z

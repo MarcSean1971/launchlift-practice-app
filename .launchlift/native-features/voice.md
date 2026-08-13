@@ -1,11 +1,11 @@
-# Files and downloads
+# Microphone and voice
 
 ## Evidence for this selected feature
 
 - No repository code signal was attached for this feature. Treat this as planned until a new scan finds code, setup, backend, policy, and device-test evidence.
 
 ## What the user gets
-Users can save, open, or share documents, receipts, tickets, exports, or attachments on Android.
+Users can record, dictate, translate, or call with clear consent and controls.
 
 ## What LaunchLift can prepare
 - Add Capacitor dependency where safe.
@@ -13,27 +13,27 @@ Users can save, open, or share documents, receipts, tickets, exports, or attachm
 - Add acceptance checklist for human/device testing.
 
 ## Capacitor / Android wrapper work
-- Choose @capacitor/filesystem, @capacitor/file-transfer, or @capacitor/file-viewer based on the flow.
-- Use Android storage access only where needed.
+- Add microphone permission and recording/WebRTC/provider setup.
+- Add Android permission wording.
 
 ## Account or service setup
 - No extra third-party account is normally required unless the app already uses a provider for this feature.
 
 ## App code work
-- Define file types and names.
-- Handle progress, errors, and retries.
-- Give users a way to find, share, or delete files.
+- Start audio only after clear user action.
+- Show stop/delete controls.
+- Connect transcription/storage/call provider if used.
 
 ## Backend work
 - Connect backend storage, permissions, or triggers only when the product flow requires it.
 
 ## Play Store and policy notes
-- Match Data Safety answers to file storage, retention, sharing, and deletion behavior.
+- Disclose audio capture, storage, processing, and deletion.
 
 ## Ready only when this is verified
-- File saves.
-- File opens or shares.
-- Invalid or failed downloads do not leave the user stuck.
+- Permission prompt works.
+- Recording/call works.
+- User can stop and delete audio.
 
 ## Feature status meanings
 - Planned means LaunchLift has the setup path, but the feature is not live yet.
@@ -46,4 +46,4 @@ Users can save, open, or share documents, receipts, tickets, exports, or attachm
 - Mark the feature live before a real Android device test.
 
 Project: LaunchLift Practice App
-Generated: 2026-08-13T03:58:21.399Z
+Generated: 2026-08-13T03:58:21.398Z

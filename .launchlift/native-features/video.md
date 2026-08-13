@@ -1,11 +1,11 @@
-# Files and downloads
+# Video calls
 
 ## Evidence for this selected feature
 
 - No repository code signal was attached for this feature. Treat this as planned until a new scan finds code, setup, backend, policy, and device-test evidence.
 
 ## What the user gets
-Users can save, open, or share documents, receipts, tickets, exports, or attachments on Android.
+Users can start or join video sessions with camera, microphone, safety, and network fallbacks.
 
 ## What LaunchLift can prepare
 - Add Capacitor dependency where safe.
@@ -13,27 +13,28 @@ Users can save, open, or share documents, receipts, tickets, exports, or attachm
 - Add acceptance checklist for human/device testing.
 
 ## Capacitor / Android wrapper work
-- Choose @capacitor/filesystem, @capacitor/file-transfer, or @capacitor/file-viewer based on the flow.
-- Use Android storage access only where needed.
+- Add camera and microphone permissions.
+- Choose WebRTC or a video provider.
 
 ## Account or service setup
 - No extra third-party account is normally required unless the app already uses a provider for this feature.
 
 ## App code work
-- Define file types and names.
-- Handle progress, errors, and retries.
-- Give users a way to find, share, or delete files.
+- Add call screens.
+- Handle denied permissions.
+- Add blocking/moderation and poor-network states.
 
 ## Backend work
 - Connect backend storage, permissions, or triggers only when the product flow requires it.
 
 ## Play Store and policy notes
-- Match Data Safety answers to file storage, retention, sharing, and deletion behavior.
+- Disclose camera/microphone use and safety controls.
 
 ## Ready only when this is verified
-- File saves.
-- File opens or shares.
-- Invalid or failed downloads do not leave the user stuck.
+- Camera works.
+- Microphone works.
+- Disconnect/reconnect works.
+- Safety controls are available.
 
 ## Feature status meanings
 - Planned means LaunchLift has the setup path, but the feature is not live yet.
@@ -46,4 +47,4 @@ Users can save, open, or share documents, receipts, tickets, exports, or attachm
 - Mark the feature live before a real Android device test.
 
 Project: LaunchLift Practice App
-Generated: 2026-08-13T03:58:21.399Z
+Generated: 2026-08-13T03:58:21.398Z
