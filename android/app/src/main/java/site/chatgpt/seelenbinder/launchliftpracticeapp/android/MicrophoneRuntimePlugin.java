@@ -1,6 +1,8 @@
 package site.chatgpt.seelenbinder.launchliftpracticeapp.android;
 
-import android.Manifest;`nimport android.content.pm.PackageManager;`nimport android.media.AudioFormat;
+import android.Manifest;
+import android.content.pm.PackageManager;
+import android.media.AudioFormat;
 import android.media.AudioRecord;
 import android.media.MediaRecorder;
 
