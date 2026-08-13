@@ -1,11 +1,11 @@
-# Offline storage
+# Biometric lock
 
 ## Evidence for this selected feature
 
 - No repository code signal was attached for this feature. Treat this as planned until a new scan finds code, setup, backend, policy, and device-test evidence.
 
 ## What the user gets
-Useful app data, drafts, or settings survive weak signal without losing user work.
+Sensitive screens can ask for fingerprint or face unlock with a safe fallback.
 
 ## What LaunchLift can prepare
 - Add Capacitor dependency where safe.
@@ -13,27 +13,27 @@ Useful app data, drafts, or settings survive weak signal without losing user wor
 - Add acceptance checklist for human/device testing.
 
 ## Capacitor / Android wrapper work
-- Install @capacitor/preferences when local key/value storage is enough.
-- Choose secure storage for sensitive data.
+- Choose a biometric plugin or native bridge.
+- Add Android biometric permission.
 
 ## Account or service setup
 - No extra third-party account is normally required unless the app already uses a provider for this feature.
 
 ## App code work
-- Define what can be stored locally.
-- Add offline UI.
-- Add sync and conflict rules.
+- Protect specific screens/actions.
+- Add fallback login or PIN behavior.
+- Reset protection after sign-out or session expiry.
 
 ## Backend work
 - Connect backend storage, permissions, or triggers only when the product flow requires it.
 
 ## Play Store and policy notes
-- Explain local storage and deletion behavior where relevant.
+- Explain biometric use as local device unlock, not biometric data collection unless different.
 
 ## Ready only when this is verified
-- Offline mode shows clearly.
-- Drafts/settings persist.
-- Reconnect sync does not duplicate or lose data.
+- Unlock works.
+- Fallback works.
+- Failed biometrics do not trap the user.
 
 ## Feature status meanings
 - Planned means LaunchLift has the setup path, but the feature is not live yet.

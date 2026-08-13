@@ -1,11 +1,11 @@
-# Offline storage
+# Bluetooth and BLE
 
 ## Evidence for this selected feature
 
 - No repository code signal was attached for this feature. Treat this as planned until a new scan finds code, setup, backend, policy, and device-test evidence.
 
 ## What the user gets
-Useful app data, drafts, or settings survive weak signal without losing user work.
+The Android app can scan for, pair with, reconnect to, or control the intended hardware device.
 
 ## What LaunchLift can prepare
 - Add Capacitor dependency where safe.
@@ -13,27 +13,27 @@ Useful app data, drafts, or settings survive weak signal without losing user wor
 - Add acceptance checklist for human/device testing.
 
 ## Capacitor / Android wrapper work
-- Install @capacitor/preferences when local key/value storage is enough.
-- Choose secure storage for sensitive data.
+- Choose a BLE/native plugin or custom bridge that matches the hardware.
+- Add BLUETOOTH_SCAN and BLUETOOTH_CONNECT permissions where required.
 
 ## Account or service setup
 - No extra third-party account is normally required unless the app already uses a provider for this feature.
 
 ## App code work
-- Define what can be stored locally.
-- Add offline UI.
-- Add sync and conflict rules.
+- Define the exact device type.
+- Implement scan, connect, reconnect, disconnect, and error states.
+- Show what data is read or written.
 
 ## Backend work
 - Connect backend storage, permissions, or triggers only when the product flow requires it.
 
 ## Play Store and policy notes
-- Explain local storage and deletion behavior where relevant.
+- Explain nearby-device/Bluetooth use and any collected device data.
 
 ## Ready only when this is verified
-- Offline mode shows clearly.
-- Drafts/settings persist.
-- Reconnect sync does not duplicate or lose data.
+- Real hardware pairs.
+- Reconnect works.
+- Permission denial and missing-device states are clear.
 
 ## Feature status meanings
 - Planned means LaunchLift has the setup path, but the feature is not live yet.
@@ -46,4 +46,4 @@ Useful app data, drafts, or settings survive weak signal without losing user wor
 - Mark the feature live before a real Android device test.
 
 Project: LaunchLift Practice App
-Generated: 2026-08-13T04:12:00.481Z
+Generated: 2026-08-13T04:12:00.480Z

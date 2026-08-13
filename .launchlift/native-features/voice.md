@@ -1,11 +1,11 @@
-# Offline storage
+# Microphone and voice
 
 ## Evidence for this selected feature
 
 - No repository code signal was attached for this feature. Treat this as planned until a new scan finds code, setup, backend, policy, and device-test evidence.
 
 ## What the user gets
-Useful app data, drafts, or settings survive weak signal without losing user work.
+Users can record, dictate, translate, or call with clear consent and controls.
 
 ## What LaunchLift can prepare
 - Add Capacitor dependency where safe.
@@ -13,27 +13,27 @@ Useful app data, drafts, or settings survive weak signal without losing user wor
 - Add acceptance checklist for human/device testing.
 
 ## Capacitor / Android wrapper work
-- Install @capacitor/preferences when local key/value storage is enough.
-- Choose secure storage for sensitive data.
+- Add microphone permission and recording/WebRTC/provider setup.
+- Add Android permission wording.
 
 ## Account or service setup
 - No extra third-party account is normally required unless the app already uses a provider for this feature.
 
 ## App code work
-- Define what can be stored locally.
-- Add offline UI.
-- Add sync and conflict rules.
+- Start audio only after clear user action.
+- Show stop/delete controls.
+- Connect transcription/storage/call provider if used.
 
 ## Backend work
 - Connect backend storage, permissions, or triggers only when the product flow requires it.
 
 ## Play Store and policy notes
-- Explain local storage and deletion behavior where relevant.
+- Disclose audio capture, storage, processing, and deletion.
 
 ## Ready only when this is verified
-- Offline mode shows clearly.
-- Drafts/settings persist.
-- Reconnect sync does not duplicate or lose data.
+- Permission prompt works.
+- Recording/call works.
+- User can stop and delete audio.
 
 ## Feature status meanings
 - Planned means LaunchLift has the setup path, but the feature is not live yet.
