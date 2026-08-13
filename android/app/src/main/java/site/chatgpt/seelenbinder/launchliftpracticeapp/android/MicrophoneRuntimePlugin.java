@@ -1,12 +1,12 @@
 package site.chatgpt.seelenbinder.launchliftpracticeapp.android;
 
 import android.Manifest;
-import android.content.pm.PackageManager;
 import android.media.AudioFormat;
 import android.media.AudioRecord;
 import android.media.MediaRecorder;
 
 import com.getcapacitor.JSObject;
+import com.getcapacitor.PermissionState;
 import com.getcapacitor.Plugin;
 import com.getcapacitor.PluginCall;
 import com.getcapacitor.PluginMethod;
@@ -23,13 +23,9 @@ import com.getcapacitor.annotation.PermissionCallback;
 public class MicrophoneRuntimePlugin extends Plugin {
     private static final int SAMPLE_RATE_HZ = 16000;
 
-    private boolean hasMicrophonePermission() {
-        return getContext().checkSelfPermission(Manifest.permission.RECORD_AUDIO)
-            == PackageManager.PERMISSION_GRANTED;
-    }
     @PluginMethod
     public void probe(PluginCall call) {
-        if (!hasMicrophonePermission()) {
+        if (getPermissionState("microphone") != PermissionState.GRANTED) {
             requestPermissionForAlias("microphone", call, "runProbe");
             return;
         }
@@ -38,7 +34,7 @@ public class MicrophoneRuntimePlugin extends Plugin {
 
     @PermissionCallback
     private void runProbe(PluginCall call) {
-        if (!hasMicrophonePermission()) {
+        if (getPermissionState("microphone") != PermissionState.GRANTED) {
             call.reject("Microphone permission denied.");
             return;
         }

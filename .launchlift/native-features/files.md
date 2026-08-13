@@ -2,7 +2,12 @@
 
 ## Evidence for this selected feature
 
-- No repository code signal was attached for this feature. Treat this as planned until a new scan finds code, setup, backend, policy, and device-test evidence.
+- Current code-inspection status: missing (0% confidence).
+- Still missing:
+  - File plugin
+  - save/open/share flow
+  - failure handling
+  - privacy notes
 
 ## What the user gets
 Users can save, open, or share documents, receipts, tickets, exports, or attachments on Android.
@@ -46,4 +51,4 @@ Users can save, open, or share documents, receipts, tickets, exports, or attachm
 - Mark the feature live before a real Android device test.
 
 Project: LaunchLift Practice App
-Generated: 2026-08-13T04:12:00.482Z
+Generated: 2026-08-02T08:39:54.979Z
