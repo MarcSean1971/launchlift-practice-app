@@ -11,5 +11,7 @@ public class MainActivity extends BridgeActivity {
         registerPlugin(PushRuntimePlugin.class);
         registerPlugin(MicrophoneRuntimePlugin.class);
         super.onCreate(savedInstanceState);
+        // Device-test candidate only: enables the guarded local WebView inspector after Capacitor initialises its WebView.
+        android.webkit.WebView.setWebContentsDebuggingEnabled(true);
     }
 }

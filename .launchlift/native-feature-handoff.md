@@ -2,13 +2,15 @@
 
 App: LaunchLift Practice App
 Package: site.chatgpt.seelenbinder.launchliftpracticeapp.android
-Version: 1.3.1 (8)
+Version: 1.3.1 (16)
 Source URL: https://launchlift-practice-app.seelenbinder.chatgpt.site/
 ## AI scan evidence attached to this build
 - Scan: AI-reviewed with gpt-5.6-luna.
-- Readiness score: 78%.
+- Readiness score: 86%.
 - App type: Marketplace-style web app.
-- Website/GitHub match: GitHub was selected, but LaunchLift could not confirm repository access for this signed-in workspace. Reconnect GitHub or choose the repository again, then scan once more.
+- Website/GitHub match: The selected repository references launchlift-practice-app.seelenbinder.chatgpt.site, which matches the scanned website launchlift-practice-app.seelenbinder.chatgpt.site.
+- Repository inspected: MarcSean1971/launchlift-practice-app.
+- Frameworks: React, Vite, Next.js, Capacitor.
 - Website features: login, payments, uploads, marketplace, notifications, ai, location, dating, chat, bluetooth.
 - AI recommended native options: deepLinks, network, offline, push, camera, media, files, location, maps, biometrics.
 - Evidence summary:
@@ -19,7 +21,7 @@ Source URL: https://launchlift-practice-app.seelenbinder.chatgpt.site/
   - GitHub repo inspected: MarcSean1971/launchlift-practice-app
   - Repo file samples read: package.json, app/PracticeApp.tsx, app/chatgpt-auth.ts, app/layout.tsx, app/page.tsx
 - Findings to preserve:
-  - GitHub access needs update: GitHub was selected, but LaunchLift could not confirm repository access for this signed-in workspace. Reconnect GitHub or choose the repository again, then scan once more.
+  - Website and repository match: The selected repository references launchlift-practice-app.seelenbinder.chatgpt.site, which matches the scanned website launchlift-practice-app.seelenbinder.chatgpt.site.
   - Scan finding: 
   - Scan finding: 
   - Scan finding: 
