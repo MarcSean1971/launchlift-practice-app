@@ -1,11 +1,11 @@
-# Touch feedback
+# Native maps
 
 ## Evidence for this selected feature
 
 - No repository code signal was attached for this feature. Treat this as planned until a new scan finds code, setup, backend, policy, and device-test evidence.
 
 ## What the user gets
-Important taps or confirmations feel responsive without making the app noisy.
+Users can see places, markers, routes, or nearby results on a phone-friendly map.
 
 ## What LaunchLift can prepare
 - Add Capacitor dependency where safe.
@@ -13,27 +13,27 @@ Important taps or confirmations feel responsive without making the app noisy.
 - Add acceptance checklist for human/device testing.
 
 ## Capacitor / Android wrapper work
-- Install @capacitor/haptics.
-- Use haptics only for deliberate feedback moments.
+- Install @capacitor/google-maps or use the existing map provider.
+- Prepare API key and platform restrictions.
 
 ## Account or service setup
 - No extra third-party account is normally required unless the app already uses a provider for this feature.
 
 ## App code work
-- Choose a small list of feedback moments.
-- Respect accessibility and reduced-motion expectations.
-- Avoid constant vibration.
+- Define markers, places, or routes.
+- Handle denied location permission.
+- Avoid exposing precise location without clear benefit.
 
 ## Backend work
 - Connect backend storage, permissions, or triggers only when the product flow requires it.
 
 ## Play Store and policy notes
-- No special Play policy work is normally needed for simple haptic feedback.
+- Complete location and map provider disclosures where data is collected or shared.
 
 ## Ready only when this is verified
-- Feedback happens only where expected.
-- It does not repeat excessively.
-- The app remains usable without it.
+- Map loads.
+- Markers/routes are correct.
+- Location denial and missing key states are handled.
 
 ## Feature status meanings
 - Planned means LaunchLift has the setup path, but the feature is not live yet.

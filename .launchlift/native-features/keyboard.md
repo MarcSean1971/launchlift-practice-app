@@ -1,11 +1,11 @@
-# Touch feedback
+# Keyboard polish
 
 ## Evidence for this selected feature
 
 - No repository code signal was attached for this feature. Treat this as planned until a new scan finds code, setup, backend, policy, and device-test evidence.
 
 ## What the user gets
-Important taps or confirmations feel responsive without making the app noisy.
+Forms, chat boxes, and buttons stay usable when the Android keyboard is open.
 
 ## What LaunchLift can prepare
 - Add Capacitor dependency where safe.
@@ -13,27 +13,27 @@ Important taps or confirmations feel responsive without making the app noisy.
 - Add acceptance checklist for human/device testing.
 
 ## Capacitor / Android wrapper work
-- Install @capacitor/haptics.
-- Use haptics only for deliberate feedback moments.
+- Install @capacitor/keyboard when native resize/control is needed.
+- Choose resize behavior and safe-area handling.
 
 ## Account or service setup
 - No extra third-party account is normally required unless the app already uses a provider for this feature.
 
 ## App code work
-- Choose a small list of feedback moments.
-- Respect accessibility and reduced-motion expectations.
-- Avoid constant vibration.
+- Identify forms or composers that need keyboard testing.
+- Keep submit buttons reachable.
+- Preserve scroll position and unsaved input.
 
 ## Backend work
 - Connect backend storage, permissions, or triggers only when the product flow requires it.
 
 ## Play Store and policy notes
-- No special Play policy work is normally needed for simple haptic feedback.
+- No special Play policy work is normally needed for keyboard layout handling.
 
 ## Ready only when this is verified
-- Feedback happens only where expected.
-- It does not repeat excessively.
-- The app remains usable without it.
+- Keyboard does not cover key controls.
+- Long fields scroll correctly.
+- Dismiss and submit behavior works.
 
 ## Feature status meanings
 - Planned means LaunchLift has the setup path, but the feature is not live yet.

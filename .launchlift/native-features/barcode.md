@@ -1,11 +1,11 @@
-# Touch feedback
+# Barcode or QR scan
 
 ## Evidence for this selected feature
 
 - No repository code signal was attached for this feature. Treat this as planned until a new scan finds code, setup, backend, policy, and device-test evidence.
 
 ## What the user gets
-Important taps or confirmations feel responsive without making the app noisy.
+Users can scan trusted QR or barcode content and land on the correct app action.
 
 ## What LaunchLift can prepare
 - Add Capacitor dependency where safe.
@@ -13,27 +13,27 @@ Important taps or confirmations feel responsive without making the app noisy.
 - Add acceptance checklist for human/device testing.
 
 ## Capacitor / Android wrapper work
-- Install @capacitor/haptics.
-- Use haptics only for deliberate feedback moments.
+- Install @capacitor/barcode-scanner or choose a scanner bridge that matches the target format.
+- Add camera permission wording.
 
 ## Account or service setup
 - No extra third-party account is normally required unless the app already uses a provider for this feature.
 
 ## App code work
-- Choose a small list of feedback moments.
-- Respect accessibility and reduced-motion expectations.
-- Avoid constant vibration.
+- Define valid code formats.
+- Reject invalid or unsafe codes.
+- Add manual fallback where practical.
 
 ## Backend work
 - Connect backend storage, permissions, or triggers only when the product flow requires it.
 
 ## Play Store and policy notes
-- No special Play policy work is normally needed for simple haptic feedback.
+- Explain camera use and any scanned data collection or sharing.
 
 ## Ready only when this is verified
-- Feedback happens only where expected.
-- It does not repeat excessively.
-- The app remains usable without it.
+- Valid code works.
+- Invalid code is rejected.
+- Denied camera permission has a fallback.
 
 ## Feature status meanings
 - Planned means LaunchLift has the setup path, but the feature is not live yet.

@@ -1,11 +1,18 @@
-# Touch feedback
+# Microphone and voice
 
 ## Evidence for this selected feature
 
-- No repository code signal was attached for this feature. Treat this as planned until a new scan finds code, setup, backend, policy, and device-test evidence.
+- Current code-inspection status: partial (50% confidence).
+- Evidence found:
+  - Voice/audio naming appears in repo tree
+- Still missing:
+  - Microphone capture flow
+  - start/stop/delete controls
+  - audio storage/transmission handling
+  - privacy wording
 
 ## What the user gets
-Important taps or confirmations feel responsive without making the app noisy.
+Users can record, dictate, translate, or call with clear consent and controls.
 
 ## What LaunchLift can prepare
 - Add Capacitor dependency where safe.
@@ -13,27 +20,27 @@ Important taps or confirmations feel responsive without making the app noisy.
 - Add acceptance checklist for human/device testing.
 
 ## Capacitor / Android wrapper work
-- Install @capacitor/haptics.
-- Use haptics only for deliberate feedback moments.
+- Add microphone permission and recording/WebRTC/provider setup.
+- Add Android permission wording.
 
 ## Account or service setup
 - No extra third-party account is normally required unless the app already uses a provider for this feature.
 
 ## App code work
-- Choose a small list of feedback moments.
-- Respect accessibility and reduced-motion expectations.
-- Avoid constant vibration.
+- Start audio only after clear user action.
+- Show stop/delete controls.
+- Connect transcription/storage/call provider if used.
 
 ## Backend work
 - Connect backend storage, permissions, or triggers only when the product flow requires it.
 
 ## Play Store and policy notes
-- No special Play policy work is normally needed for simple haptic feedback.
+- Disclose audio capture, storage, processing, and deletion.
 
 ## Ready only when this is verified
-- Feedback happens only where expected.
-- It does not repeat excessively.
-- The app remains usable without it.
+- Permission prompt works.
+- Recording/call works.
+- User can stop and delete audio.
 
 ## Feature status meanings
 - Planned means LaunchLift has the setup path, but the feature is not live yet.
@@ -46,4 +53,4 @@ Important taps or confirmations feel responsive without making the app noisy.
 - Mark the feature live before a real Android device test.
 
 Project: LaunchLift Practice App
-Generated: 2026-08-13T05:10:33.257Z
+Generated: 2026-08-13T05:10:33.256Z

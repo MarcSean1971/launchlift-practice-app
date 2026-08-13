@@ -1,11 +1,14 @@
-# Touch feedback
+# App links and deep links
 
 ## Evidence for this selected feature
 
-- No repository code signal was attached for this feature. Treat this as planned until a new scan finds code, setup, backend, policy, and device-test evidence.
+- Current code-inspection status: found (100% confidence).
+- Evidence found:
+  - @capacitor/app dependency present
+  - App-link config candidate detected
 
 ## What the user gets
-Important taps or confirmations feel responsive without making the app noisy.
+Android opens supported web links directly inside the app.
 
 ## What LaunchLift can prepare
 - Add Capacitor dependency where safe.
@@ -13,27 +16,28 @@ Important taps or confirmations feel responsive without making the app noisy.
 - Add acceptance checklist for human/device testing.
 
 ## Capacitor / Android wrapper work
-- Install @capacitor/haptics.
-- Use haptics only for deliberate feedback moments.
+- Install/use @capacitor/app listener.
+- Add Android intent filters.
+- Add route mapping.
 
 ## Account or service setup
 - No extra third-party account is normally required unless the app already uses a provider for this feature.
 
 ## App code work
-- Choose a small list of feedback moments.
-- Respect accessibility and reduced-motion expectations.
-- Avoid constant vibration.
+- Map each URL to the right screen.
+- Handle unknown or expired links.
+- Keep web fallback working.
 
 ## Backend work
 - Connect backend storage, permissions, or triggers only when the product flow requires it.
 
 ## Play Store and policy notes
-- No special Play policy work is normally needed for simple haptic feedback.
+- Publish Android assetlinks.json from the verified domain.
 
 ## Ready only when this is verified
-- Feedback happens only where expected.
-- It does not repeat excessively.
-- The app remains usable without it.
+- Domain verification passes.
+- Invite/reset/product links open the correct screen.
+- Web fallback still works.
 
 ## Feature status meanings
 - Planned means LaunchLift has the setup path, but the feature is not live yet.
@@ -46,4 +50,4 @@ Important taps or confirmations feel responsive without making the app noisy.
 - Mark the feature live before a real Android device test.
 
 Project: LaunchLift Practice App
-Generated: 2026-08-13T05:10:33.257Z
+Generated: 2026-08-13T05:10:33.255Z
