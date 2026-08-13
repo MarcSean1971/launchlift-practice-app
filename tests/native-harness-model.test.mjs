@@ -74,6 +74,10 @@ test("uses one native non-persistent microphone capture instead of the WebView p
   const plugin = readFileSync(new URL("../android/app/src/main/java/site/chatgpt/seelenbinder/launchliftpracticeapp/android/MicrophoneRuntimePlugin.java", import.meta.url), "utf8");
 
   assert.match(activity, /registerPlugin\(MicrophoneRuntimePlugin\.class\)/u);
+  assert.ok(
+    activity.indexOf("registerPlugin(MicrophoneRuntimePlugin.class)") < activity.indexOf("super.onCreate(savedInstanceState)"),
+    "app-owned plugins must be registered before Capacitor initialises its bridge",
+  );
   assert.match(plugin, /@Permission\(alias = "microphone", strings = \{ Manifest\.permission\.RECORD_AUDIO \}\)/u);
   assert.match(plugin, /getContext\(\)\.checkSelfPermission\(Manifest\.permission\.RECORD_AUDIO\)/u);
   assert.match(plugin, /PackageManager\.PERMISSION_GRANTED/u);
