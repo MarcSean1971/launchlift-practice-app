@@ -1,11 +1,14 @@
-# Touch feedback
+# Background tasks
 
 ## Evidence for this selected feature
 
-- No repository code signal was attached for this feature. Treat this as planned until a new scan finds code, setup, backend, policy, and device-test evidence.
+- Current code-inspection status: found (100% confidence).
+- Evidence found:
+  - @capacitor/background-runner dependency present
+  - Background/scheduler naming appears in repo tree
 
 ## What the user gets
-Important taps or confirmations feel responsive without making the app noisy.
+Allowed work can happen when the app is not open, without abusing battery or Play policy.
 
 ## What LaunchLift can prepare
 - Add Capacitor dependency where safe.
@@ -13,27 +16,27 @@ Important taps or confirmations feel responsive without making the app noisy.
 - Add acceptance checklist for human/device testing.
 
 ## Capacitor / Android wrapper work
-- Install @capacitor/haptics.
-- Use haptics only for deliberate feedback moments.
+- Choose Android-approved scheduling/background approach.
+- Add only the permissions required by the task.
 
 ## Account or service setup
 - No extra third-party account is normally required unless the app already uses a provider for this feature.
 
 ## App code work
-- Choose a small list of feedback moments.
-- Respect accessibility and reduced-motion expectations.
-- Avoid constant vibration.
+- Define the exact background task.
+- Show user controls.
+- Avoid hidden tracking or unnecessary work.
 
 ## Backend work
 - Connect backend storage, permissions, or triggers only when the product flow requires it.
 
 ## Play Store and policy notes
-- No special Play policy work is normally needed for simple haptic feedback.
+- Document background behavior and notifications where required.
 
 ## Ready only when this is verified
-- Feedback happens only where expected.
-- It does not repeat excessively.
-- The app remains usable without it.
+- Task runs under Android limits.
+- Battery restrictions are handled.
+- User can stop or understand the work.
 
 ## Feature status meanings
 - Planned means LaunchLift has the setup path, but the feature is not live yet.
@@ -46,4 +49,4 @@ Important taps or confirmations feel responsive without making the app noisy.
 - Mark the feature live before a real Android device test.
 
 Project: LaunchLift Practice App
-Generated: 2026-08-13T05:26:29.706Z
+Generated: 2026-08-13T05:26:29.704Z

@@ -1,11 +1,17 @@
-# Touch feedback
+# In-app browser
 
 ## Evidence for this selected feature
 
-- No repository code signal was attached for this feature. Treat this as planned until a new scan finds code, setup, backend, policy, and device-test evidence.
+- Current code-inspection status: partial (50% confidence).
+- Evidence found:
+  - Browser dependency present
+- Still missing:
+  - Browser plugin
+  - trusted-domain rules
+  - return-to-app behavior
 
 ## What the user gets
-Important taps or confirmations feel responsive without making the app noisy.
+Trusted help, policy, checkout, or external pages open without losing the Android app context.
 
 ## What LaunchLift can prepare
 - Add Capacitor dependency where safe.
@@ -13,27 +19,27 @@ Important taps or confirmations feel responsive without making the app noisy.
 - Add acceptance checklist for human/device testing.
 
 ## Capacitor / Android wrapper work
-- Install @capacitor/haptics.
-- Use haptics only for deliberate feedback moments.
+- Install @capacitor/browser or use @capacitor/inappbrowser when the app needs embedded browser controls.
+- Define trusted domains and return behavior.
 
 ## Account or service setup
 - No extra third-party account is normally required unless the app already uses a provider for this feature.
 
 ## App code work
-- Choose a small list of feedback moments.
-- Respect accessibility and reduced-motion expectations.
-- Avoid constant vibration.
+- Choose which links open in-app.
+- Keep untrusted links in the system browser.
+- Show a clear close/back path.
 
 ## Backend work
 - Connect backend storage, permissions, or triggers only when the product flow requires it.
 
 ## Play Store and policy notes
-- No special Play policy work is normally needed for simple haptic feedback.
+- Do not hide third-party checkout, policy, or account ownership from the user.
 
 ## Ready only when this is verified
-- Feedback happens only where expected.
-- It does not repeat excessively.
-- The app remains usable without it.
+- Trusted links open.
+- Users can return to the app.
+- Untrusted links do not get privileged treatment.
 
 ## Feature status meanings
 - Planned means LaunchLift has the setup path, but the feature is not live yet.
@@ -46,4 +52,4 @@ Important taps or confirmations feel responsive without making the app noisy.
 - Mark the feature live before a real Android device test.
 
 Project: LaunchLift Practice App
-Generated: 2026-08-13T05:26:29.706Z
+Generated: 2026-08-13T05:26:29.705Z
