@@ -1,11 +1,11 @@
-# Location
+# Bluetooth and BLE
 
 ## Evidence for this selected feature
 
 - No repository code signal was attached for this feature. Treat this as planned until a new scan finds code, setup, backend, policy, and device-test evidence.
 
 ## What the user gets
-Users can use nearby, map, route, safety, or local discovery features on Android.
+The Android app can scan for, pair with, reconnect to, or control the intended hardware device.
 
 ## What LaunchLift can prepare
 - Add Capacitor dependency where safe.
@@ -13,28 +13,27 @@ Users can use nearby, map, route, safety, or local discovery features on Android
 - Add acceptance checklist for human/device testing.
 
 ## Capacitor / Android wrapper work
-- Install @capacitor/geolocation.
-- Choose approximate or precise location.
-- Add Android location permission wording.
+- Choose a BLE/native plugin or custom bridge that matches the hardware.
+- Add BLUETOOTH_SCAN and BLUETOOTH_CONNECT permissions where required.
 
 ## Account or service setup
 - No extra third-party account is normally required unless the app already uses a provider for this feature.
 
 ## App code work
-- Ask only when the user can see the benefit.
-- Handle denied permission.
-- Avoid background location unless absolutely necessary.
+- Define the exact device type.
+- Implement scan, connect, reconnect, disconnect, and error states.
+- Show what data is read or written.
 
 ## Backend work
 - Connect backend storage, permissions, or triggers only when the product flow requires it.
 
 ## Play Store and policy notes
-- Complete Play Store location declarations and privacy wording.
+- Explain nearby-device/Bluetooth use and any collected device data.
 
 ## Ready only when this is verified
-- Android permission prompt appears at the right time.
-- Denied permission has fallback UI.
-- Location feature works on a real device.
+- Real hardware pairs.
+- Reconnect works.
+- Permission denial and missing-device states are clear.
 
 ## Feature status meanings
 - Planned means LaunchLift has the setup path, but the feature is not live yet.
@@ -47,4 +46,4 @@ Users can use nearby, map, route, safety, or local discovery features on Android
 - Mark the feature live before a real Android device test.
 
 Project: LaunchLift Practice App
-Generated: 2026-08-13T03:33:30.558Z
+Generated: 2026-08-13T03:33:30.559Z

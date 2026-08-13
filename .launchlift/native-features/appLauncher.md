@@ -1,11 +1,11 @@
-# Location
+# Open other apps
 
 ## Evidence for this selected feature
 
 - No repository code signal was attached for this feature. Treat this as planned until a new scan finds code, setup, backend, policy, and device-test evidence.
 
 ## What the user gets
-Users can use nearby, map, route, safety, or local discovery features on Android.
+Users can open maps, email, calls, or another installed app from an intentional tap.
 
 ## What LaunchLift can prepare
 - Add Capacitor dependency where safe.
@@ -13,28 +13,27 @@ Users can use nearby, map, route, safety, or local discovery features on Android
 - Add acceptance checklist for human/device testing.
 
 ## Capacitor / Android wrapper work
-- Install @capacitor/geolocation.
-- Choose approximate or precise location.
-- Add Android location permission wording.
+- Install @capacitor/app-launcher.
+- Check whether the target app or URL can be opened before launching.
 
 ## Account or service setup
 - No extra third-party account is normally required unless the app already uses a provider for this feature.
 
 ## App code work
-- Ask only when the user can see the benefit.
-- Handle denied permission.
-- Avoid background location unless absolutely necessary.
+- Define each outside-app action.
+- Add a fallback when the target app is missing.
+- Avoid hidden launches without a user action.
 
 ## Backend work
 - Connect backend storage, permissions, or triggers only when the product flow requires it.
 
 ## Play Store and policy notes
-- Complete Play Store location declarations and privacy wording.
+- Keep external-app behavior clear in support or policy copy when it affects user data.
 
 ## Ready only when this is verified
-- Android permission prompt appears at the right time.
-- Denied permission has fallback UI.
-- Location feature works on a real device.
+- Target app opens.
+- Missing target app has a fallback.
+- Each action starts from a visible user choice.
 
 ## Feature status meanings
 - Planned means LaunchLift has the setup path, but the feature is not live yet.
@@ -47,4 +46,4 @@ Users can use nearby, map, route, safety, or local discovery features on Android
 - Mark the feature live before a real Android device test.
 
 Project: LaunchLift Practice App
-Generated: 2026-08-13T03:33:30.558Z
+Generated: 2026-08-13T03:33:30.561Z

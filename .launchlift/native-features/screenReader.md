@@ -1,11 +1,11 @@
-# Location
+# Screen reader support
 
 ## Evidence for this selected feature
 
 - No repository code signal was attached for this feature. Treat this as planned until a new scan finds code, setup, backend, policy, and device-test evidence.
 
 ## What the user gets
-Users can use nearby, map, route, safety, or local discovery features on Android.
+Important Android flows are understandable for users relying on accessibility tools.
 
 ## What LaunchLift can prepare
 - Add Capacitor dependency where safe.
@@ -13,28 +13,27 @@ Users can use nearby, map, route, safety, or local discovery features on Android
 - Add acceptance checklist for human/device testing.
 
 ## Capacitor / Android wrapper work
-- Install @capacitor/geolocation.
-- Choose approximate or precise location.
-- Add Android location permission wording.
+- Use @capacitor/screen-reader only where native screen-reader state helps.
+- Keep most accessibility work in semantic UI labels and focus behavior.
 
 ## Account or service setup
 - No extra third-party account is normally required unless the app already uses a provider for this feature.
 
 ## App code work
-- Ask only when the user can see the benefit.
-- Handle denied permission.
-- Avoid background location unless absolutely necessary.
+- Label key controls.
+- Announce important state changes.
+- Keep focus order logical on mobile.
 
 ## Backend work
 - Connect backend storage, permissions, or triggers only when the product flow requires it.
 
 ## Play Store and policy notes
-- Complete Play Store location declarations and privacy wording.
+- No special Play policy work is normally needed, but accessibility claims should match real testing.
 
 ## Ready only when this is verified
-- Android permission prompt appears at the right time.
-- Denied permission has fallback UI.
-- Location feature works on a real device.
+- Android screen reader can complete key flows.
+- Buttons and fields have useful labels.
+- Dynamic changes are announced where needed.
 
 ## Feature status meanings
 - Planned means LaunchLift has the setup path, but the feature is not live yet.
@@ -47,4 +46,4 @@ Users can use nearby, map, route, safety, or local discovery features on Android
 - Mark the feature live before a real Android device test.
 
 Project: LaunchLift Practice App
-Generated: 2026-08-13T03:33:30.558Z
+Generated: 2026-08-13T03:33:30.562Z

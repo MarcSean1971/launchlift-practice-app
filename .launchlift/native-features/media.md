@@ -1,11 +1,11 @@
-# Location
+# Photo and media picker
 
 ## Evidence for this selected feature
 
 - No repository code signal was attached for this feature. Treat this as planned until a new scan finds code, setup, backend, policy, and device-test evidence.
 
 ## What the user gets
-Users can use nearby, map, route, safety, or local discovery features on Android.
+Users can pick phone media for profiles, listings, receipts, posts, or support uploads.
 
 ## What LaunchLift can prepare
 - Add Capacitor dependency where safe.
@@ -13,28 +13,27 @@ Users can use nearby, map, route, safety, or local discovery features on Android
 - Add acceptance checklist for human/device testing.
 
 ## Capacitor / Android wrapper work
-- Install @capacitor/geolocation.
-- Choose approximate or precise location.
-- Add Android location permission wording.
+- Install @capacitor/camera for gallery/photo picker support.
+- Use Android 13+ media permissions only when needed.
 
 ## Account or service setup
 - No extra third-party account is normally required unless the app already uses a provider for this feature.
 
 ## App code work
-- Ask only when the user can see the benefit.
-- Handle denied permission.
-- Avoid background location unless absolutely necessary.
+- Validate file type and size.
+- Upload to the right storage path.
+- Show progress, failure, preview, and delete states.
 
 ## Backend work
 - Connect backend storage, permissions, or triggers only when the product flow requires it.
 
 ## Play Store and policy notes
-- Complete Play Store location declarations and privacy wording.
+- Match data safety answers to uploaded media storage and retention.
 
 ## Ready only when this is verified
-- Android permission prompt appears at the right time.
-- Denied permission has fallback UI.
-- Location feature works on a real device.
+- Picker opens.
+- Invalid files are rejected.
+- Media can be deleted by the user.
 
 ## Feature status meanings
 - Planned means LaunchLift has the setup path, but the feature is not live yet.

@@ -2,14 +2,7 @@
 
 ## Evidence for this selected feature
 
-- Current code-inspection status: partial (50% confidence).
-- Evidence found:
-  - Service worker/offline file detected
-- Still missing:
-  - Local storage layer
-  - safe offline data map
-  - sync/retry behavior
-  - clear/delete controls
+- No repository code signal was attached for this feature. Treat this as planned until a new scan finds code, setup, backend, policy, and device-test evidence.
 
 ## What the user gets
 Useful app data, drafts, or settings survive weak signal without losing user work.
@@ -53,4 +46,4 @@ Useful app data, drafts, or settings survive weak signal without losing user wor
 - Mark the feature live before a real Android device test.
 
 Project: LaunchLift Practice App
-Generated: 2026-08-02T08:39:54.978Z
+Generated: 2026-08-13T03:33:30.560Z
