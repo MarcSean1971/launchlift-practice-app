@@ -2,7 +2,13 @@
 
 ## Evidence for this selected feature
 
-- No repository code signal was attached for this feature. Treat this as planned until a new scan finds code, setup, backend, policy, and device-test evidence.
+- Current code-inspection status: partial (50% confidence).
+- Evidence found:
+  - Browser dependency present
+- Still missing:
+  - Browser plugin
+  - trusted-domain rules
+  - return-to-app behavior
 
 ## What the user gets
 Trusted help, policy, checkout, or external pages open without losing the Android app context.
@@ -46,4 +52,4 @@ Trusted help, policy, checkout, or external pages open without losing the Androi
 - Mark the feature live before a real Android device test.
 
 Project: LaunchLift Practice App
-Generated: 2026-08-13T04:12:00.482Z
+Generated: 2026-08-14T01:26:24.359Z
