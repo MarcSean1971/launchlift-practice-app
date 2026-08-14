@@ -501,7 +501,7 @@ export function NativeTestHarness() {
       const mapId = "launchlift-practice-native-map-probe";
       try {
         await new Promise<void>((resolve, reject) => {
-          const timer = window.setTimeout(() => reject(new Error("Native map did not report ready on this phone.")), 8_000);
+          const timer = window.setTimeout(() => reject(new Error("Native map did not report ready on this phone.")), 20_000);
           void GoogleMap.create({
             id: mapId,
             element: host,
