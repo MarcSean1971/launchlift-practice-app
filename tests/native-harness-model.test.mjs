@@ -109,6 +109,7 @@ test("opens the installed native test surface without a WebView entry tap", () =
 
 test("makes every successful native probe perceptible on the handset", () => {
   const source = readFileSync(new URL("../app/NativeTestHarness.tsx", import.meta.url), "utf8");
+  const styles = readFileSync(new URL("../app/globals.css", import.meta.url), "utf8");
   assert.equal(nativeHarnessCapabilityIds.length, 28);
   for (const capability of nativeHarnessCapabilityIds) {
     assert.match(source, new RegExp(`^  ${capability}:`, "mu"), `${capability} must remain a real harness action`);
@@ -141,6 +142,8 @@ test("makes every successful native probe perceptible on the handset", () => {
   assert.match(source, /async function destroyNativeMap\(map: NativeGoogleMap \| null\)/u);
   assert.match(source, /void destroyNativeMap\(activeMap\)/u);
   assert.match(source, /id="native-google-map-probe" ref=\{nativeMapHost\} className="native-google-map-probe"/u);
+  assert.match(styles, /html \{ background: transparent; \}/u);
+  assert.match(styles, /body:has\(\.native-map-preview-card\)[\s\S]*?\.native-harness[\s\S]*?\.native-map-preview-card[\s\S]*?\.native-google-map-probe[\s\S]*?background: transparent;/u);
 });
 
 test("keeps downloadable native-demo actions visually separated from their explanation", () => {
