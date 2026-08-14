@@ -159,7 +159,7 @@ test("wires the final five bounded native probes without device-verification ove
     assert.match(modelSource, new RegExp(`\\b${capability}\\b`));
   }
   for (const signal of [
-    'Capacitor.isPluginAvailable("GoogleMaps")', "Keyboard.show", "Keyboard.hide", "Device.getInfo",
+    'Capacitor.isPluginAvailable("CapacitorGoogleMaps")', "Keyboard.show", "Keyboard.hide", "Device.getInfo",
     "PrivacyScreen.enable", "PrivacyScreen.disable", "PrivacyScreen.isEnabled", "ScreenReader.isEnabled", "ScreenReader.speak",
   ]) {
     assert.match(harnessSource, new RegExp(signal.replaceAll(".", "\\.").replaceAll("(", "\\(").replaceAll(")", "\\)")));
