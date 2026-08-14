@@ -132,7 +132,8 @@ test("makes every successful native probe perceptible on the handset", () => {
   assert.match(source, /maps: async \(\) => \{[\s\S]*?nativeMapHost\.current/u);
   assert.match(source, /maps: async \(\) => \{[\s\S]*?bounds\.width < 80 \|\| bounds\.height < 80/u);
   assert.match(source, /maps: async \(\) => \{[\s\S]*?GoogleMap\.create\(\{[\s\S]*?element: host,[\s\S]*?forceCreate: true/u);
-  assert.match(source, /maps: async \(\) => \{[\s\S]*?\(\{ mapId: readyMapId \}\) => \{[\s\S]*?readyMapId !== mapId/u);
+  assert.match(source, /const createdMap = await new Promise<NativeGoogleMap>[\s\S]*?GoogleMap\.create\(\{[\s\S]*?\}\)\.then\(\(map\) => \{[\s\S]*?resolve\(map\)/u);
+  assert.doesNotMatch(source, /readyMapId/u);
   assert.match(source, /maps: async \(\) => \{[\s\S]*?Native map did not report ready on this phone/u);
   assert.match(source, /Native map did not report ready on this phone\."\)\), 20_000\);/u);
   assert.match(source, /maps: async \(\) => \{[\s\S]*?A native Google Map view reported ready in the visible panel below/u);
