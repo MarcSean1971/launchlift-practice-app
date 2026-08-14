@@ -34,7 +34,7 @@ android {
         // Android 16 is already the compile toolchain. Target it as well so
         // this new Google Play submission remains eligible after 31 Aug 2026.
         targetSdkVersion 36
-        versionCode 8
+        versionCode 21
         versionName "1.3.1"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         aaptOptions {

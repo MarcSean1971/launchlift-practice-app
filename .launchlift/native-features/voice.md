@@ -2,7 +2,14 @@
 
 ## Evidence for this selected feature
 
-- No repository code signal was attached for this feature. Treat this as planned until a new scan finds code, setup, backend, policy, and device-test evidence.
+- Current code-inspection status: partial (50% confidence).
+- Evidence found:
+  - Voice/audio naming appears in repo tree
+- Still missing:
+  - Microphone capture flow
+  - start/stop/delete controls
+  - audio storage/transmission handling
+  - privacy wording
 
 ## What the user gets
 Users can record, dictate, translate, or call with clear consent and controls.
@@ -46,4 +53,4 @@ Users can record, dictate, translate, or call with clear consent and controls.
 - Mark the feature live before a real Android device test.
 
 Project: LaunchLift Practice App
-Generated: 2026-08-13T04:12:00.481Z
+Generated: 2026-08-14T02:52:54.929Z
