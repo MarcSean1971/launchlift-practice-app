@@ -2,7 +2,11 @@
 
 ## Evidence for this selected feature
 
-- No repository code signal was attached for this feature. Treat this as planned until a new scan finds code, setup, backend, policy, and device-test evidence.
+- Current code-inspection status: found (100% confidence).
+- Evidence found:
+  - @capacitor/preferences dependency present
+  - Service worker/offline file detected
+  - Offline/cache naming appears in repo tree
 
 ## What the user gets
 Useful app data, drafts, or settings survive weak signal without losing user work.
@@ -46,4 +50,4 @@ Useful app data, drafts, or settings survive weak signal without losing user wor
 - Mark the feature live before a real Android device test.
 
 Project: LaunchLift Practice App
-Generated: 2026-08-13T04:12:00.481Z
+Generated: 2026-08-14T03:16:59.188Z

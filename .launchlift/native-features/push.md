@@ -2,7 +2,10 @@
 
 ## Evidence for this selected feature
 
-- No repository code signal was attached for this feature. Treat this as planned until a new scan finds code, setup, backend, policy, and device-test evidence.
+- Current code-inspection status: found (100% confidence).
+- Evidence found:
+  - @capacitor/push-notifications dependency present
+  - Push/token naming appears in repo tree
 
 ## What the user gets
 Users receive useful Android notifications and land on the right screen when they tap them.
@@ -58,4 +61,4 @@ Users receive useful Android notifications and land on the right screen when the
 - Mark push live before a real Android device receives a notification.
 
 Project: LaunchLift Practice App
-Generated: 2026-08-13T04:12:00.479Z
+Generated: 2026-08-14T03:16:59.185Z
