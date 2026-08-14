@@ -481,7 +481,7 @@ export function NativeTestHarness() {
     },
     maps: async () => {
       const { GoogleMap } = await import("@capacitor/google-maps");
-      if (!GoogleMap || !Capacitor.isPluginAvailable("GoogleMaps")) {
+      if (!GoogleMap || !Capacitor.isPluginAvailable("CapacitorGoogleMaps")) {
         return { status: "blocked", message: "The native Google Maps bridge is unavailable in this converted build." };
       }
       const previousMap = nativeMap.current;
