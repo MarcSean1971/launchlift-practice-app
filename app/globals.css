@@ -249,6 +249,19 @@ h1 { margin: 0; max-width: 13ch; font-size: clamp(2.55rem, 7vw, 5.4rem); line-he
 .native-map-preview-card > div:first-child strong { color: var(--text); }
 .native-google-map-probe { display: block; width: 100%; min-height: 18rem; margin-top: .75rem; border-radius: .8rem; overflow: hidden; background: #020c11; }
 
+/* Capacitor Google Maps renders beneath Android's WebView. Keep the ordinary
+   web design opaque, but clear every ancestor and the exact preview surface
+   while the native-only map preview exists so the native tiles are visible. */
+html { background: transparent; }
+body:has(.native-map-preview-card),
+body:has(.native-map-preview-card) .practice-shell,
+body:has(.native-map-preview-card) .lab-section,
+body:has(.native-map-preview-card) .native-harness,
+body:has(.native-map-preview-card) .native-map-preview-card,
+body:has(.native-map-preview-card) .native-google-map-probe {
+  background: transparent;
+}
+
 @media (max-width: 860px) {
   .hero-grid { grid-template-columns: 1fr; }
   .guide-grid, .lab-grid, .capability-list { grid-template-columns: repeat(2, minmax(0, 1fr)); }
