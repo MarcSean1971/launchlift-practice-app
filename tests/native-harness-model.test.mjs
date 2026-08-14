@@ -143,7 +143,7 @@ test("makes every successful native probe perceptible on the handset", () => {
   assert.match(source, /void destroyNativeMap\(activeMap\)/u);
   assert.match(source, /id="native-google-map-probe" ref=\{nativeMapHost\} className="native-google-map-probe"/u);
   assert.match(styles, /html \{ background: transparent; \}/u);
-  assert.match(styles, /body:has\\(\\.native-map-preview-card\\)[\\s\\S]*?\\.native-harness[\\s\\S]*?\\.native-map-preview-card[\\s\\S]*?\\.native-google-map-probe[\\s\\S]*?background: transparent;/u);
+  assert.match(styles, /body:has\(\.native-map-preview-card\)[\s\S]*?\.native-harness[\s\S]*?\.native-map-preview-card[\s\S]*?\.native-google-map-probe[\s\S]*?background: transparent;/u);
 });
 
 test("keeps downloadable native-demo actions visually separated from their explanation", () => {
