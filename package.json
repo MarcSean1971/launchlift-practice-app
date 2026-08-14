@@ -37,7 +37,7 @@
     "@capacitor/file-transfer": "^2.0.5",
     "@capacitor/file-viewer": "^2.0.1",
     "@capacitor/filesystem": "^8.1.2",
-    "@capacitor/geolocation": "^8.2.1",
+    "@capacitor/geolocation": "^8.2.2",
     "@capacitor/google-maps": "^8.0.1",
     "@capacitor/haptics": "^8.0.2",
     "@capacitor/keyboard": "^8.0.5",
