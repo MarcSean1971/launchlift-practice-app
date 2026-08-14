@@ -500,7 +500,7 @@ export function NativeTestHarness() {
       // configuration. Do not embed or expose a key in this web source.
       const mapId = "launchlift-practice-native-map-probe";
       try {
-        await new Promise<void>((resolve, reject) => {
+        const createdMap = await new Promise<NativeGoogleMap>((resolve, reject) => {
           const timer = window.setTimeout(() => reject(new Error("Native map did not report ready on this phone.")), 20_000);
           void GoogleMap.create({
             id: mapId,
@@ -512,17 +512,15 @@ export function NativeTestHarness() {
               zoom: 2,
               androidLiteMode: false,
             },
-          }, ({ mapId: readyMapId }) => {
-            if (readyMapId !== mapId) return;
-            window.clearTimeout(timer);
-            resolve();
           }).then((map) => {
-            nativeMap.current = map;
+            window.clearTimeout(timer);
+            resolve(map);
           }).catch((error: unknown) => {
             window.clearTimeout(timer);
             reject(error instanceof Error ? error : new Error("Native map creation failed."));
           });
         });
+        nativeMap.current = createdMap;
       } catch (error) {
         const failedMap = nativeMap.current;
         nativeMap.current = null;
